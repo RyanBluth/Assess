@@ -1,0 +1,40 @@
+html{
+	background-color: #222222;
+	color: #f9f9f9;
+	font-family: sans-serif;
+	padding: 0;
+}
+
+body{
+	padding: 0;
+}
+
+td{
+	border-radius: 1px;
+	border-color: #fff;
+	border-style: solid;
+	padding: 5px;
+}
+
+
+.asset-list-container{
+	width: 70%;
+	height: 100%;
+	float: left;
+	background-color: #666;	
+}
+
+.asset-edit-container{
+	width: 30%;
+	background-color: #444;
+	height: 100%;
+	float: right;
+}
+
+.asset-row{
+	width:90%;
+}
+
+.asset-list-table{
+	width: 100%;
+}

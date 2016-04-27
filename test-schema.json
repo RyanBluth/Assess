@@ -1,0 +1,25 @@
+{
+  "AS_ASSET_TYPES": [
+    {
+      "name": "Image",
+      "type": "IMAGE",
+      "fields": [
+        {
+          "dataType": "AS_FILE",
+          "name": "src",
+          "extensions": [
+            "png",
+            "jpg",
+            "gif"
+          ],
+          "loader":"image",
+          "default":"DEFAULT"
+        },
+        {
+          "dataType": "AS_STRING",
+          "name": "Description"
+        }
+      ]
+    } 
+  ]
+}

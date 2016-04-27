@@ -1,0 +1,6 @@
+<tr class="asset-row">
+	<td *ngFor="#key of asset.getFieldKeys()">
+		{{key}} = <span [innerHtml]="asset.fields[key].rendered"></span>
+	</td>
+	<td><button>Edit</button></td>
+</tr>

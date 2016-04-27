@@ -1,0 +1,9 @@
+{
+	"writeObjects" : [
+		{
+			"dataSet" : "ASSETS",
+			"writer"  : "writers/assetWriter.js"
+		}
+
+	]
+}
