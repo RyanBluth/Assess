@@ -1,10 +1,17 @@
-exports.load = function load(originalValue) {
-	return "loaded" + originalValue;
-};
+exports.preview = function preview(value){
+	return{
+		template: '<span>' + value + '</span>',	 
+		run: function(elem){}
+	}
+}
 
-exports.render = function render(loadedValue) {
-    return "<input type='text' value='" + loadedValue + "'/>";
-};
-
-exports.script = function script(origValue, loadedValue) {	
-};
+exports.edit = function edit(value){
+	return{
+		template: '<input type="text" value="' + value + '"/>',
+		run: function(elem, updateValueFunc){
+			elem.onChange(function(){
+				updateValueFunc(elem.value);
+			});
+		}
+	}
+}

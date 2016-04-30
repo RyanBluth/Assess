@@ -1,1 +1,14 @@
-[{"type":"IMAGE","src":"T1111ErrrDst","Description":""}, {"type":"IMAGE","src":"TEstdwd","Description":"sdasd"}]
+{
+	"nest1" : {
+		"nest2":{
+			"nestArray" : [
+				{
+					"meta" : {
+						"name" : "DDDDDD"
+						},
+					"assets" : [{"type":"IMAGE","src":"DEFAULT","Description":"","TTT":0},{"type":"IMAGE","src":"DEFAULT","Description":"","TTT":0},{"type":"IMAGE","src":"DEFAULT","Description":"","TTT":0}]
+				}
+			]
+		}
+	}
+}

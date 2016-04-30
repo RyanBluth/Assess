@@ -35,7 +35,7 @@ System.register(["./utils"], function(exports_1, context_1) {
             })(DataType || (DataType = {}));
             exports_1("DataType", DataType);
             (function (SchemaFields) {
-                SchemaFields[SchemaFields["AS_ASSET_TYPES"] = 0] = "AS_ASSET_TYPES";
+                SchemaFields[SchemaFields["AS_ASSETS"] = 0] = "AS_ASSETS";
             })(SchemaFields || (SchemaFields = {}));
             exports_1("SchemaFields", SchemaFields);
             AssetFieldDefinition = (function () {
@@ -112,7 +112,6 @@ System.register(["./utils"], function(exports_1, context_1) {
             exports_1("AssetTypeDefinition", AssetTypeDefinition);
             AssetField = (function () {
                 function AssetField(def, value) {
-                    var funcs = require("./app/loaders/" + def.loader);
                     this.definition = def;
                     if (value) {
                         this.value = value;
@@ -120,10 +119,14 @@ System.register(["./utils"], function(exports_1, context_1) {
                     else {
                         this.value = def.default;
                     }
-                    this.loadedValue = funcs.load(this.value);
-                    this.rendered = funcs.render(this.loadedValue);
-                    this.script = funcs.script;
+                    var p = require("./app/loaders/" + def.loader);
+                    this.preview = p.preview(this.value);
+                    this.edit = p.edit(this.value);
+                    this.editing = true;
                 }
+                AssetField.prototype.toggleEditMode = function () {
+                    this.editing = !this.editing;
+                };
                 return AssetField;
             }());
             exports_1("AssetField", AssetField);
@@ -135,7 +138,6 @@ System.register(["./utils"], function(exports_1, context_1) {
                     // Instantiate the asset fields with null values so they are assigned defaults
                     def.fields.forEach(function (field) {
                         var val = null;
-                        console.log(fieldValues);
                         if (fieldValues && fieldValues.hasOwnProperty(field.name)) {
                             val = fieldValues[field.name];
                         }

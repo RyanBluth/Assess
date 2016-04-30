@@ -14,7 +14,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
         return function (target, key) { decorator(target, key, paramIndex); }
     };
     var core_1, common_1, Assets, utils;
-    var fs, electron, ProjectConfig, AssetWriteFormat, Schema, AssetService, AppComponent, AssetComponent, AssetGroupComponent;
+    var fs, electron, AS_SchemaTypes, ProjectConfig, AssetWriteFormat, Schema, AssetService, AppComponent, AssetFieldComponent, AssetComponent, AssetGroupComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -32,6 +32,9 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
         execute: function() {
             fs = require('fs');
             electron = require('electron');
+            AS_SchemaTypes = [
+                "AS_ASSETS"
+            ];
             ProjectConfig = (function () {
                 function ProjectConfig() {
                 }
@@ -42,41 +45,15 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                 AssetWriteFormat[AssetWriteFormat["JSON"] = 0] = "JSON";
             })(AssetWriteFormat || (AssetWriteFormat = {}));
             exports_1("AssetWriteFormat", AssetWriteFormat);
-            /**
-             * @brief Defines the structure of the asset strore and its data types
-             *
-             * The following attributes may be specifed
-             * ASSET_TYPES - An array specifing the asset types and their formats. An example would be as follows
-             * "ASSET_TYPES": [
-             *   {
-             *     "name": "Image",
-             *     "type": "IMAGE",
-             *     "fields": [
-             *       {
-             *         "dataType": "AS_FILE",
-             *         "name": "src",
-             *         "extensions": [
-             *           "png",
-             *           "jpg",
-             *           "gif"
-             *         ],
-             *         "loader": "loaders/imageLoader.js"
-             *       },
-             *       {
-             *         "dataType": "AS_STRING",
-             *         "name": "Description",
-             *         "loader": "loaders/imageLoader.js"
-             *       }
-             *     ]
-             *   }
-             * ]
-             */
             Schema = (function () {
-                function Schema(schemaAsObj) {
+                function Schema(schemaAsObj, structureStr) {
                     var _this = this;
                     this.assetTypes = {};
-                    if (schemaAsObj.hasOwnProperty(Assets.SchemaFields[Assets.SchemaFields.AS_ASSET_TYPES])) {
-                        var at = schemaAsObj[Assets.SchemaFields[Assets.SchemaFields.AS_ASSET_TYPES]];
+                    this.properties = [];
+                    this.structureStr = structureStr;
+                    this.properties = Object.keys(schemaAsObj);
+                    if (schemaAsObj.hasOwnProperty(Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS])) {
+                        var at = schemaAsObj[Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS]];
                         if (at instanceof Array) {
                             at.forEach(function (typeDef) {
                                 _this.assetTypes[typeDef["type"]] = new Assets.AssetTypeDefinition(typeDef);
@@ -105,7 +82,12 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                         utils.logError("Error reading schema file");
                         return;
                     }
-                    this.schema = new Schema(JSON.parse(data));
+                    var struc = fs.readFileSync(config.structurePath, 'utf8');
+                    if (!struc) {
+                        utils.logError("Error reading structure file");
+                        return;
+                    }
+                    this.schema = new Schema(JSON.parse(data), struc);
                 };
                 /**
                  * @brief Adds a new asset to the assets array
@@ -128,25 +110,78 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                  * If the outputPasth isn't specied try and load it from the project.json file
                  */
                 AssetService.prototype.writeAssets = function (format, outputPath) {
-                    var outAssets = [];
-                    this.assets.forEach(function (asset) {
-                        var outAsset = {};
-                        outAsset["type"] = asset.definition.type;
-                        for (var key in asset.fields) {
-                            outAsset[key] = asset.fields[key].value;
-                        }
-                        outAssets.push(outAsset);
+                    var _this = this;
+                    var outStructureStr = this.schema.structureStr;
+                    // insert AS properties from schema into output assets
+                    this.schema.properties.forEach(function (prop) {
+                        outStructureStr = outStructureStr.replace(new RegExp('"' + prop + '"', 'i'), _this.retriveValueForSchemaProperty(prop));
                     });
-                    fs.writeFileSync("C:/Projects/Asses/assets.json", JSON.stringify(outAssets));
+                    fs.writeFileSync("C:/Projects/Asses/assets.json", outStructureStr);
                 };
                 AssetService.prototype.readAssets = function (inputPath) {
                     var _this = this;
-                    var assetsObj = fs.readFileSync(inputPath, 'utf8');
-                    assetsObj = JSON.parse(assetsObj);
-                    assetsObj.forEach(function (asset) {
+                    var assetsStr = fs.readFileSync(inputPath, 'utf8');
+                    var strucToAssetMap = {};
+                    var strucObj = JSON.parse(this.schema.structureStr);
+                    this.schema.properties.forEach(function (p) {
+                        strucToAssetMap[p] = _this.findValueInObject(strucObj, p).reverse();
+                    });
+                    // @TODO Load custom properties
+                    var assetsObj = JSON.parse(assetsStr);
+                    var c = null;
+                    strucToAssetMap["AS_ASSETS"].forEach(function (p) {
+                        if (c == null) {
+                            c = assetsObj[p];
+                        }
+                        else {
+                            c = c[p];
+                        }
+                    });
+                    c.forEach(function (asset) {
                         var a = new Assets.Asset(_this.schema.assetTypes[asset.type], asset);
                         _this.assets.push(a);
                     });
+                };
+                AssetService.prototype.retriveValueForSchemaProperty = function (property) {
+                    if (AS_SchemaTypes.indexOf(property) != -1) {
+                        switch (property) {
+                            case "AS_ASSETS":
+                                var outAssets_1 = [];
+                                this.assets.forEach(function (asset) {
+                                    var outAsset = {};
+                                    outAsset["type"] = asset.definition.type;
+                                    for (var key in asset.fields) {
+                                        outAsset[key] = asset.fields[key].value;
+                                    }
+                                    outAssets_1.push(outAsset);
+                                });
+                                return JSON.stringify(outAssets_1);
+                        }
+                    }
+                    else {
+                        // @TODO Retrive custom properties
+                        return '"DDDDDD"';
+                    }
+                    return "";
+                };
+                AssetService.prototype.findValueInObject = function (obj, property, path) {
+                    if (path === void 0) { path = []; }
+                    for (var x in obj) {
+                        ;
+                        var val = obj[x];
+                        if (val == property) {
+                            path.push(x);
+                            return path;
+                        }
+                        else if (val != null && typeof val == 'object') {
+                            var v = this.findValueInObject(val, property, path);
+                            if (v != null) {
+                                path.push(x);
+                                return path;
+                            }
+                        }
+                    }
+                    return null;
                 };
                 AssetService = __decorate([
                     core_1.Injectable(), 
@@ -168,9 +203,37 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                 return AppComponent;
             }());
             exports_1("AppComponent", AppComponent);
+            AssetFieldComponent = (function () {
+                function AssetFieldComponent(elem) {
+                    this.elem = elem.nativeElement;
+                }
+                AssetFieldComponent.prototype.ngAfterViewChecked = function () {
+                    this.field.preview.run(this.elem);
+                };
+                AssetFieldComponent.prototype.updateState = function () {
+                    if (this.field.editing) {
+                        this.field.edit.run(this.elem);
+                    }
+                    else {
+                        this.field.edit.run(this.elem);
+                    }
+                };
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Object)
+                ], AssetFieldComponent.prototype, "field", void 0);
+                AssetFieldComponent = __decorate([
+                    core_1.Component({
+                        selector: 'asses-asset-field',
+                        template: '<div [innerHTML]="field.editing ? field.edit.template : field.preview.template"></div>'
+                    }), 
+                    __metadata('design:paramtypes', [core_1.ElementRef])
+                ], AssetFieldComponent);
+                return AssetFieldComponent;
+            }());
+            exports_1("AssetFieldComponent", AssetFieldComponent);
             AssetComponent = (function () {
                 function AssetComponent() {
-                    console.log(this.asset);
                 }
                 __decorate([
                     core_1.Input(), 
@@ -179,6 +242,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                 AssetComponent = __decorate([
                     core_1.Component({
                         selector: 'assess-asset',
+                        directives: [AssetFieldComponent],
                         templateUrl: './app/templates/assess-asset.html'
                     }), 
                     __metadata('design:paramtypes', [])
@@ -202,8 +266,10 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                                     var pc = new ProjectConfig();
                                     pc.assetsPath = "/assets.json";
                                     pc.schemaPath = "C:/Projects/Asses/test-schema.json";
+                                    pc.structurePath = "C:/Projects/Asses/test-structure.json";
                                     var assetService = new AssetService(pc);
                                     assetService.readAssets("C:/Projects/Asses/assets.json");
+                                    assetService.writeAssets(AssetWriteFormat.JSON);
                                     return assetService;
                                 }
                             })

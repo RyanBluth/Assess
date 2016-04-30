@@ -1,5 +1,8 @@
 {
-  "AS_ASSET_TYPES": [
+  "ME_NAME" : {
+      "dataType": "AS_STRING"
+  },
+  "AS_ASSETS": [
     {
       "name": "Image",
       "type": "IMAGE",
@@ -18,6 +21,10 @@
         {
           "dataType": "AS_STRING",
           "name": "Description"
+        },
+         {
+          "dataType": "AS_INT",
+          "name": "TTT"
         }
       ]
     } 

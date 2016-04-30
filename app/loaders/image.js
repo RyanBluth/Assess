@@ -1,10 +1,16 @@
-exports.load = function load(originalValue) {
-	return "loaded" + originalValue;
-};
+exports.preview = function preview(value){
+	return{
+		template: '<img src='+ value +'/>',	 
+		run: function(elem){
 
-exports.render = function render(loadedValue) {
-    return "<h1>" + loadedValue + "</h1>";
-};
+		}
+	}
+}
 
-exports.script = function script(origValue, loadedValue) {
-};
+exports.edit = function edit(value, updateValueFunc){
+	return{
+		template: 'EDIT',
+		run: function(elem){
+		}
+	}
+}

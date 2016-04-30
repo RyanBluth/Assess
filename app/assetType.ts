@@ -11,9 +11,8 @@ export enum DataType{
 	AS_BOOLEAN
 }
 
-
 export enum SchemaFields{
-	AS_ASSET_TYPES
+	AS_ASSETS
 }
 
 function getLoaderForDataType(dataType: DataType) : string{
@@ -87,7 +86,6 @@ export class AssetFieldDefinition{
 	}
 }
 
-
 export class AssetTypeDefinition{
 	
 	public name: string;
@@ -113,22 +111,26 @@ export class AssetTypeDefinition{
 export class AssetField{
 	
 	public definition: AssetFieldDefinition;
-	public rendered: string;
-	public script: (loadedValue:any) => void;
-	public loadedValue: any;
 	public value: any;
+	public preview: any;
+	public edit: any;
+	public editing: boolean;
 
 	constructor(def: AssetFieldDefinition, value?: any){
-		var funcs = require("./app/loaders/" + def.loader)
 		this.definition = def;
-		if(value){
+		if (value) {
 			this.value = value;
-		}else{
+		} else {
 			this.value = def.default;
 		}
-		this.loadedValue = funcs.load(this.value);
-		this.rendered = funcs.render(this.loadedValue);
-		this.script = funcs.script;
+		let p = require("./app/loaders/" + def.loader);
+		this.preview = p.preview(this.value);
+		this.edit 	 = p.edit(this.value);
+		this.editing = true;
+	}
+
+	public toggleEditMode(){
+		this.editing = !this.editing;
 	}
 }
 
@@ -142,8 +144,7 @@ export class Asset{
 		// Instantiate the asset fields with null values so they are assigned defaults
 		def.fields.forEach(field => {
 			var val = null;
-			console.log(fieldValues);
-			if (fieldValues && fieldValues.hasOwnProperty(field.name)) {
+			if(fieldValues && fieldValues.hasOwnProperty(field.name)){
 				val = fieldValues[field.name];
 			}
 			this.fields[field.name] = new AssetField(field, val);

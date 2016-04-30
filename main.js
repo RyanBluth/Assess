@@ -11,7 +11,7 @@ var BrowserWindow = electron.BrowserWindow;
 var mainWindow;
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 800, height: 600 });
+    mainWindow = new BrowserWindow({ width: 1800, height: 1600 });
     // and load the index.html of the app.
     mainWindow.loadURL('file://' + __dirname + '/index.html');
     // Open the DevTools.
@@ -24,14 +24,6 @@ function createWindow() {
         mainWindow = null;
     });
     
-    {
-        let t = require("./app/loaders/image");
-        t.load()
-    }
-    {
-        let t = require("./app/loaders/int");
-        t.load()
-    }
     /*// Setup menu
     var menu = new Menu();
     menu.append(new MenuItem({ label: 'MenuItem1', click: function () { console.log('item 1 clicked'); } }));

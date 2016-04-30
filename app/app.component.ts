@@ -1,6 +1,6 @@
 declare function require(moduleName: string): any;
 
-import {provide, Component, Injector, Provider, Inject, Input, Output, Optional, Injectable} from 'angular2/core';
+import {ElementRef, provide, Component, Injector, Provider, Inject, Input, Output, Optional, Injectable, AfterViewChecked} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import * as Assets from './assetType';
 import * as utils from "./utils";
@@ -8,51 +8,31 @@ import * as utils from "./utils";
 const fs = require('fs'); 
 const electron = require('electron');
 
+const AS_SchemaTypes: string[] = [
+	"AS_ASSETS"
+];
+
 export class ProjectConfig{
 	public schemaPath: string;
 	public assetsPath: string;
+	public structurePath: string;
 }
 
 export enum AssetWriteFormat{
 	JSON
 }
 
-/**
- * @brief Defines the structure of the asset strore and its data types
- * 
- * The following attributes may be specifed
- * ASSET_TYPES - An array specifing the asset types and their formats. An example would be as follows 
- * "ASSET_TYPES": [
- *   {
- *     "name": "Image",
- *     "type": "IMAGE",
- *     "fields": [
- *       {
- *         "dataType": "AS_FILE",
- *         "name": "src",
- *         "extensions": [
- *           "png",
- *           "jpg",
- *           "gif"
- *         ],
- *         "loader": "loaders/imageLoader.js"
- *       },
- *       {
- *         "dataType": "AS_STRING",
- *         "name": "Description",
- *         "loader": "loaders/imageLoader.js"
- *       }
- *     ]
- *   }
- * ] 
- */
 export class Schema{
 	
 	public assetTypes: {} = {};
+	public properties: string[] = [];
+	public structureStr: string;
 
-	constructor(schemaAsObj: any){
-		if (schemaAsObj.hasOwnProperty(Assets.SchemaFields[Assets.SchemaFields.AS_ASSET_TYPES])){
-			let at = schemaAsObj[Assets.SchemaFields[Assets.SchemaFields.AS_ASSET_TYPES]]; 
+	constructor(schemaAsObj: any, structureStr: string){
+		this.structureStr = structureStr;
+		this.properties = Object.keys(schemaAsObj);
+		if (schemaAsObj.hasOwnProperty(Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS])){
+			let at = schemaAsObj[Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS]]; 
 			if(at instanceof Array){
 				at.forEach((typeDef) => {
 					this.assetTypes[typeDef["type"]] = new Assets.AssetTypeDefinition(typeDef);
@@ -87,7 +67,12 @@ export class AssetService{
 			utils.logError("Error reading schema file");
 			return;
 		}
-		this.schema = new Schema(JSON.parse(data));
+		let struc = fs.readFileSync(config.structurePath, 'utf8');
+		if (!struc) {
+			utils.logError("Error reading structure file");
+			return;
+		}
+		this.schema = new Schema(JSON.parse(data), struc);
 	}
 
 	/**
@@ -112,29 +97,82 @@ export class AssetService{
 	 * If the outputPasth isn't specied try and load it from the project.json file
 	 */
 	public writeAssets(format:AssetWriteFormat, outputPath?: string) : void {
-		let outAssets = [];
-		this.assets.forEach((asset) => {
-			let outAsset = {};
-			outAsset["type"] = asset.definition.type;
 		
-			for(let key in asset.fields){
-				outAsset[key] = asset.fields[key].value;
-			}
-			outAssets.push(outAsset);
- 		});
-		fs.writeFileSync("C:/Projects/Asses/assets.json", JSON.stringify(outAssets));
+		var outStructureStr = this.schema.structureStr;
+ 		// insert AS properties from schema into output assets
+		this.schema.properties.forEach(prop => {
+			outStructureStr = outStructureStr.replace(new RegExp('"' + prop +'"', 'i'), this.retriveValueForSchemaProperty(prop));
+		});
+
+		fs.writeFileSync("C:/Projects/Asses/assets.json", outStructureStr);
 	}
 
 	public readAssets(inputPath?: string) : void{
-		let assetsObj = fs.readFileSync(inputPath, 'utf8');
-		assetsObj = JSON.parse(assetsObj);
-		assetsObj.forEach((asset) => {
+		let assetsStr = fs.readFileSync(inputPath, 'utf8');
+
+		let strucToAssetMap = {};
+		let strucObj = JSON.parse(this.schema.structureStr);
+		this.schema.properties.forEach(p => {
+			strucToAssetMap[p] = this.findValueInObject(strucObj, p).reverse();
+		});
+
+		// @TODO Load custom properties
+		let assetsObj = JSON.parse(assetsStr);
+		var c = null;
+		strucToAssetMap["AS_ASSETS"].forEach(p => {
+			if(c == null){
+				c = assetsObj[p];
+			}else{
+				c = c[p];
+			}
+		});
+		c.forEach((asset) => {
 			let a:Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.type], asset);
 			this.assets.push(a);
 		});
 	}
-}
 
+	public retriveValueForSchemaProperty(property: string) : string{
+		if(AS_SchemaTypes.indexOf(property) != -1){
+			switch (property) {
+				case "AS_ASSETS":
+					let outAssets = [];
+					this.assets.forEach((asset) => {
+						let outAsset = {};
+						outAsset["type"] = asset.definition.type;
+
+						for (let key in asset.fields) {
+							outAsset[key] = asset.fields[key].value;
+						}
+						outAssets.push(outAsset);
+					});
+					return JSON.stringify(outAssets);
+			}
+		}else{
+			// @TODO Retrive custom properties
+			return '"DDDDDD"';
+		}
+		return "";
+	}
+
+	public findValueInObject(obj: any, property: string, path: any[] = []): any[] {
+		for(let x in obj){;
+			let val = obj[x];
+			if (val == property){
+				path.push(x);
+				return path;
+			}
+			else if(val != null && typeof val == 'object'){
+				let v = this.findValueInObject(val, property, path);
+				if(v != null){
+					path.push(x);	
+					return path;
+				}
+			}
+		}
+		return null;
+	}
+}
 
 @Component({
     selector: 'assess-app',
@@ -145,17 +183,44 @@ export class AppComponent {
 	constructor(){}
 }
 
+
+@Component({
+	selector: 'asses-asset-field',
+	template: '<div [innerHTML]="field.editing ? field.edit.template : field.preview.template"></div>'
+})
+export class AssetFieldComponent implements AfterViewChecked {
+	@Input() field: any;
+
+	private elem: ElementRef;
+
+	constructor(elem: ElementRef){
+		this.elem = elem.nativeElement;
+	}
+
+	public ngAfterViewChecked() {
+		this.field.preview.run(this.elem);
+	}
+
+	public updateState(){
+		if(this.field.editing){
+			this.field.edit.run(this.elem);
+		}else{
+			this.field.edit.run(this.elem);
+		}
+	}
+}
+
+
 @Component({
 	selector: 'assess-asset',
+	directives: [AssetFieldComponent],
 	templateUrl: './app/templates/assess-asset.html'
 })
 export class AssetComponent{
 	
 	@Input() asset : Assets.Asset;
 
-	constructor(){
-		console.log(this.asset);
-	}
+	constructor() {}
 }
 
 @Component({
@@ -169,9 +234,13 @@ export class AssetComponent{
 				var pc = new ProjectConfig();
 				pc.assetsPath = "/assets.json";
 				pc.schemaPath = "C:/Projects/Asses/test-schema.json";
+				pc.structurePath = "C:/Projects/Asses/test-structure.json";
 
 				var assetService: AssetService = new AssetService(pc);
+		
 				assetService.readAssets("C:/Projects/Asses/assets.json");
+
+				assetService.writeAssets(AssetWriteFormat.JSON);
 				return assetService;
 			}
 		})
