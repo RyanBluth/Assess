@@ -4,5 +4,12 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"build_systems":
+    [
+        {
+            "name": "start",
+            "cmd": ["npm.cmd", "start"]
+        }
+    ]
 }

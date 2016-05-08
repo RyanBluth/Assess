@@ -128,7 +128,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                     this.schema.properties.forEach(function (prop) {
                         outStructureStr = outStructureStr.replace(new RegExp('"' + prop + '"', 'i'), _this.retriveValueForSchemaProperty(prop));
                     });
-                    fs.writeFileSync("C:/Projects/Asses/assets.json", outStructureStr);
+                    fs.writeFileSync("C:/Projects/Assess/assets.json", outStructureStr);
                 };
                 AssetService.prototype.readAssets = function (inputPath) {
                     var _this = this;
@@ -277,10 +277,10 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                                     // Load project configuration stuff here
                                     var pc = new ProjectConfig();
                                     pc.assetsPath = "/assets.json";
-                                    pc.schemaPath = "C:/Projects/Asses/test-schema.json";
-                                    pc.structurePath = "C:/Projects/Asses/test-structure.json";
+                                    pc.schemaPath = "C:/Projects/Assess/test-schema.json";
+                                    pc.structurePath = "C:/Projects/Assess/test-structure.json";
                                     var assetService = new AssetService(pc);
-                                    assetService.readAssets("C:/Projects/Asses/assets.json");
+                                    assetService.readAssets("C:/Projects/Assess/assets.json");
                                     assetService.writeAssets(AssetWriteFormat.JSON);
                                     return assetService;
                                 }

@@ -408,37 +408,29 @@
 	"buffers":
 	[
 		{
-			"file": "index.html",
+			"contents": "declare function require(moduleName: string): any;\n\nimport {ElementRef, provide, Component, Injector, Provider, Inject, Input, Output, Optional, Injectable, AfterViewChecked} from 'angular2/core';\nimport {NgFor} from 'angular2/common';\nimport * as Assets from './assetType';\nimport * as utils from \"./utils\";\n\nconst fs = require('fs'); \nconst electron = require('electron');\n\nvar currentProjectPath = null; // Current Project File Path\n\nconst AS_SchemaTypes: string[] = [\n	\"AS_ASSETS\"\n];\n\nexport class ProjectConfig{\n	public schemaPath: string;\n	public assetsPath: string;\n	public structurePath: string;\n	public mappings: {};\n}\n\nexport enum AssetWriteFormat{\n	JSON\n}\n\nexport class Schema{\n	\n	public assetTypes: {} = {};\n	public properties: string[] = [];\n	public structureStr: string;\n\n	constructor(schemaAsObj: any, structureStr: string){\n		this.structureStr = structureStr;\n		this.properties = Object.keys(schemaAsObj);\n		if (schemaAsObj.hasOwnProperty(Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS])){\n			let at = schemaAsObj[Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS]]; \n			if(at instanceof Array){\n				at.forEach((typeDef) => {\n					this.assetTypes[typeDef[\"type\"]] = new Assets.AssetTypeDefinition(typeDef);\n				});\n			}else{\n				utils.logError(\"ASSET_TYPES must be an array\");\n			}\n		}\n	}\n}\n\nexport function loadProject() : ProjectConfig{\n	var data = fs.loadFileSync(currentProjectPath, \"utf8\");\n	data = JSON.parse(data);\n	var pc = new ProjectConfig();\n	pc.assetsPath    = data[\"assetPath\"]     || null;\n	pc.schemaPath    = data[\"schemaPath\"]    || null;\n	pc.structurePath = data[\"structurePath\"] || null;\n	pc.structurePath = data[\"mappings\"]      || null;\n	return pc;\n}\n\n@Injectable()\nexport class AssetService{\n	public assets: Assets.Asset[] = [];\n	public assetTypeDefinitions: any;\n\n	public schema: Schema;\n	public assetsAsObj: any; // Asset file loaded as object\n\n	constructor(config:ProjectConfig){\n		if(config){\n			this.loadProject(config);\n		}\n	}\n\n	public loadProject(config: ProjectConfig){\n		// Load schema\n		// populate AssetTypeDefinitions as object keyed by type\n		let data = fs.readFileSync(config.schemaPath, 'utf8');\n		if (!data) {\n			utils.logError(\"Error reading schema file\");\n			return;\n		}\n		let struc = fs.readFileSync(config.structurePath, 'utf8');\n		if (!struc) {\n			utils.logError(\"Error reading structure file\");\n			return;\n		}\n		this.schema = new Schema(JSON.parse(data), struc);\n	}\n\n	/**\n	 * @brief Adds a new asset to the assets array \n	 * @details Constructs the asset based on the type and populates\n	 *  its fields with appropreiate default values\n	 * \n	 * @param type The type of the asset - specified in the schema\n	 */\n	public addAsset(type: string): void {\n		// Need to make sure there is a loaded type definition for the specified type\n		if(!this.schema.assetTypes.hasOwnProperty(type)){\n			utils.logError(\"Error occured during call to addAsset - type \\\"\" + type + \"\\\" is not specified in the loaded schema\");\n			return;\n		}\n		// Creeate a new asset object - passing in the type definition from the schema\n		this.assets.push(new Assets.Asset(this.schema.assetTypes[type]));\n	}	\n\n	/**\n	 * Write the current assets to a file using the specified format\n	 * If the outputPasth isn't specied try and load it from the project.json file\n	 */\n	public writeAssets(format:AssetWriteFormat, outputPath?: string) : void {\n		\n		var outStructureStr = this.schema.structureStr;\n 		// insert AS properties from schema into output assets\n		this.schema.properties.forEach(prop => {\n			outStructureStr = outStructureStr.replace(new RegExp('\"' + prop +'\"', 'i'), this.retriveValueForSchemaProperty(prop));\n		});\n\n		fs.writeFileSync(\"C:/Projects/Assess/assets.json\", outStructureStr);\n	}\n\n	public readAssets(inputPath?: string) : void{\n		let assetsStr = fs.readFileSync(inputPath, 'utf8');\n\n		let strucToAssetMap = {};\n		let strucObj = JSON.parse(this.schema.structureStr);\n		this.schema.properties.forEach(p => {\n			strucToAssetMap[p] = this.findValueInObject(strucObj, p).reverse();\n		});\n\n		// @TODO Load custom properties\n		let assetsObj = JSON.parse(assetsStr);\n		var c = null;\n		strucToAssetMap[\"AS_ASSETS\"].forEach(p => {\n			if(c == null){\n				c = assetsObj[p];\n			}else{\n				c = c[p];\n			}\n		});\n		c.forEach((asset) => {\n			let a:Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.type], asset);\n			this.assets.push(a);\n		});\n	}\n\n	public retriveValueForSchemaProperty(property: string) : string{\n		if(AS_SchemaTypes.indexOf(property) != -1){\n			switch (property) {\n				case \"AS_ASSETS\":\n					let outAssets = [];\n					this.assets.forEach((asset) => {\n						let outAsset = {};\n						outAsset[\"type\"] = asset.definition.type;\n\n						for (let key in asset.fields) {\n							outAsset[key] = asset.fields[key].value;\n						}\n						outAssets.push(outAsset);\n					});\n					return JSON.stringify(outAssets);\n			}\n		}else{\n			// @TODO Retrive custom properties\n			return '\"DDDDDD\"';\n		}\n		return \"\";\n	}\n\n	public findValueInObject(obj: any, property: string, path: any[] = []): any[] {\n		for(let x in obj){;\n			let val = obj[x];\n			if (val == property){\n				path.push(x);\n				return path;\n			}\n			else if(val != null && typeof val == 'object'){\n				let v = this.findValueInObject(val, property, path);\n				if(v != null){\n					path.push(x);	\n					return path;\n				}\n			}\n		}\n		return null;\n	}\n}\n\n@Component({\n    selector: 'assess-app',\n    template: '<h4>Assess</h4>',\n})\nexport class AppComponent {\n\n	constructor(){}\n}\n\n\n@Component({\n	selector: 'asses-asset-field',\n	template: '<div [innerHTML]=\"field.editing ? field.edit.template : field.preview.template\"></div>'\n})\nexport class AssetFieldComponent implements AfterViewChecked {\n	@Input() field: any;\n\n	private elem: ElementRef;\n\n	constructor(elem: ElementRef){\n		this.elem = elem.nativeElement;\n	}\n\n	public ngAfterViewChecked() {\n		this.field.preview.run(this.elem);\n	}\n\n	public updateState(){\n		if(this.field.editing){\n			this.field.edit.run(this.elem);\n		}else{\n			this.field.edit.run(this.elem);\n		}\n	}\n}\n\n\n@Component({\n	selector: 'assess-asset',\n	directives: [AssetFieldComponent],\n	templateUrl: './app/templates/assess-asset.html'\n})\nexport class AssetComponent{\n	\n	@Input() asset : Assets.Asset;\n\n	constructor() {}\n}\n\n@Component({\n    selector: 'assess-asset-group',\n    directives: [AssetComponent, NgFor],\n    template: '<div *ngFor=\"#asset of assetService.assets\"><assess-asset [asset]=\"asset\"></assess-asset></div>',\n    providers: [\n		provide(AssetService, {\n			useFactory: () => {\n				// Load project configuration stuff here\n				var pc = new ProjectConfig();\n				pc.assetsPath = \"/assets.json\";\n				pc.schemaPath = \"C:/Projects/Assess/test-schema.json\";\n				pc.structurePath = \"C:/Projects/Assess/test-structure.json\";\n\n				var assetService: AssetService = new AssetService(pc);\n		\n				assetService.readAssets(\"C:/Projects/Assess/assets.json\");\n\n				assetService.writeAssets(AssetWriteFormat.JSON);\n				return assetService;\n			}\n		})\n	]\n})\nexport class AssetGroupComponent {\n\n	public assetService: AssetService;\n\n	constructor(@Inject(AssetService) assetService: AssetService) {\n		this.assetService = assetService;\n	}\n}l",
+			"file": "app/app.component.ts",
+			"file_size": 7395,
+			"file_write_time": 131071886776871084,
 			"settings":
 			{
-				"buffer_size": 1356,
+				"buffer_size": 7127,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 678,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "app/app.component.ts",
-			"settings":
-			{
-				"buffer_size": 7122,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "styles.css",
-			"settings":
-			{
-				"buffer_size": 447,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "{\n  \"nest1\": {\n    \"nest2\": {\n      \"nestArray\": [\n        {\n          \"meta\": {\n            \"name\": \"DDDDDD\"\n          },\n          \"assets\": [\n            {\n              \"type\": \"IMAGE\",\n              \"src\": \"DEFAULT\",\n              \"Description\": \"sadadasdad\",\n              \"TTT\": 0\n            },\n            {\n              \"type\": \"IMAGE\",\n              \"src\": \"DEFAULT\",\n              \"Description\": \"\",\n              \"TTT\": 0\n            },\n            {\n              \"type\": \"IMAGE\",\n              \"src\": \"DEFAULT\",\n              \"Description\": \"\",\n              \"TTT\": 0\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
 			"file": "assets.json",
-			"file_size": 335,
-			"file_write_time": 131065248717207331,
 			"settings":
 			{
-				"buffer_size": 639,
+				"buffer_size": 322,
 				"line_ending": "Windows"
 			}
 		},
@@ -455,14 +447,6 @@
 			"settings":
 			{
 				"buffer_size": 557,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "test-structure.json",
-			"settings":
-			{
-				"buffer_size": 149,
 				"line_ending": "Windows"
 			}
 		}
@@ -506,13 +490,41 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 600.0,
-		"last_filter": "pre",
+		"height": 182.0,
+		"last_filter": "vmen",
 		"selected_items":
 		[
 			[
+				"vmen",
+				"View: Toggle Menu"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"color",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
 				"pre",
 				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"form",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"valid",
+				"Pretty JSON: Validate"
 			],
 			[
 				"inde",
@@ -525,10 +537,6 @@
 			[
 				"v",
 				"Pretty JSON: Validate"
-			],
-			[
-				"install",
-				"Package Control: Install Package"
 			],
 			[
 				"va",
@@ -591,10 +599,6 @@
 				"Package Control: Remove Package"
 			],
 			[
-				"color",
-				"Colorsublime: Install Theme"
-			],
-			[
 				"setsyntax text",
 				"Set Syntax: Plain Text"
 			],
@@ -613,10 +617,6 @@
 			[
 				"conver",
 				"Indentation: Convert to Tabs"
-			],
-			[
-				"valid",
-				"Pretty JSON: Validate"
 			],
 			[
 				"prett",
@@ -691,13 +691,14 @@
 				"Set Syntax: Haxe"
 			]
 		],
-		"width": 720.0
+		"width": 382.0
 	},
 	"console":
 	{
 		"height": 204.0,
 		"history":
 		[
+			"view.settings().erase(\"color_scheme\")",
 			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
 		]
 	},
@@ -712,13 +713,17 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Projects/Asses",
-		"/C/Projects/Asses/app",
-		"/C/Projects/Asses/app/loaders",
-		"/C/Projects/Asses/app/loaders/default"
+		"/C/Projects/Assess",
+		"/C/Projects/Assess/app"
 	],
 	"file_history":
 	[
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Projects/Assess/index.html",
+		"/C/Projects/Assess/tsconfig.json",
+		"/C/Projects/Assess/styles.css",
+		"/C/Projects/Assess/Assess.sublime-project",
 		"/C/Projects/Asses/app/app.component.ts",
 		"/C/Projects/LowResJam/Game/Source/Game/assets/scenario.json",
 		"/C/Projects/Asses/app/utils.js",
@@ -786,7 +791,6 @@
 		"/C/Users/ryan/ClionProjects/S-Tengine2/CMakeLists.txt",
 		"/C/Users/ryan/.vscode/extensions/mitaki28.vscode-clang-0.2.0/package.json",
 		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/include/AutoMusic.h",
-		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/src/StringUtils.cpp",
 		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/include/StringUtils.h",
 		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/ClangAutoComplete/ClangAutoComplete.sublime-settings",
@@ -841,22 +845,18 @@
 		"/C/Users/ryan/Desktop/FixedScenarios/second mansion.json",
 		"/C/Users/ryan/Desktop/ddd/2_sweetheartsquad@gmail.com.crt",
 		"/C/Users/ryan/Desktop/fixedScenario/Sixth mansion.json",
-		"/C/Projects/Scenarios/scenarios/Intro_Lab.json",
-		"/C/Projects/Scenarios/scenarios/Butler_1.json",
-		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/animations/goodsee_writing.json",
-		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/animations/dead.json",
-		"/C/Users/ryan/Desktop/ssl.key",
-		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Butler_2.json"
+		"/C/Projects/Scenarios/scenarios/Intro_Lab.json"
 	],
 	"find":
 	{
-		"height": 55.0
+		"height": 43.0
 	},
 	"find_in_files":
 	{
 		"height": 90.0,
 		"where_history":
 		[
+			"C:\\Projects\\Assess",
 			"C:\\Projects\\Scenarios\\components"
 		]
 	},
@@ -865,6 +865,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Asses/",
+			"Asses",
 			"|| ",
 			"conso",
 			"addASs",
@@ -990,9 +992,7 @@
 			"”",
 			"“",
 			"’",
-			"”",
-			"+",
-			"\""
+			"”"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1032,114 +1032,24 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "index.html",
+					"file": "app/app.component.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1356,
+						"buffer_size": 7127,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6,
-								6
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"rainbowth.lispy": false,
-							"syntax": "Packages/Djaneiro/Syntaxes/HTML (Django).tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "app/app.component.ts",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 7122,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
+								5111,
+								5111
 							]
 						],
 						"settings":
@@ -1214,123 +1124,69 @@
 							},
 							"use_tab_stops": false
 						},
-						"translation.x": -0.0,
-						"translation.y": 1232.0,
+						"translation.x": 0.0,
+						"translation.y": 450.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "styles.css",
+					"buffer": 1,
+					"file": "/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 447,
+						"buffer_size": 678,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								158,
-								158
+								678,
+								678
 							]
 						],
 						"settings":
 						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"rainbowth.lispy": false,
-							"syntax": "Packages/Djaneiro/Syntaxes/CSS (Django).tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": false,
+								"indentSize": 4,
+								"tabSize": 4
+							}
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 3,
+			"selected": 2,
 			"sheets":
 			[
 				{
-					"buffer": 3,
+					"buffer": 2,
 					"file": "assets.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 639,
+						"buffer_size": 322,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								639,
-								639
+								322,
+								322
 							]
 						],
 						"settings":
@@ -1394,19 +1250,22 @@
 								"bh_curly_close",
 								"bh_curly_content"
 							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai Bright.tmTheme",
 							"history_list_is_closing": true,
 							"rainbowth.lispy": false,
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 3,
 					"file": "test-project.json",
 					"semi_transient": false,
 					"settings":
@@ -1483,6 +1342,7 @@
 								"bh_curly_close",
 								"bh_curly_content"
 							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/lioshi.tmTheme",
 							"rainbowth.lispy": false,
 							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
 						},
@@ -1490,11 +1350,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 4,
 					"file": "test-schema.json",
 					"semi_transient": false,
 					"settings":
@@ -1571,6 +1431,7 @@
 								"bh_curly_close",
 								"bh_curly_content"
 							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/lioshi.tmTheme",
 							"rainbowth.lispy": false,
 							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
 							"tab_size": 2,
@@ -1580,96 +1441,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "test-structure.json",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 149,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content"
-							],
-							"rainbowth.lispy": false,
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -1703,7 +1475,7 @@
 		"cols":
 		[
 			0.0,
-			0.649880505292,
+			0.689298334279,
 			1.0
 		],
 		"rows":
@@ -1723,7 +1495,7 @@
 	},
 	"output.exec":
 	{
-		"height": 30.0
+		"height": 26.0
 	},
 	"output.find_results":
 	{
@@ -1733,7 +1505,7 @@
 	{
 		"height": 140.0
 	},
-	"pinned_build_system": "Packages/User/assess.sublime-build",
+	"pinned_build_system": "start",
 	"project": "Assess.sublime-project",
 	"replace":
 	{
@@ -1975,7 +1747,7 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 1,
+	"selected_group": 0,
 	"settings":
 	{
 	},
@@ -1983,7 +1755,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 271.0,
+	"side_bar_width": 212.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

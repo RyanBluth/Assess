@@ -117,7 +117,7 @@ export class AssetService{
 			outStructureStr = outStructureStr.replace(new RegExp('"' + prop +'"', 'i'), this.retriveValueForSchemaProperty(prop));
 		});
 
-		fs.writeFileSync("C:/Projects/Asses/assets.json", outStructureStr);
+		fs.writeFileSync("C:/Projects/Assess/assets.json", outStructureStr);
 	}
 
 	public readAssets(inputPath?: string) : void{
@@ -246,12 +246,12 @@ export class AssetComponent{
 				// Load project configuration stuff here
 				var pc = new ProjectConfig();
 				pc.assetsPath = "/assets.json";
-				pc.schemaPath = "C:/Projects/Asses/test-schema.json";
-				pc.structurePath = "C:/Projects/Asses/test-structure.json";
+				pc.schemaPath = "C:/Projects/Assess/test-schema.json";
+				pc.structurePath = "C:/Projects/Assess/test-structure.json";
 
 				var assetService: AssetService = new AssetService(pc);
 		
-				assetService.readAssets("C:/Projects/Asses/assets.json");
+				assetService.readAssets("C:/Projects/Assess/assets.json");
 
 				assetService.writeAssets(AssetWriteFormat.JSON);
 				return assetService;
