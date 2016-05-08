@@ -8,6 +8,8 @@ import * as utils from "./utils";
 const fs = require('fs'); 
 const electron = require('electron');
 
+var currentProjectPath = null; // Current Project File Path
+
 const AS_SchemaTypes: string[] = [
 	"AS_ASSETS"
 ];
@@ -16,6 +18,7 @@ export class ProjectConfig{
 	public schemaPath: string;
 	public assetsPath: string;
 	public structurePath: string;
+	public mappings: {};
 }
 
 export enum AssetWriteFormat{
@@ -44,6 +47,16 @@ export class Schema{
 	}
 }
 
+export function loadProject() : ProjectConfig{
+	var data = fs.loadFileSync(currentProjectPath, "utf8");
+	data = JSON.parse(data);
+	var pc = new ProjectConfig();
+	pc.assetsPath    = data["assetPath"]     || null;
+	pc.schemaPath    = data["schemaPath"]    || null;
+	pc.structurePath = data["structurePath"] || null;
+	pc.structurePath = data["mappings"]      || null;
+	return pc;
+}
 
 @Injectable()
 export class AssetService{

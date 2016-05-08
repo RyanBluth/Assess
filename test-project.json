@@ -1,0 +1,9 @@
+{
+	"assetPath"     : "",  // Path to assets from location of project file
+	"schemaPath"    : "",  // Path to schema file
+	"structurePath" : "",  // Path to structure file
+	"mappings" : {
+		"AS_ASSETS" : "AS_ASSETS", // Used to specifiy assets section in schema
+		"AS_ASSET_TYPE" : "type" // Uswd to specify the type of an asset in the schema
+	}
+}

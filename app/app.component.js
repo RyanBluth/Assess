@@ -14,7 +14,18 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
         return function (target, key) { decorator(target, key, paramIndex); }
     };
     var core_1, common_1, Assets, utils;
-    var fs, electron, AS_SchemaTypes, ProjectConfig, AssetWriteFormat, Schema, AssetService, AppComponent, AssetFieldComponent, AssetComponent, AssetGroupComponent;
+    var fs, electron, currentProjectPath, AS_SchemaTypes, ProjectConfig, AssetWriteFormat, Schema, AssetService, AppComponent, AssetFieldComponent, AssetComponent, AssetGroupComponent;
+    function loadProject() {
+        var data = fs.loadFileSync(currentProjectPath, "utf8");
+        data = JSON.parse(data);
+        var pc = new ProjectConfig();
+        pc.assetsPath = data["assetPath"] || null;
+        pc.schemaPath = data["schemaPath"] || null;
+        pc.structurePath = data["structurePath"] || null;
+        pc.structurePath = data["mappings"] || null;
+        return pc;
+    }
+    exports_1("loadProject", loadProject);
     return {
         setters:[
             function (core_1_1) {
@@ -32,6 +43,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
         execute: function() {
             fs = require('fs');
             electron = require('electron');
+            currentProjectPath = null; // Current Project File Path
             AS_SchemaTypes = [
                 "AS_ASSETS"
             ];
