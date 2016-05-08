@@ -6,7 +6,26 @@
 					"meta" : {
 						"name" : "DDDDDD"
 						},
-					"assets" : [{"type":"IMAGE","src":"DEFAULT","Description":"sadadasdad","TTT":0},{"type":"IMAGE","src":"DEFAULT","Description":"","TTT":0},{"type":"IMAGE","src":"DEFAULT","Description":"","TTT":0}]
+					"assets" : [
+	{
+		"type": "IMAGE",
+		"src": "DEFAULT",
+		"Description": "sdasddfssd",
+		"TTT": "3333"
+	},
+	{
+		"type": "IMAGE",
+		"src": "DEFAULT",
+		"Description": "adsdfsd",
+		"TTT": "-5"
+	},
+	{
+		"type": "IMAGE",
+		"src": "DEFAULT",
+		"Description": "asdasd",
+		"TTT": "11"
+	}
+]
 				}
 			]
 		}

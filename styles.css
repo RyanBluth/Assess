@@ -10,16 +10,20 @@ body{
 }
 
 td{	
-	border: thin solid #666;
-	padding: 10px;
 	width: auto;
-	display : flex;
+	margin: 0;
+	padding: 0;
+	border-right: thin solid #666;
+}
+
+tr{
+	margin:0;
+	border: thin solid #666;
 }
 
 .asset-list-container{
 	width: 100%;
 	height: 100%;
-	float: left;
 	background-color: #333;	
 }
 
@@ -27,7 +31,6 @@ td{
 	width: 30%;
 	background-color: #444;
 	height: 100%;
-	float: right;
 }
 
 .asset-row{
@@ -36,4 +39,17 @@ td{
 
 .asset-list-table{
 	width: 100%;
+}
+
+.asset-group-table{
+	width:100%;
+	border-collapse: collapse;
+}
+
+.asset-field-column{
+	width: 99%;
+}
+
+.asset-field{
+	padding: 0;
 }

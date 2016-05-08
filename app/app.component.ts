@@ -14,6 +14,26 @@ const AS_SchemaTypes: string[] = [
 	"AS_ASSETS"
 ];
 
+const providers = {
+	assetServiceProvider: provide(AssetService, {
+		useFactory: () => {
+			// Load project configuration stuff here
+			var pc = new ProjectConfig();
+			pc.assetsPath = "/assets.json";
+			pc.schemaPath = "C:/Projects/Assess/test-schema.json";
+			pc.structurePath = "C:/Projects/Assess/test-structure.json";
+
+			var assetService: AssetService = new AssetService(pc);
+
+			assetService.readAssets("C:/Projects/Assess/assets.json");
+
+			assetService.writeAssets(AssetWriteFormat.JSON);
+
+			return assetService;
+		}
+	})
+}
+
 export class ProjectConfig{
 	public schemaPath: string;
 	public assetsPath: string;
@@ -28,6 +48,7 @@ export enum AssetWriteFormat{
 export class Schema{
 	
 	public assetTypes: {} = {};
+	public assetTypeNames: string[] = [];
 	public properties: string[] = [];
 	public structureStr: string;
 
@@ -39,6 +60,7 @@ export class Schema{
 			if(at instanceof Array){
 				at.forEach((typeDef) => {
 					this.assetTypes[typeDef["type"]] = new Assets.AssetTypeDefinition(typeDef);
+					this.assetTypeNames.push(typeDef["type"]);
 				});
 			}else{
 				utils.logError("ASSET_TYPES must be an array");
@@ -159,7 +181,7 @@ export class AssetService{
 						}
 						outAssets.push(outAsset);
 					});
-					return JSON.stringify(outAssets);
+					return JSON.stringify(outAssets, null, "\t");
 			}
 		}else{
 			// @TODO Retrive custom properties
@@ -196,36 +218,34 @@ export class AppComponent {
 	constructor(){}
 }
 
-
 @Component({
-	selector: 'asses-asset-field',
-	template: '<div [innerHTML]="field.editing ? field.edit.template : field.preview.template"></div>'
+	selector: '[asses-asset-field]',
+	template: '<div class="asset-field" [outerHTML]="field.create.template"></div>',
 })
 export class AssetFieldComponent implements AfterViewChecked {
-	@Input() field: any;
+	@Input() field: Assets.AssetField;
 
-	private elem: ElementRef;
+	private elem: any;
+	private assetService: AssetService;
 
-	constructor(elem: ElementRef){
+	constructor(elem: ElementRef, @Inject(AssetService) assetService: AssetService) {
 		this.elem = elem.nativeElement;
+		this.assetService = assetService;
 	}
 
 	public ngAfterViewChecked() {
-		this.field.preview.run(this.elem);
+		this.field.create.setup(this.elem, (value) => {this.updateValue(value)});
 	}
 
-	public updateState(){
-		if(this.field.editing){
-			this.field.edit.run(this.elem);
-		}else{
-			this.field.edit.run(this.elem);
-		}
+	public updateValue(value){
+		this.field.value = value;
+		this.assetService.writeAssets(AssetWriteFormat.JSON);
 	}
 }
 
 
 @Component({
-	selector: 'assess-asset',
+	selector: '[assess-asset]',
 	directives: [AssetFieldComponent],
 	templateUrl: './app/templates/assess-asset.html'
 })
@@ -236,27 +256,33 @@ export class AssetComponent{
 	constructor() {}
 }
 
+
+@Component({
+	selector: '[assess-asset-header]',
+	templateUrl: './app/templates/assess-asset-header.html'
+})
+export class AssetHeaderComponent {
+
+	@Input() assetType: Assets.AssetTypeDefinition;
+
+	constructor() { }
+}
+
 @Component({
     selector: 'assess-asset-group',
-    directives: [AssetComponent, NgFor],
-    template: '<div *ngFor="#asset of assetService.assets"><assess-asset [asset]="asset"></assess-asset></div>',
+    directives: [AssetComponent, AssetHeaderComponent, NgFor],
+    template: `
+    		<table class="asset-group-table" cellpadding=0 cellspacing=0>
+    			<thead>
+	    			<tr assess-asset-header *ngFor="#assetTypeName of assetService.schema.assetTypeNames" 
+	    				[assetType]="assetService.schema.assetTypes[assetTypeName]"></tr>
+    			</thead>
+    			<tbody>
+	    			<tr assess-asset *ngFor="#asset of assetService.assets" [asset]="asset"></tr>
+	    		</tbody>
+    		</table>`,
     providers: [
-		provide(AssetService, {
-			useFactory: () => {
-				// Load project configuration stuff here
-				var pc = new ProjectConfig();
-				pc.assetsPath = "/assets.json";
-				pc.schemaPath = "C:/Projects/Assess/test-schema.json";
-				pc.structurePath = "C:/Projects/Assess/test-structure.json";
-
-				var assetService: AssetService = new AssetService(pc);
-		
-				assetService.readAssets("C:/Projects/Assess/assets.json");
-
-				assetService.writeAssets(AssetWriteFormat.JSON);
-				return assetService;
-			}
-		})
+		provide(AssetService, providers.assetServiceProvider)
 	]
 })
 export class AssetGroupComponent {

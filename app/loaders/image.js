@@ -1,16 +1,10 @@
-exports.preview = function preview(value){
+exports.create = function create(value){
 	return{
-		template: '<img src='+ value +'/>',	 
-		run: function(elem){
-
-		}
-	}
-}
-
-exports.edit = function edit(value, updateValueFunc){
-	return{
-		template: 'EDIT',
-		run: function(elem){
+		template: '<input type="text" value="' + value + '"/>',
+		setup: function(elem, updateValueFunc){
+			elem.onchange = function(){
+				updateValueFunc(elem.value);
+			};
 		}
 	}
 }

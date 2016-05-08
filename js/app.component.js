@@ -14,7 +14,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
         return function (target, key) { decorator(target, key, paramIndex); }
     };
     var core_1, common_1, Assets, utils;
-    var fs, electron, currentProjectPath, AS_SchemaTypes, ProjectConfig, AssetWriteFormat, Schema, AssetService, AppComponent, AssetFieldComponent, AssetComponent, AssetGroupComponent;
+    var fs, electron, currentProjectPath, AS_SchemaTypes, providers, ProjectConfig, AssetWriteFormat, Schema, AssetService, AppComponent, AssetFieldComponent, AssetComponent, AssetHeaderComponent, AssetGroupComponent;
     function loadProject() {
         var data = fs.loadFileSync(currentProjectPath, "utf8");
         data = JSON.parse(data);
@@ -47,6 +47,21 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
             AS_SchemaTypes = [
                 "AS_ASSETS"
             ];
+            providers = {
+                assetServiceProvider: core_1.provide(AssetService, {
+                    useFactory: function () {
+                        // Load project configuration stuff here
+                        var pc = new ProjectConfig();
+                        pc.assetsPath = "/assets.json";
+                        pc.schemaPath = "C:/Projects/Assess/test-schema.json";
+                        pc.structurePath = "C:/Projects/Assess/test-structure.json";
+                        var assetService = new AssetService(pc);
+                        assetService.readAssets("C:/Projects/Assess/assets.json");
+                        assetService.writeAssets(AssetWriteFormat.JSON);
+                        return assetService;
+                    }
+                })
+            };
             ProjectConfig = (function () {
                 function ProjectConfig() {
                 }
@@ -61,6 +76,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                 function Schema(schemaAsObj, structureStr) {
                     var _this = this;
                     this.assetTypes = {};
+                    this.assetTypeNames = [];
                     this.properties = [];
                     this.structureStr = structureStr;
                     this.properties = Object.keys(schemaAsObj);
@@ -69,6 +85,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                         if (at instanceof Array) {
                             at.forEach(function (typeDef) {
                                 _this.assetTypes[typeDef["type"]] = new Assets.AssetTypeDefinition(typeDef);
+                                _this.assetTypeNames.push(typeDef["type"]);
                             });
                         }
                         else {
@@ -167,7 +184,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                                     }
                                     outAssets_1.push(outAsset);
                                 });
-                                return JSON.stringify(outAssets_1);
+                                return JSON.stringify(outAssets_1, null, "\t");
                         }
                     }
                     else {
@@ -216,30 +233,29 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
             }());
             exports_1("AppComponent", AppComponent);
             AssetFieldComponent = (function () {
-                function AssetFieldComponent(elem) {
+                function AssetFieldComponent(elem, assetService) {
                     this.elem = elem.nativeElement;
+                    this.assetService = assetService;
                 }
                 AssetFieldComponent.prototype.ngAfterViewChecked = function () {
-                    this.field.preview.run(this.elem);
+                    var _this = this;
+                    this.field.create.setup(this.elem, function (value) { _this.updateValue(value); });
                 };
-                AssetFieldComponent.prototype.updateState = function () {
-                    if (this.field.editing) {
-                        this.field.edit.run(this.elem);
-                    }
-                    else {
-                        this.field.edit.run(this.elem);
-                    }
+                AssetFieldComponent.prototype.updateValue = function (value) {
+                    this.field.value = value;
+                    this.assetService.writeAssets(AssetWriteFormat.JSON);
                 };
                 __decorate([
                     core_1.Input(), 
-                    __metadata('design:type', Object)
+                    __metadata('design:type', Assets.AssetField)
                 ], AssetFieldComponent.prototype, "field", void 0);
                 AssetFieldComponent = __decorate([
                     core_1.Component({
-                        selector: 'asses-asset-field',
-                        template: '<div [innerHTML]="field.editing ? field.edit.template : field.preview.template"></div>'
-                    }), 
-                    __metadata('design:paramtypes', [core_1.ElementRef])
+                        selector: '[asses-asset-field]',
+                        template: '<div class="asset-field" [outerHTML]="field.create.template"></div>',
+                    }),
+                    __param(1, core_1.Inject(AssetService)), 
+                    __metadata('design:paramtypes', [core_1.ElementRef, AssetService])
                 ], AssetFieldComponent);
                 return AssetFieldComponent;
             }());
@@ -253,7 +269,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                 ], AssetComponent.prototype, "asset", void 0);
                 AssetComponent = __decorate([
                     core_1.Component({
-                        selector: 'assess-asset',
+                        selector: '[assess-asset]',
                         directives: [AssetFieldComponent],
                         templateUrl: './app/templates/assess-asset.html'
                     }), 
@@ -262,6 +278,23 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                 return AssetComponent;
             }());
             exports_1("AssetComponent", AssetComponent);
+            AssetHeaderComponent = (function () {
+                function AssetHeaderComponent() {
+                }
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Assets.AssetTypeDefinition)
+                ], AssetHeaderComponent.prototype, "assetType", void 0);
+                AssetHeaderComponent = __decorate([
+                    core_1.Component({
+                        selector: '[assess-asset-header]',
+                        templateUrl: './app/templates/assess-asset-header.html'
+                    }), 
+                    __metadata('design:paramtypes', [])
+                ], AssetHeaderComponent);
+                return AssetHeaderComponent;
+            }());
+            exports_1("AssetHeaderComponent", AssetHeaderComponent);
             AssetGroupComponent = (function () {
                 function AssetGroupComponent(assetService) {
                     this.assetService = assetService;
@@ -269,22 +302,10 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                 AssetGroupComponent = __decorate([
                     core_1.Component({
                         selector: 'assess-asset-group',
-                        directives: [AssetComponent, common_1.NgFor],
-                        template: '<div *ngFor="#asset of assetService.assets"><assess-asset [asset]="asset"></assess-asset></div>',
+                        directives: [AssetComponent, AssetHeaderComponent, common_1.NgFor],
+                        template: "\n    \t\t<table class=\"asset-group-table\" cellpadding=0 cellspacing=0>\n    \t\t\t<thead>\n\t    \t\t\t<tr assess-asset-header *ngFor=\"#assetTypeName of assetService.schema.assetTypeNames\" \n\t    \t\t\t\t[assetType]=\"assetService.schema.assetTypes[assetTypeName]\"></tr>\n    \t\t\t</thead>\n    \t\t\t<tbody>\n\t    \t\t\t<tr assess-asset *ngFor=\"#asset of assetService.assets\" [asset]=\"asset\"></tr>\n\t    \t\t</tbody>\n    \t\t</table>",
                         providers: [
-                            core_1.provide(AssetService, {
-                                useFactory: function () {
-                                    // Load project configuration stuff here
-                                    var pc = new ProjectConfig();
-                                    pc.assetsPath = "/assets.json";
-                                    pc.schemaPath = "C:/Projects/Assess/test-schema.json";
-                                    pc.structurePath = "C:/Projects/Assess/test-structure.json";
-                                    var assetService = new AssetService(pc);
-                                    assetService.readAssets("C:/Projects/Assess/assets.json");
-                                    assetService.writeAssets(AssetWriteFormat.JSON);
-                                    return assetService;
-                                }
-                            })
+                            core_1.provide(AssetService, providers.assetServiceProvider)
                         ]
                     }),
                     __param(0, core_1.Inject(AssetService)), 

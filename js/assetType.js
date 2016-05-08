@@ -120,8 +120,7 @@ System.register(["./utils"], function(exports_1, context_1) {
                         this.value = def.default;
                     }
                     var p = require("./app/loaders/" + def.loader);
-                    this.preview = p.preview(this.value);
-                    this.edit = p.edit(this.value);
+                    this.create = p.create(this.value);
                     this.editing = true;
                 }
                 AssetField.prototype.toggleEditMode = function () {

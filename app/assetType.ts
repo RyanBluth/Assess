@@ -112,8 +112,7 @@ export class AssetField{
 	
 	public definition: AssetFieldDefinition;
 	public value: any;
-	public preview: any;
-	public edit: any;
+	public create: any;
 	public editing: boolean;
 
 	constructor(def: AssetFieldDefinition, value?: any){
@@ -124,8 +123,7 @@ export class AssetField{
 			this.value = def.default;
 		}
 		let p = require("./app/loaders/" + def.loader);
-		this.preview = p.preview(this.value);
-		this.edit 	 = p.edit(this.value);
+		this.create	 = p.create(this.value);
 		this.editing = true;
 	}
 
