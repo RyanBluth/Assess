@@ -171,6 +171,15 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                         _this.assets.push(a);
                     });
                 };
+                AssetService.prototype.assetsForType = function (type) {
+                    var ret = [];
+                    for (var idx in this.assets) {
+                        if (this.assets[idx].definition.type === type) {
+                            ret.push(this.assets[idx]);
+                        }
+                    }
+                    return ret;
+                };
                 AssetService.prototype.retriveValueForSchemaProperty = function (property) {
                     if (AS_SchemaTypes.indexOf(property) != -1) {
                         switch (property) {
@@ -303,7 +312,7 @@ System.register(['angular2/core', 'angular2/common', './assetType', "./utils"], 
                     core_1.Component({
                         selector: 'assess-asset-group',
                         directives: [AssetComponent, AssetHeaderComponent, common_1.NgFor],
-                        template: "\n    \t\t<table class=\"asset-group-table\" cellpadding=0 cellspacing=0>\n    \t\t\t<thead>\n\t    \t\t\t<tr assess-asset-header *ngFor=\"#assetTypeName of assetService.schema.assetTypeNames\" \n\t    \t\t\t\t[assetType]=\"assetService.schema.assetTypes[assetTypeName]\"></tr>\n    \t\t\t</thead>\n    \t\t\t<tbody>\n\t    \t\t\t<tr assess-asset *ngFor=\"#asset of assetService.assets\" [asset]=\"asset\"></tr>\n\t    \t\t</tbody>\n    \t\t</table>",
+                        template: "\n    \t\t<div class=\"asset-group\" *ngFor=\"#assetTypeName of assetService.schema.assetTypeNames\"> \n    \t\t\t<div class=\"asset-type-title\"><span>{{assetService.schema.assetTypes[assetTypeName].name}}s</span></div> \n\t    \t\t<table class=\"asset-group-table\" cellpadding=0 cellspacing=0>\n\t    \t\t\t<thead>\n\t\t    \t\t\t<tr assess-asset-header [assetType]=\"assetService.schema.assetTypes[assetTypeName]\"></tr>\n\t    \t\t\t</thead>\n\t    \t\t\t<tbody>\n\t\t    \t\t\t<tr assess-asset *ngFor=\"#asset of assetService.assetsForType(assetTypeName)\" [asset]=\"asset\"></tr>\n\t\t    \t\t</tbody>\n\t    \t\t</table>\n\t    \t\t<button class=\"new-asset-btn\" (click)=\"assetService.addAsset(assetTypeName)\">New</button>\n    \t\t</div>",
                         providers: [
                             core_1.provide(AssetService, providers.assetServiceProvider)
                         ]

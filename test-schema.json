@@ -27,6 +27,27 @@
           "name": "TTT"
         }
       ]
-    } 
+    },
+     {
+      "name": "Sound",
+      "type": "SOUND",
+      "fields": [
+        {
+          "dataType": "AS_FILE",
+          "name": "src",
+          "extensions": [
+            "png",
+            "jpg",
+            "gif"
+          ],
+          "loader":"image",
+          "default":"DEFAULT"
+        },
+        {
+          "dataType": "AS_STRING",
+          "name": "Category"
+        }
+      ]
+    }  
   ]
 }

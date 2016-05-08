@@ -167,6 +167,16 @@ export class AssetService{
 		});
 	}
 
+	public assetsForType(type:string): Assets.Asset[]{
+		var ret: Assets.Asset[] = [];
+		for(let idx in this.assets){
+			if(this.assets[idx].definition.type === type){
+				ret.push(this.assets[idx]);
+			}
+		}
+		return ret;
+	}
+
 	public retriveValueForSchemaProperty(property: string) : string{
 		if(AS_SchemaTypes.indexOf(property) != -1){
 			switch (property) {
@@ -272,15 +282,18 @@ export class AssetHeaderComponent {
     selector: 'assess-asset-group',
     directives: [AssetComponent, AssetHeaderComponent, NgFor],
     template: `
-    		<table class="asset-group-table" cellpadding=0 cellspacing=0>
-    			<thead>
-	    			<tr assess-asset-header *ngFor="#assetTypeName of assetService.schema.assetTypeNames" 
-	    				[assetType]="assetService.schema.assetTypes[assetTypeName]"></tr>
-    			</thead>
-    			<tbody>
-	    			<tr assess-asset *ngFor="#asset of assetService.assets" [asset]="asset"></tr>
-	    		</tbody>
-    		</table>`,
+    		<div class="asset-group" *ngFor="#assetTypeName of assetService.schema.assetTypeNames"> 
+    			<div class="asset-type-title"><span>{{assetService.schema.assetTypes[assetTypeName].name}}s</span></div> 
+	    		<table class="asset-group-table" cellpadding=0 cellspacing=0>
+	    			<thead>
+		    			<tr assess-asset-header [assetType]="assetService.schema.assetTypes[assetTypeName]"></tr>
+	    			</thead>
+	    			<tbody>
+		    			<tr assess-asset *ngFor="#asset of assetService.assetsForType(assetTypeName)" [asset]="asset"></tr>
+		    		</tbody>
+	    		</table>
+	    		<button class="new-asset-btn" (click)="assetService.addAsset(assetTypeName)">New</button>
+    		</div>`,
     providers: [
 		provide(AssetService, providers.assetServiceProvider)
 	]
