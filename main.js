@@ -2,6 +2,7 @@
 var electron = require('electron');
 var Menu = require('menu');
 var MenuItem = require('menu-item');
+const { dialog } = require('electron');
 // Module to control application life.
 var app = electron.app;
 // Module to create native browser window.
@@ -24,12 +25,48 @@ function createWindow() {
         mainWindow = null;
     });
     
-    /*// Setup menu
-    var menu = new Menu();
-    menu.append(new MenuItem({ label: 'MenuItem1', click: function () { console.log('item 1 clicked'); } }));
-    menu.append(new MenuItem({ type: 'separator' }));
-    menu.append(new MenuItem({ label: 'MenuItem2', type: 'checkbox', checked: true }));
-    Menu.setApplicationMenu(menu);*/
+    // Setup menu
+
+    var template = [
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'New Project',
+                    accelerator: 'Command+N'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Open Project',
+                    accelerator: 'Command+O',
+                    click: function(){
+                        dialog.showOpenDialog( 
+                            {properties: [ 'openFile']}, 
+                            function(e){
+                                console.log(e);
+                                dialog.showMessageBox({ message: e.toString(),
+                                                        buttons: ["OK"] });
+                            }
+                        );
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Reload',
+                    accelerator: 'Command+R',
+                    click: function(){mainWindow.reload()}
+                }
+            ]
+        }
+    ];
+
+    var menu = Menu.buildFromTemplate(template);
+
+    Menu.setApplicationMenu(menu);
 }
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
