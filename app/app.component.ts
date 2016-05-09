@@ -9,10 +9,12 @@ const fs = require('fs');
 const electron = require('electron');
 
 const remote = require('remote');
-const window = remote.require('electron').BrowserWindow;
+const { BrowserWindow } = require('electron').remote;
 const Menu = remote.require('menu');
 const MenuItem = remote.require('menu-item');
 const { dialog } = require('electron').remote;
+
+var mainWindow = BrowserWindow.fromId(1);
 
 var currentProjectPath = null; // Current Project File Path
 
@@ -34,10 +36,10 @@ var template = [
 			},
 			{
 				label: 'Open Project',
-				accelerator: 'Command+O',
+				accelerator: 'Command+o',
 				click: function() {
 					dialog.showOpenDialog(
-						{ properties: ['openFile'] },
+						{ properties: ['openFile'], filters: [{ name: 'JSON', extensions: ['json'] }] },
 						function(file) {
 							if (file != undefined) {
 								dialog.showMessageBox({
@@ -56,7 +58,7 @@ var template = [
 			{
 				label: 'Reload',
 				accelerator: 'Command+R',
-				click: function() { window.reload() }
+				click: function() { mainWindow.reload() }
 			}
 		]
 	}
