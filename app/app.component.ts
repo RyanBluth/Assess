@@ -8,11 +8,62 @@ import * as utils from "./utils";
 const fs = require('fs'); 
 const electron = require('electron');
 
+const remote = require('remote');
+const window = remote.require('electron').BrowserWindow;
+const Menu = remote.require('menu');
+const MenuItem = remote.require('menu-item');
+const { dialog } = require('electron').remote;
+
 var currentProjectPath = null; // Current Project File Path
 
 const AS_SchemaTypes: string[] = [
 	"AS_ASSETS"
 ];
+
+// Setup menu
+var template = [
+	{
+		label: 'File',
+		submenu: [
+			{
+				label: 'New Project',
+				accelerator: 'Command+N'
+			},
+			{
+				type: 'separator'
+			},
+			{
+				label: 'Open Project',
+				accelerator: 'Command+O',
+				click: function() {
+					dialog.showOpenDialog(
+						{ properties: ['openFile'] },
+						function(file) {
+							if (file != undefined) {
+								dialog.showMessageBox({
+									message: file.toString(),
+									buttons: ["OK"]
+								});
+								localStorage.setItem("currentProject", file.toString());
+							}
+						}
+					);
+				}
+			},
+			{
+				type: 'separator'
+			},
+			{
+				label: 'Reload',
+				accelerator: 'Command+R',
+				click: function() { window.reload() }
+			}
+		]
+	}
+];
+
+var menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
 
 const providers = {
 	assetServiceProvider: provide(AssetService, {

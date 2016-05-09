@@ -24,49 +24,6 @@ function createWindow() {
         // when you should delete the corresponding element.
         mainWindow = null;
     });
-    
-    // Setup menu
-
-    var template = [
-        {
-            label: 'File',
-            submenu: [
-                {
-                    label: 'New Project',
-                    accelerator: 'Command+N'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Open Project',
-                    accelerator: 'Command+O',
-                    click: function(){
-                        dialog.showOpenDialog( 
-                            {properties: [ 'openFile']}, 
-                            function(e){
-                                console.log(e);
-                                dialog.showMessageBox({ message: e.toString(),
-                                                        buttons: ["OK"] });
-                            }
-                        );
-                    }
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Reload',
-                    accelerator: 'Command+R',
-                    click: function(){mainWindow.reload()}
-                }
-            ]
-        }
-    ];
-
-    var menu = Menu.buildFromTemplate(template);
-
-    Menu.setApplicationMenu(menu);
 }
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
