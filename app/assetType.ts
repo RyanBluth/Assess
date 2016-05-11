@@ -115,6 +115,8 @@ export class AssetField{
 	public create: any;
 	public editing: boolean;
 
+	private _loader;
+
 	constructor(def: AssetFieldDefinition, value?: any){
 		this.definition = def;
 		if (value) {
@@ -122,13 +124,17 @@ export class AssetField{
 		} else {
 			this.value = def.default;
 		}
-		let p = require("./app/loaders/" + def.loader);
-		this.create	 = p.create(this.value);
+		this._loader = require("./app/loaders/" + def.loader);
+		this.create	 = this._loader.create(this.value);
 		this.editing = true;
 	}
 
 	public toggleEditMode(){
 		this.editing = !this.editing;
+	}
+
+	public refresh(){
+		this.create = this._loader.create(this.value);
 	}
 }
 

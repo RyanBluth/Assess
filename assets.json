@@ -9,63 +9,63 @@
 					"assets" : [
 	{
 		"type": "IMAGE",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Description": "sdasddfssdasdasd",
 		"TTT": "3333"
 	},
 	{
 		"type": "IMAGE",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Description": "adsdfasdadassd",
 		"TTT": "0"
 	},
 	{
 		"type": "IMAGE",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Description": "asdasd",
 		"TTT": "11"
 	},
 	{
 		"type": "IMAGE",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Description": "asdasd",
 		"TTT": 0
 	},
 	{
 		"type": "IMAGE",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Description": "asdasd",
 		"TTT": 0
 	},
 	{
 		"type": "IMAGE",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Description": "cccc",
 		"TTT": "99999"
 	},
 	{
 		"type": "SOUND",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Category": "asdassadsadasdasdasdd"
 	},
 	{
 		"type": "SOUND",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Category": "asdasd"
 	},
 	{
 		"type": "SOUND",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Category": "zxczx"
 	},
 	{
 		"type": "SOUND",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Category": "czxzcxc"
 	},
 	{
 		"type": "SOUND",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Category": "zxczx"
 	},
 	{
@@ -80,12 +80,12 @@
 	},
 	{
 		"type": "SOUND",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Category": "qqqqqq"
 	},
 	{
 		"type": "SOUND",
-		"src": "DEFAULT",
+		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Category": "1111"
 	}
 ]

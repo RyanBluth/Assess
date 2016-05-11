@@ -34,7 +34,6 @@ export class Project{
 	}
 }
 
-
 @Injectable()
 export class ProjectService {
 
@@ -53,6 +52,5 @@ export class ProjectService {
 		} catch (e) {
 			utils.logError("Project file " + filePath + " does not exist");
 		}
-		
 	}
 }

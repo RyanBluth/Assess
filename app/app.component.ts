@@ -114,8 +114,12 @@ export class AssetService{
 	private _zone: NgZone;// Angular zone
 	private _projectService: ProjectService;
 
-	constructor( @Inject(NgZone) _zone: NgZone, @Inject(ProjectService) _projectService: ProjectService) {
+	constructor( 
+		@Inject(NgZone) _zone: NgZone, 
+		@Inject(ProjectService) _projectService: ProjectService) 
+	{
 		this._zone = _zone;
+		this._projectService = _projectService;
 		var lastProject = window.localStorage.getItem('lastProject');
 		if (lastProject != null && lastProject != undefined) {
 			try{
@@ -267,26 +271,32 @@ export class AssetService{
 
 @Component({
 	selector: '[asses-asset-field]',
-	template: '<div class="asset-field" [outerHTML]="field.create.template"></div>',
+	template: '<div class="asset-field" [innerHTML]="field.create.template()"></div>',
 })
 export class AssetFieldComponent implements AfterViewChecked {
 	@Input() field: Assets.AssetField;
 
-	private elem: any;
-	private assetService: AssetService;
+	private _elem: any;
+	private _assetService: AssetService;
+	private _zone: NgZone;
 
-	constructor(elem: ElementRef, @Inject(AssetService) assetService: AssetService) {
-		this.elem = elem.nativeElement;
-		this.assetService = assetService;
+	constructor(_zone:NgZone, _elem: ElementRef, @Inject(AssetService) _assetService: AssetService) {
+		this._elem = _elem.nativeElement;
+		this._assetService = _assetService;
+		this._zone = _zone;
 	}
 
 	public ngAfterViewChecked() {
-		this.field.create.setup(this.elem, (value) => {this.updateValue(value)});
+		this.field.create.setup(this._elem, (value) => {this.updateValue(value)});
 	}
 
 	public updateValue(value){
-		this.field.value = value;
-		this.assetService.writeAssets(AssetWriteFormat.JSON);
+		this._zone.run(() => {
+				this.field.value = value;
+				this.field.refresh();
+			}
+		);
+		this._assetService.writeAssets(AssetWriteFormat.JSON);
 	}
 }
 
