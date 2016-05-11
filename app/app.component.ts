@@ -1,7 +1,11 @@
 declare function require(moduleName: string): any;
 
-import {appInjector} from "./bootstrap"
-import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, ApplicationRef, Provider, Inject, Input, Output, Optional, Injectable, AfterViewChecked} from 'angular2/core';
+import {globalAppInjector} from "./bootstrap"
+
+import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, 
+	ApplicationRef, Provider, Inject, Input, Output, 
+	Optional, Injectable, AfterViewChecked} from 'angular2/core';
+
 import {NgFor, NgIf} from 'angular2/common';
 import * as Assets from './assetType';
 import * as utils from "./utils";
@@ -44,8 +48,9 @@ var template = [
 						{ properties: ['openFile'], filters: [{ name: 'JSON', extensions: ['json'] }] },
 						(file) => {
 							if (file != undefined) {
-								ProjectService.loadProject(file.toString());
-								appInjector.get(AssetService).loadProject(ProjectService.currentProject);
+								var projService = globalAppInjector.get(ProjectService);
+								projService.loadProject(file.toString());
+								globalAppInjector.get(AssetService).loadProject(projService.currentProject);
 							}
 						}
 					);
@@ -106,16 +111,17 @@ export class AssetService{
 	public schema: Schema = null;
 	public assetsAsObj: any = null; // Asset file loaded as object
 
-	private zone: NgZone;// Angular zone
+	private _zone: NgZone;// Angular zone
+	private _projectService: ProjectService;
 
-	constructor( @Inject(NgZone) zone: NgZone) {
-		this.zone = zone;
+	constructor( @Inject(NgZone) _zone: NgZone, @Inject(ProjectService) _projectService: ProjectService) {
+		this._zone = _zone;
 		var lastProject = window.localStorage.getItem('lastProject');
 		if (lastProject != null && lastProject != undefined) {
 			try{
 				fs.accessSync(lastProject); // Check for file access
-				ProjectService.loadProject(lastProject);
-				this.loadProject(ProjectService.currentProject);
+				this._projectService.loadProject(lastProject);
+				this.loadProject(this._projectService.currentProject);
 			}catch(ignored){/*Fail silently*/}
 		}
 	}
@@ -134,7 +140,7 @@ export class AssetService{
 			return;
 		}
 		// Run inside the injected NgZone so angular knows to do an update
-		this.zone.run(() => {
+		this._zone.run(() => {
 			this.schema = new Schema(JSON.parse(data), struc);
 			this.readAssets(config.assetFilePath);
 		});
@@ -156,7 +162,7 @@ export class AssetService{
 			return;
 		}
 		// Run inside the injected NgZone so angular knows to do an update
-		this.zone.run(() => {
+		this._zone.run(() => {
 			// Creeate a new asset object - passing in the type definition from the schema
 			this.assets.push(new Assets.Asset(this.schema.assetTypes[type]));
 		});
@@ -173,8 +179,7 @@ export class AssetService{
 		this.schema.properties.forEach(prop => {
 			outStructureStr = outStructureStr.replace(new RegExp('"' + prop +'"', 'i'), this.retriveValueForSchemaProperty(prop));
 		});
-
-		fs.writeFileSync("C:/Projects/Assess/assets.json", outStructureStr);
+		fs.writeFileSync(this._projectService.currentProject.assetFilePath, outStructureStr);
 	}
 
 	public readAssets(inputPath?: string) : void{
@@ -203,7 +208,7 @@ export class AssetService{
 			tempAssets.push(a);
 		});
 		// Run inside angular
-		this.zone.run(() => { 
+		this._zone.run(() => { 
 			this.assets = tempAssets;
 		});
 	}
@@ -329,7 +334,6 @@ export class AssetHeaderComponent {
 		    		<button class="new-asset-btn" (click)="assetService.addAsset(assetTypeName)">New</button>
 	    		</div>
     		</div>`,
-    //providers: [AssetService]
 })
 export class AssetGroupComponent {
 

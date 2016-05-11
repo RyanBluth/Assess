@@ -1,5 +1,7 @@
 declare function require(moduleName: string): any;
 
+import {Injectable, Inject, NgZone} from 'angular2/core';
+
 const fs = require('fs'); 
 
 import * as utils from "./utils";
@@ -32,14 +34,22 @@ export class Project{
 	}
 }
 
-export namespace ProjectService {
 
- 	export var currentProject: Project = null;
+@Injectable()
+export class ProjectService {
 
-	export function loadProject(filePath: string){
+ 	public currentProject: Project = null;
+
+  	private _zone: NgZone;
+
+	constructor( @Inject(NgZone) _zone: NgZone){
+		this._zone = _zone
+	}
+
+	public loadProject(filePath: string){
 		try {
 			var proj = fs.readFileSync(filePath, 'utf8');
-			currentProject = new Project(filePath, JSON.parse(proj));
+			this.currentProject = new Project(filePath, JSON.parse(proj));
 		} catch (e) {
 			utils.logError("Project file " + filePath + " does not exist");
 		}
