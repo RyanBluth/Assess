@@ -1,10 +1,20 @@
 exports.create = function create(value){
 	return{
 		template: function(){
+
+			var style = `
+				<style>
+					.img-asset{
+						max-height:150px;
+						max-with: 500px;
+					}
+				</style>
+			`;
+
 			var fs = require('fs');
 			try{
 				fs.accessSync(value);
-				return '<img src="' + value + '"/>';
+				return style + '<img class="img-asset" src="' + value + '"/>';
 			}catch(e){
 				return '<span>Select Image</span>';
 			}	

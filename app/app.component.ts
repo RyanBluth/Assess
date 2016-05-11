@@ -20,6 +20,8 @@ const Menu = remote.require('menu');
 const MenuItem = remote.require('menu-item');
 const { dialog } = require('electron').remote;
 
+declare var jQuery: any;
+
 var mainWindow = BrowserWindow.fromId(1);
 
 var currentProjectPath = null; // Current Project File Path
@@ -351,6 +353,10 @@ export class AssetGroupComponent {
 
 	constructor( @Inject(AssetService) assetService: AssetService) {
 		this.assetService = assetService; 
+	}
+
+	public ngAfterViewChecked() {
+		jQuery("table").colResizable({ liveDrag: true });
 	}
 }
 

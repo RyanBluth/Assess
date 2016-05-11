@@ -14,7 +14,8 @@ td{
 	width: auto;
 	margin: 0;
 	padding: 0;
-	border-right: thin solid #444;
+	border: thin solid #444;
+	background-color: #333;	
 }
 
 tr{
@@ -43,7 +44,7 @@ tr{
 }
 
 .asset-group-table{
-	width:100%;
+	width:100%;3
 	border-collapse: collapse;
 }
 
