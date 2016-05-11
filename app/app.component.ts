@@ -94,6 +94,10 @@ export class Schema{
 	}
 }
 
+/**
+* The assest service is setup in bootstrap.ts using the global app injector
+* This gives us access to NgZone which we need in order to update things properly 
+**/
 @Injectable()
 export class AssetService{
 	public assets: Assets.Asset[] = [];
@@ -104,8 +108,16 @@ export class AssetService{
 
 	private zone: NgZone;// Angular zone
 
-	constructor(@Inject(NgZone)zone: NgZone){
-		this.zone = zone
+	constructor( @Inject(NgZone) zone: NgZone) {
+		this.zone = zone;
+		var lastProject = window.localStorage.getItem('lastProject');
+		if (lastProject != null && lastProject != undefined) {
+			try{
+				fs.accessSync(lastProject); // Check for file access
+				ProjectService.loadProject(lastProject);
+				this.loadProject(ProjectService.currentProject);
+			}catch(ignored){/*Fail silently*/}
+		}
 	}
 
 	public loadProject(config: Project){
@@ -126,6 +138,8 @@ export class AssetService{
 			this.schema = new Schema(JSON.parse(data), struc);
 			this.readAssets(config.assetFilePath);
 		});
+
+		window.localStorage.setItem("lastProject", config.filePath);
 	}
 
 	/**

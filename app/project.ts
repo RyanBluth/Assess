@@ -14,10 +14,11 @@ export class Project{
 	public mappings: {} = {};
 	
 	constructor(filePath, rawObj?) {
-		if (!filePath) {
+		if (filePath == null || filePath == undefined) {
 			utils.logError("File path cannot be null");
 			return;
 		}
+		this.filePath = filePath;
 		if (rawObj) {
 			for (let prop in rawObj) {
 				if (this.hasOwnProperty(prop)) {
@@ -36,11 +37,12 @@ export namespace ProjectService {
  	export var currentProject: Project = null;
 
 	export function loadProject(filePath: string){
-		if(fs.exists){
+		try {
 			var proj = fs.readFileSync(filePath, 'utf8');
 			currentProject = new Project(filePath, JSON.parse(proj));
-		}else{
+		} catch (e) {
 			utils.logError("Project file " + filePath + " does not exist");
-		}	
+		}
+		
 	}
 }
