@@ -1,9 +1,11 @@
 declare function require(moduleName: string): any;
 
-import {ElementRef, provide, Component, Injector, Provider, Inject, Input, Output, Optional, Injectable, AfterViewChecked} from 'angular2/core';
-import {NgFor} from 'angular2/common';
+import {appInjector} from "./bootstrap"
+import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, ApplicationRef, Provider, Inject, Input, Output, Optional, Injectable, AfterViewChecked} from 'angular2/core';
+import {NgFor, NgIf} from 'angular2/common';
 import * as Assets from './assetType';
 import * as utils from "./utils";
+import {ProjectService, Project} from './project'
 
 const fs = require('fs'); 
 const electron = require('electron');
@@ -40,13 +42,10 @@ var template = [
 				click: function() {
 					dialog.showOpenDialog(
 						{ properties: ['openFile'], filters: [{ name: 'JSON', extensions: ['json'] }] },
-						function(file) {
+						(file) => {
 							if (file != undefined) {
-								dialog.showMessageBox({
-									message: file.toString(),
-									buttons: ["OK"]
-								});
-								localStorage.setItem("currentProject", file.toString());
+								ProjectService.loadProject(file.toString());
+								appInjector.get(AssetService).loadProject(ProjectService.currentProject);
 							}
 						}
 					);
@@ -66,33 +65,6 @@ var template = [
 
 var menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
-
-const providers = {
-	assetServiceProvider: provide(AssetService, {
-		useFactory: () => {
-			// Load project configuration stuff here
-			var pc = new ProjectConfig();
-			pc.assetsPath = "/assets.json";
-			pc.schemaPath = "C:/Projects/Assess/test-schema.json";
-			pc.structurePath = "C:/Projects/Assess/test-structure.json";
-
-			var assetService: AssetService = new AssetService(pc);
-
-			assetService.readAssets("C:/Projects/Assess/assets.json");
-
-			assetService.writeAssets(AssetWriteFormat.JSON);
-
-			return assetService;
-		}
-	})
-}
-
-export class ProjectConfig{
-	public schemaPath: string;
-	public assetsPath: string;
-	public structurePath: string;
-	public mappings: {};
-}
 
 export enum AssetWriteFormat{
 	JSON
@@ -122,32 +94,21 @@ export class Schema{
 	}
 }
 
-export function loadProject() : ProjectConfig{
-	var data = fs.loadFileSync(currentProjectPath, "utf8");
-	data = JSON.parse(data);
-	var pc = new ProjectConfig();
-	pc.assetsPath    = data["assetPath"]     || null;
-	pc.schemaPath    = data["schemaPath"]    || null;
-	pc.structurePath = data["structurePath"] || null;
-	pc.structurePath = data["mappings"]      || null;
-	return pc;
-}
-
 @Injectable()
 export class AssetService{
 	public assets: Assets.Asset[] = [];
-	public assetTypeDefinitions: any;
+	public assetTypeDefinitions: any = null;
 
-	public schema: Schema;
-	public assetsAsObj: any; // Asset file loaded as object
+	public schema: Schema = null;
+	public assetsAsObj: any = null; // Asset file loaded as object
 
-	constructor(config:ProjectConfig){
-		if(config){
-			this.loadProject(config);
-		}
+	private zone: NgZone;// Angular zone
+
+	constructor(@Inject(NgZone)zone: NgZone){
+		this.zone = zone
 	}
 
-	public loadProject(config: ProjectConfig){
+	public loadProject(config: Project){
 		// Load schema
 		// populate AssetTypeDefinitions as object keyed by type
 		let data = fs.readFileSync(config.schemaPath, 'utf8');
@@ -160,7 +121,11 @@ export class AssetService{
 			utils.logError("Error reading structure file");
 			return;
 		}
-		this.schema = new Schema(JSON.parse(data), struc);
+		// Run inside the injected NgZone so angular knows to do an update
+		this.zone.run(() => {
+			this.schema = new Schema(JSON.parse(data), struc);
+			this.readAssets(config.assetFilePath);
+		});
 	}
 
 	/**
@@ -176,8 +141,11 @@ export class AssetService{
 			utils.logError("Error occured during call to addAsset - type \"" + type + "\" is not specified in the loaded schema");
 			return;
 		}
-		// Creeate a new asset object - passing in the type definition from the schema
-		this.assets.push(new Assets.Asset(this.schema.assetTypes[type]));
+		// Run inside the injected NgZone so angular knows to do an update
+		this.zone.run(() => {
+			// Creeate a new asset object - passing in the type definition from the schema
+			this.assets.push(new Assets.Asset(this.schema.assetTypes[type]));
+		});
 	}	
 
 	/**
@@ -214,9 +182,15 @@ export class AssetService{
 				c = c[p];
 			}
 		});
+
+		var tempAssets = [];
 		c.forEach((asset) => {
 			let a:Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.type], asset);
-			this.assets.push(a);
+			tempAssets.push(a);
+		});
+		// Run inside angular
+		this.zone.run(() => { 
+			this.assets = tempAssets;
 		});
 	}
 
@@ -273,15 +247,6 @@ export class AssetService{
 }
 
 @Component({
-    selector: 'assess-app',
-    template: '<h4>Assess</h4>',
-})
-export class AppComponent {
-
-	constructor(){}
-}
-
-@Component({
 	selector: '[asses-asset-field]',
 	template: '<div class="asset-field" [outerHTML]="field.create.template"></div>',
 })
@@ -333,29 +298,40 @@ export class AssetHeaderComponent {
 
 @Component({
     selector: 'assess-asset-group',
-    directives: [AssetComponent, AssetHeaderComponent, NgFor],
+    directives: [AssetComponent, AssetHeaderComponent, NgFor, NgIf],
     template: `
-    		<div class="asset-group" *ngFor="#assetTypeName of assetService.schema.assetTypeNames"> 
-    			<div class="asset-type-title"><span>{{assetService.schema.assetTypes[assetTypeName].name}}s</span></div> 
-	    		<table class="asset-group-table" cellpadding=0 cellspacing=0>
-	    			<thead>
-		    			<tr assess-asset-header [assetType]="assetService.schema.assetTypes[assetTypeName]"></tr>
-	    			</thead>
-	    			<tbody>
-		    			<tr assess-asset *ngFor="#asset of assetService.assetsForType(assetTypeName)" [asset]="asset"></tr>
-		    		</tbody>
-	    		</table>
-	    		<button class="new-asset-btn" (click)="assetService.addAsset(assetTypeName)">New</button>
+    		<h1>Assets</h1>
+    		<div *ngIf="assetService.schema != null">
+	    		<div class="asset-group" *ngFor="#assetTypeName of assetService.schema.assetTypeNames"> 
+	    			<div class="asset-type-title"><span>{{assetService.schema.assetTypes[assetTypeName].name}}s</span></div> 
+		    		<table class="asset-group-table" cellpadding=0 cellspacing=0>
+		    			<thead>
+			    			<tr assess-asset-header [assetType]="assetService.schema.assetTypes[assetTypeName]"></tr>
+		    			</thead>
+		    			<tbody>
+			    			<tr assess-asset *ngFor="#asset of assetService.assetsForType(assetTypeName)" [asset]="asset"></tr>
+			    		</tbody>
+		    		</table>
+		    		<button class="new-asset-btn" (click)="assetService.addAsset(assetTypeName)">New</button>
+	    		</div>
     		</div>`,
-    providers: [
-		provide(AssetService, providers.assetServiceProvider)
-	]
+    //providers: [AssetService]
 })
 export class AssetGroupComponent {
 
 	public assetService: AssetService;
 
-	constructor(@Inject(AssetService) assetService: AssetService) {
-		this.assetService = assetService;
+	constructor( @Inject(AssetService) assetService: AssetService) {
+		this.assetService = assetService; 
 	}
+}
+
+@Component({
+    selector: 'assess-app',
+    template: '<assess-asset-group class="asset-list-container"></assess-asset-group>',
+    directives: [AssetGroupComponent]
+})
+export class AppComponent {
+
+	constructor() { }
 }

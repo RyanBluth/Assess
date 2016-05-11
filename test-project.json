@@ -1,10 +1,10 @@
 {
-	"assetPath"     : "test-assets",  // Path to assets from location of project file
-	"assetFilePath" : "assets.json", // Path to assets json file
-	"schemaPath"    : "test-schema.json",  // Path to schema file
-	"structurePath" : "test-structure.json",  // Path to structure file
+	"assetPath"     : "test-assets",  
+	"assetFilePath" : "assets.json", 
+	"schemaPath"    : "test-schema.json", 
+	"structurePath" : "test-structure.json", 
 	"mappings" : {
-		"AS_ASSETS" : "AS_ASSETS", // Used to specifiy assets section in schema
-		"AS_ASSET_TYPE" : "type" // Uswd to specify the type of an asset in the schema
+		"AS_ASSETS" : "AS_ASSETS",
+		"AS_ASSET_TYPE" : "type"
 	}
 }
