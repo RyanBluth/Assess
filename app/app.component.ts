@@ -11,17 +11,22 @@ import * as Assets from './assetType';
 import * as utils from "./utils";
 import {ProjectService, Project} from './project'
 
+// Node includes
 const fs = require('fs'); 
-const electron = require('electron');
+const path = require('path');
 
+// Electron includes
+const electron = require('electron');
 const remote = require('remote');
 const { BrowserWindow } = require('electron').remote;
 const Menu = remote.require('menu');
 const MenuItem = remote.require('menu-item');
 const { dialog } = require('electron').remote;
 
+// Declare jquery - It's included in index.html
 declare var jQuery: any;
 
+// Get the window we created in main.js
 var mainWindow = BrowserWindow.fromId(1);
 
 var currentProjectPath = null; // Current Project File Path
@@ -30,6 +35,10 @@ const AS_SchemaTypes: string[] = [
 	"AS_ASSETS"
 ];
 
+export enum AssetWriteFormat {
+	JSON
+}
+
 // Setup menu
 var template = [
 	{
@@ -37,7 +46,21 @@ var template = [
 		submenu: [
 			{
 				label: 'New Project',
-				accelerator: 'Command+N'
+				accelerator: 'Command+N',
+				click: function() {
+					dialog.showSaveDialog(
+						{ properties: ['saveFile'], filters: [{ name: 'Assess Project', extensions: ['assess_project'] }] },
+						(file) => {
+							if (file != undefined) {
+								var projService: ProjectService = globalAppInjector.get(ProjectService);
+								projService.newProject(file.toString());
+								var assetService: AssetService = globalAppInjector.get(AssetService);
+								assetService.loadProject(projService.currentProject);
+								assetService.writeAssets(AssetWriteFormat.JSON, projService.currentProject.assetFilePath);
+							}
+						}
+					);
+				}
 			},
 			{
 				type: 'separator'
@@ -47,7 +70,7 @@ var template = [
 				accelerator: 'Command+o',
 				click: function() {
 					dialog.showOpenDialog(
-						{ properties: ['openFile'], filters: [{ name: 'JSON', extensions: ['json'] }] },
+						{ properties: ['openFile'], filters: [{ name: 'Assess Project', extensions: ['assess_project'] }] },
 						(file) => {
 							if (file != undefined) {
 								var projService = globalAppInjector.get(ProjectService);
@@ -72,10 +95,6 @@ var template = [
 
 var menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
-
-export enum AssetWriteFormat{
-	JSON
-}
 
 export class Schema{
 	
@@ -133,21 +152,9 @@ export class AssetService{
 	}
 
 	public loadProject(config: Project){
-		// Load schema
-		// populate AssetTypeDefinitions as object keyed by type
-		let data = fs.readFileSync(config.schemaPath, 'utf8');
-		if (!data) {
-			utils.logError("Error reading schema file");
-			return;
-		}
-		let struc = fs.readFileSync(config.structurePath, 'utf8');
-		if (!struc) {
-			utils.logError("Error reading structure file");
-			return;
-		}
 		// Run inside the injected NgZone so angular knows to do an update
 		this._zone.run(() => {
-			this.schema = new Schema(JSON.parse(data), struc);
+			this.schema = new Schema(config.schema, JSON.stringify(config.structure, null, "\t"));
 			this.readAssets(config.assetFilePath);
 		});
 
@@ -185,12 +192,19 @@ export class AssetService{
 		this.schema.properties.forEach(prop => {
 			outStructureStr = outStructureStr.replace(new RegExp('"' + prop +'"', 'i'), this.retriveValueForSchemaProperty(prop));
 		});
-		fs.writeFileSync(this._projectService.currentProject.assetFilePath, outStructureStr);
+		this._projectService.writeAssetsFile(outStructureStr);
 	}
 
 	public readAssets(inputPath?: string) : void{
-		let assetsStr = fs.readFileSync(inputPath, 'utf8');
-
+		var assetsStr = null;
+		
+		try{
+			assetsStr = this._projectService.readAssetsFile();
+		}catch(e){
+			// If the asset file doesn't exist then write it and read it again
+			this.writeAssets(AssetWriteFormat.JSON);
+			assetsStr = this._projectService.readAssetsFile();
+		}
 		let strucToAssetMap = {};
 		let strucObj = JSON.parse(this.schema.structureStr);
 		this.schema.properties.forEach(p => {
@@ -208,15 +222,17 @@ export class AssetService{
 			}
 		});
 
-		var tempAssets = [];
-		c.forEach((asset) => {
-			let a:Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.type], asset);
-			tempAssets.push(a);
-		});
-		// Run inside angular
-		this._zone.run(() => { 
-			this.assets = tempAssets;
-		});
+		if (c != null) {
+			var tempAssets = [];
+			c.forEach((asset) => {
+				let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.type], asset);
+				tempAssets.push(a);
+			});
+			// Run inside angular
+			this._zone.run(() => {
+				this.assets = tempAssets;
+			});
+		}
 	}
 
 	public assetsForType(type:string): Assets.Asset[]{
@@ -252,18 +268,18 @@ export class AssetService{
 		return "";
 	}
 
-	public findValueInObject(obj: any, property: string, path: any[] = []): any[] {
+	public findValueInObject(obj: any, property: string, curPath: any[] = []): any[] {
 		for(let x in obj){;
 			let val = obj[x];
 			if (val == property){
-				path.push(x);
-				return path;
+				curPath.push(x);
+				return curPath;
 			}
 			else if(val != null && typeof val == 'object'){
-				let v = this.findValueInObject(val, property, path);
+				let v = this.findValueInObject(val, property, curPath);
 				if(v != null){
-					path.push(x);	
-					return path;
+					curPath.push(x);	
+					return curPath;
 				}
 			}
 		}

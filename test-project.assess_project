@@ -1,0 +1,75 @@
+{
+  "assetPath": "test-assets",
+  "assetFilePath": "assets.json",
+  "schema": {
+    "ME_NAME": {
+      "dataType": "AS_STRING"
+    },
+    "AS_ASSETS": [
+      {
+        "name": "Image",
+        "type": "IMAGE",
+        "fields": [
+          {
+            "dataType": "AS_FILE",
+            "name": "src",
+            "extensions": [
+              "png",
+              "jpg",
+              "gif"
+            ],
+            "loader": "image",
+            "default": "DEFAULT"
+          },
+          {
+            "dataType": "AS_STRING",
+            "name": "Description"
+          },
+          {
+            "dataType": "AS_INT",
+            "name": "TTT"
+          }
+        ]
+      },
+      {
+        "name": "Sound",
+        "type": "SOUND",
+        "fields": [
+          {
+            "dataType": "AS_FILE",
+            "name": "src",
+            "extensions": [
+              "png",
+              "jpg",
+              "gif"
+            ],
+            "loader": "image",
+            "default": "DEFAULT"
+          },
+          {
+            "dataType": "AS_STRING",
+            "name": "Category"
+          }
+        ]
+      }
+    ]
+  },
+  "structure": {
+    "nest1": {
+      "nest2": {
+        "nestArray": [
+          {
+            "meta": {
+              "name": "ME_NAME"
+            },
+            "assets": "AS_ASSETS"
+          }
+        ]
+      }
+    }
+  },
+  "mappings": {
+    "AS_ASSETS": "AS_ASSETS",
+    "AS_ASSET_TYPE": "type"
+  }
+}

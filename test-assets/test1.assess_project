@@ -1,0 +1,38 @@
+{
+	"assetPath": "",
+	"assetFilePath": "test1-assets.json",
+	"schema": {
+		"AS_ASSETS": [{
+        "name": "Image",
+        "type": "IMAGE",
+        "fields": [
+          {
+            "dataType": "AS_FILE",
+            "name": "src",
+            "extensions": [
+              "png",
+              "jpg",
+              "gif"
+            ],
+            "loader": "image",
+            "default": "DEFAULT"
+          },
+          {
+            "dataType": "AS_STRING",
+            "name": "Description"
+          },
+          {
+            "dataType": "AS_INT",
+            "name": "TTT"
+          }
+        ]
+      }]
+	},
+	"structure": {
+		"assets": "AS_ASSETS"
+	},
+	"mappings": {
+		"AS_ASSETS": "AS_ASSETS",
+		"AS_ASSET_TYPE": "type"
+	}
+}
