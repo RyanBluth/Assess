@@ -6,7 +6,7 @@ import {ElementRef, NgZone, provide, Component, EventEmitter, Injector,
 	ApplicationRef, Provider, Inject, Input, Output, 
 	Optional, Injectable, AfterViewChecked} from 'angular2/core';
 
-import {NgFor, NgIf} from 'angular2/common';
+import {NgFor, NgIf, NgModel} from 'angular2/common';
 import * as Assets from './assetType';
 import * as utils from "./utils";
 import {ProjectService, Project} from './project'
@@ -367,11 +367,13 @@ export class AssetGroupComponent {
 @Component({
 	selector: 'assess-object-renderer',
 	templateUrl: './app/templates/assess-object-renderer.html',
-	directives: [NgFor, NgIf, ObjectRendererComponent]
+	directives: [NgFor, NgIf, NgModel, ObjectRendererComponent]
 })
 export class ObjectRendererComponent {
 
 	@Input() object: {}[];
+
+	public collapsed = false;
 
 	constructor() { }
 
@@ -385,6 +387,54 @@ export class ObjectRendererComponent {
 
 	public isObject(val): boolean {
 		return (val instanceof Object) && !(val instanceof Array) && !(val instanceof String);
+	}
+
+	public isInteger(val): boolean{
+		return !isNaN(val);
+	}
+
+	public toggleCollapse(): void{
+		this.collapsed = !this.collapsed;
+	}
+
+	public addNewProperty() : void{
+		if(this.isArray(this.object)) {
+			(<Array<any>>this.object).push('');
+		} else if(this.isObject(this.object)) {
+			this.object["Property" + (Object.keys(this.object).length + 1).toString()] = '';
+		} else {
+			utils.logError("Could not add new element");
+		}
+	}
+
+	public addNewArray(): void {
+		if (this.isArray(this.object)) {
+			(<Array<any>>this.object).push(new Array());
+		} else if (this.isObject(this.object)) {
+			this.object["Property" + (Object.keys(this.object).length + 1).toString()] = new Array();
+		} else {
+			utils.logError("Could not add new element");
+		}
+	}
+
+	public addNewObject(): void {
+		if (this.isArray(this.object)) {
+			(<Array<any>>this.object).push(new Object());
+		} else if (this.isObject(this.object)) {
+			this.object["Property" + (Object.keys(this.object).length + 1).toString()] = new Object();
+		} else {
+			utils.logError("Could not add new element");
+		}
+	}
+
+	public deleteProperty(property): void{
+		if (this.isArray(this.object)) {
+			(<Array<any>>this.object).splice((<Array<any>>this.object).indexOf(this.object[property]));
+		} else if (this.isObject(this.object)) {
+			delete this.object[property]
+		}else{
+			utils.logError("Could not delete " + property);
+		}
 	}
 }
 

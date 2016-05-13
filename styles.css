@@ -56,7 +56,7 @@ tr{
 	padding: 0;
 }
 
-.asset-field>input{
+input{
 	background-color: #333;
 	border: none;
 	padding: 5px;
@@ -101,6 +101,7 @@ tr{
 	background-color: #111;
 	width: 100px;
 	border-top: none;
+	border-top: solid medium #111
 }
 
 .assess-tab-nav-col.selected{
@@ -119,12 +120,21 @@ tr{
 	font-size: 9pt;
 }
 
+.hidden{
+	display: none;
+}
+
 .new-asset-btn{
 	float: right;
+}
+
+button{
 	color: #f9f9f9;
 	background-color: #FF582D;
 	border:none;
 }
+
+
 
 input[type="text"] {
      width: 100%; 
@@ -139,6 +149,15 @@ input[type="text"] {
   -ms-user-select: none;      
   user-select: none;
 }
+
+html{
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
+
 
 .indent{
 	margin-left: 10px;
@@ -156,3 +175,52 @@ input[type="text"] {
 }
 
 /* Assess Schema End*/
+
+/* Object Renderer Begin */
+
+.assess-object-renderer{
+
+}
+
+.assess-object-renderer .add-new-btn{
+	margin: 3px;
+}
+
+.assess-object-renderer input[type="text"] {
+	width:150px;
+	display: inline-block;
+}
+
+.assess-object-renderer .field-name{
+	margin: 3px;
+}
+
+.assess-object-renderer .fields{
+	border-left: thin dashed #333; 
+}
+
+.assess-object-renderer .field-value{
+	display: inline-block;
+}
+
+.assess-object-renderer .toggle-collapse{
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 18px;
+	width: 50px;
+	height: 50px;
+	color: #FF582D; 
+}
+
+.assess-object-renderer .delete-property{
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 18px;
+	width: 50px;
+	height: 50px;
+	color: #FF582D; 
+}
+
+
+
+/* Object Renderer End*/
