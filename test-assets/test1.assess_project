@@ -1,8 +1,9 @@
 {
-	"assetPath": "",
-	"assetFilePath": "test1-assets.json",
-	"schema": {
-		"AS_ASSETS": [{
+  "assetPath": "",
+  "assetFilePath": "test1-assets.json",
+  "schema": {
+    "AS_ASSETS": [
+      {
         "name": "Image",
         "type": "IMAGE",
         "fields": [
@@ -26,13 +27,14 @@
             "name": "TTT"
           }
         ]
-      }]
-	},
-	"structure": {
-		"assets": "AS_ASSETS"
-	},
-	"mappings": {
-		"AS_ASSETS": "AS_ASSETS",
-		"AS_ASSET_TYPE": "type"
-	}
+      }
+    ]
+  },
+  "structure": {
+    "assets": "AS_ASSETS"
+  },
+  "mappings": {
+    "AS_ASSETS": "AS_ASSETS",
+    "AS_ASSET_TYPE": "type"
+  }
 }

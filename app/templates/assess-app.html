@@ -1,0 +1,10 @@
+<assess-tab-nav [tabs]="mainNavTabs"></assess-tab-nav>
+<div *ngIf="currentMode == MODES.ASSETS">
+	<assess-asset-group class="asset-list-container"></assess-asset-group>
+</div>
+<div *ngIf="currentMode == MODES.SCHEMA">
+	Schema
+</div>
+<div *ngIf="currentMode == MODES.STRUCTURE">
+	Structure
+</div>

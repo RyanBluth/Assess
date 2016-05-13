@@ -1,0 +1,7 @@
+<table class="assess-tab-nav-table">
+	<tr class="assess-tab-nav-row">
+		<td class="assess-tab-nav-col" *ngFor="#tab of tabs" (click)="tab.click()">
+			<span class="assess-tab-nav-label">{{tab.label}}</span>
+		</td>
+	</tr>
+</table>

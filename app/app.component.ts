@@ -346,22 +346,7 @@ export class AssetHeaderComponent {
 @Component({
     selector: 'assess-asset-group',
     directives: [AssetComponent, AssetHeaderComponent, NgFor, NgIf],
-    template: `
-    		<h1>Assets</h1>
-    		<div *ngIf="assetService.schema != null">
-	    		<div class="asset-group" *ngFor="#assetTypeName of assetService.schema.assetTypeNames"> 
-	    			<div class="asset-type-title"><span>{{assetService.schema.assetTypes[assetTypeName].name}}s</span></div> 
-		    		<table class="asset-group-table" cellpadding=0 cellspacing=0>
-		    			<thead>
-			    			<tr assess-asset-header [assetType]="assetService.schema.assetTypes[assetTypeName]"></tr>
-		    			</thead>
-		    			<tbody>
-			    			<tr assess-asset *ngFor="#asset of assetService.assetsForType(assetTypeName)" [asset]="asset"></tr>
-			    		</tbody>
-		    		</table>
-		    		<button class="new-asset-btn" (click)="assetService.addAsset(assetTypeName)">New</button>
-	    		</div>
-    		</div>`,
+    templateUrl: './app/templates/assess-asset-group.html'
 })
 export class AssetGroupComponent {
 
@@ -377,11 +362,58 @@ export class AssetGroupComponent {
 }
 
 @Component({
+	selector: 'assess-tab-nav',
+	templateUrl: './app/templates/assess-tab-nav.html',
+	directives: [NgFor]
+})
+export class TabNavComponent{
+	
+	@Input() tabs: {}[];
+
+	constructor(){
+		
+	}
+}
+
+@Component({
     selector: 'assess-app',
-    template: '<assess-asset-group class="asset-list-container"></assess-asset-group>',
-    directives: [AssetGroupComponent]
+    templateUrl: './app/templates/assess-app.html',
+    directives: [AssetGroupComponent, TabNavComponent]
 })
 export class AppComponent {
 
-	constructor() { }
+	public MODES = {
+		ASSETS 	  : 0,  
+		SCHEMA 	  : 1,  
+		STRUCTURE : 2,  
+	}
+
+	public currentMode;
+
+	public mainNavTabs = [
+		{
+			label: "Assets",
+			click: () => { 
+				this.currentMode = this.MODES.ASSETS;
+			}
+		},
+		{
+			label: "Schema",
+			click: () => { 
+				this.currentMode = this.MODES.SCHEMA;
+			}
+		},
+		{
+			label: "Structure",
+			click: () => {
+				this.currentMode = this.MODES.STRUCTURE;
+			}
+		}
+	];
+
+	constructor() { 
+		this.currentMode = this.MODES.ASSETS;
+	}
 }
+
+
