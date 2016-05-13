@@ -3,7 +3,7 @@
 	<assess-asset-group class="asset-list-container"></assess-asset-group>
 </div>
 <div *ngIf="currentMode == MODES.SCHEMA">
-	Schema
+	<assess-schema [schema]="_assetService.schema"></assess-schema>
 </div>
 <div *ngIf="currentMode == MODES.STRUCTURE">
 	Structure

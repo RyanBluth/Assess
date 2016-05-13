@@ -102,9 +102,11 @@ export class Schema{
 	public assetTypeNames: string[] = [];
 	public properties: string[] = [];
 	public structureStr: string;
+	public rawObject: {};
 
 	constructor(schemaAsObj: any, structureStr: string){
 		this.structureStr = structureStr;
+		this.rawObject = schemaAsObj;
 		this.properties = Object.keys(schemaAsObj);
 		if (schemaAsObj.hasOwnProperty(Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS])){
 			let at = schemaAsObj[Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS]]; 
@@ -361,6 +363,44 @@ export class AssetGroupComponent {
 	}
 }
 
+
+@Component({
+	selector: 'assess-object-renderer',
+	templateUrl: './app/templates/assess-object-renderer.html',
+	directives: [NgFor, NgIf, ObjectRendererComponent]
+})
+export class ObjectRendererComponent {
+
+	@Input() object: {}[];
+
+	constructor() { }
+
+	public objectProperties(): string[]{
+		return Object.keys(this.object);
+	}
+
+	public isArray(val): boolean {
+		return val instanceof Array && !(val instanceof String);
+	}
+
+	public isObject(val): boolean {
+		return (val instanceof Object) && !(val instanceof Array) && !(val instanceof String);
+	}
+}
+
+
+@Component({
+	selector: 'assess-schema',
+	directives: [ObjectRendererComponent, NgFor, NgIf],
+	templateUrl: './app/templates/assess-schema.html'
+})
+export class SchemaComponent {
+
+	@Input() schema: Schema;
+
+	constructor() {}
+}
+
 @Component({
 	selector: 'assess-tab-nav',
 	templateUrl: './app/templates/assess-tab-nav.html',
@@ -370,17 +410,31 @@ export class TabNavComponent{
 	
 	@Input() tabs: {}[];
 
-	constructor(){
-		
+	constructor(){}
+
+	public ngOnInit(){
+		if(this.tabs.length > 0){
+			this.select(this.tabs[0]);
+		}
+	}
+
+	public select(tab: any){
+		this.tabs.forEach((tab)=>{
+			tab['isSelected'] = false;			
+		});
+		tab['isSelected'] = true;
+		tab.click();
 	}
 }
 
 @Component({
     selector: 'assess-app',
     templateUrl: './app/templates/assess-app.html',
-    directives: [AssetGroupComponent, TabNavComponent]
+    directives: [AssetGroupComponent, TabNavComponent, SchemaComponent]
 })
 export class AppComponent {
+
+	private _assetService: AssetService;
 
 	public MODES = {
 		ASSETS 	  : 0,  
@@ -388,7 +442,7 @@ export class AppComponent {
 		STRUCTURE : 2,  
 	}
 
-	public currentMode;
+	public currentMode = this.MODES.ASSETS;
 
 	public mainNavTabs = [
 		{
@@ -401,18 +455,18 @@ export class AppComponent {
 			label: "Schema",
 			click: () => { 
 				this.currentMode = this.MODES.SCHEMA;
-			}
+			},
 		},
 		{
 			label: "Structure",
 			click: () => {
 				this.currentMode = this.MODES.STRUCTURE;
-			}
+			},
 		}
 	];
 
-	constructor() { 
-		this.currentMode = this.MODES.ASSETS;
+	constructor(@Inject(AssetService) assetService: AssetService) {
+		this._assetService = assetService;
 	}
 }
 

@@ -1,4 +1,3 @@
-<h1>Assets</h1>
 <div *ngIf="assetService.schema != null">
 	<div class="asset-group" *ngFor="#assetTypeName of assetService.schema.assetTypeNames"> 
 		<div class="asset-type-title"><span>{{assetService.schema.assetTypes[assetTypeName].name}}s</span></div> 

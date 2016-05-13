@@ -2,8 +2,14 @@
 	"assets": [
 	{
 		"type": "IMAGE",
-		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
+		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Description": "asdasdasDasda",
+		"TTT": 0
+	},
+	{
+		"type": "IMAGE",
+		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
+		"Description": "",
 		"TTT": 0
 	}
 ]

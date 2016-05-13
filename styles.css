@@ -82,6 +82,43 @@ tr{
 	font-weight: bold;
 }
 
+.assess-tab-nav-table{
+	background-color: #222;
+}
+
+.assess-tab-nav-row{
+
+}
+
+.assess-tab-nav{
+	background-color: #111;
+	width: 100%;
+}
+
+.assess-tab-nav-col{
+	padding: 10px;
+	border: none;
+	background-color: #111;
+	width: 100px;
+	border-top: none;
+}
+
+.assess-tab-nav-col.selected{
+	background-color: #222;
+	border-top: solid medium #FF582D
+}
+
+.assess-tab-nav-col.selected>.assess-tab-nav-label{
+	color: #f9f9f9;
+}
+
+.assess-tab-nav-label{
+	color: #aaa;
+	padding: 10px;
+	cursor: default;
+	font-size: 9pt;
+}
+
 .new-asset-btn{
 	float: right;
 	color: #f9f9f9;
@@ -95,3 +132,27 @@ input[type="text"] {
      -webkit-box-sizing:border-box;
      -moz-box-sizing: border-box;
 }
+
+.disable-select {
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
+.indent{
+	margin-left: 10px;
+}
+
+.indent-double{
+	margin-left: 20px;
+}
+
+
+/* Assess Schema Begin*/
+
+.assess-schema{
+	padding: 15px;
+}
+
+/* Assess Schema End*/

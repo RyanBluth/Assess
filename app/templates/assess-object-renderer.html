@@ -1,0 +1,15 @@
+<div class="indent-double" *ngFor="#prop of objectProperties()">
+	<div *ngIf="isArray(object[prop])">
+		<span class="indent">[</span> 
+		<assess-object-renderer class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
+		<span class="indent">]</span>
+	</div>
+	<div *ngIf="isObject(object[prop])">	
+		<span class="indent">{</span>
+		<assess-object-renderer class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
+		<span class="indent">}</span>
+	</div>
+	<div *ngIf="!isArray(object[prop]) && !isObject(object[prop])">
+		<span class="indent">{{prop}} : {{object[prop]}}</span> 
+	</div>
+</div>
