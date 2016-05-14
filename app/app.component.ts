@@ -102,10 +102,12 @@ export class Schema{
 	public assetTypeNames: string[] = [];
 	public properties: string[] = [];
 	public structureStr: string;
+	public structureObject: {};
 	public rawObject: {};
 
 	constructor(schemaAsObj: any, structureStr: string){
 		this.structureStr = structureStr;
+		this.structureObject = JSON.parse(structureStr);
 		this.rawObject = schemaAsObj;
 		this.properties = Object.keys(schemaAsObj);
 		if (schemaAsObj.hasOwnProperty(Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS])){
@@ -289,6 +291,18 @@ export class AssetService{
 	}
 }
 
+export class PopupOption{
+
+	public onClick: ()=>void;
+	public label: string;
+
+	constructor(label: string, onClick:()=>void){
+		this.label = label;
+		this.onClick = onClick;
+	}
+}
+
+
 @Component({
 	selector: '[asses-asset-field]',
 	template: '<div class="asset-field" [innerHTML]="field.create.template()"></div>',
@@ -363,11 +377,28 @@ export class AssetGroupComponent {
 	}
 }
 
+@Component({
+	selector: 'assess-popup',
+	templateUrl: './app/templates/assess-popup.html',
+	directives: [NgFor, NgIf]
+})
+export class PopupComponent {
+
+	@Input() options: PopupOption[];
+
+	public hidden = true;
+
+	constructor() {}
+
+	public toggleHidden(){
+		this.hidden = !this.hidden;
+	}
+}
 
 @Component({
 	selector: 'assess-object-renderer',
 	templateUrl: './app/templates/assess-object-renderer.html',
-	directives: [NgFor, NgIf, NgModel, ObjectRendererComponent]
+	directives: [NgFor, NgIf, NgModel, ObjectRendererComponent, PopupComponent]
 })
 export class ObjectRendererComponent {
 
@@ -398,31 +429,31 @@ export class ObjectRendererComponent {
 		this.collapsed = !this.collapsed;
 	}
 
-	public addNewProperty() : void{
-		if(this.isArray(this.object)) {
-			(<Array<any>>this.object).push('');
-		} else if(this.isObject(this.object)) {
-			this.object["Property" + (Object.keys(this.object).length + 1).toString()] = '';
+	public addNewProperty(property) : void{
+		if(this.isArray(this.object[property])) {
+			(<Array<any>>this.object[property]).push('');
+		} else if (this.isObject(this.object[property])) {
+			this.object[property]["Property" + (Object.keys(this.object[property]).length + 1).toString()] = '';
 		} else {
 			utils.logError("Could not add new element");
 		}
 	}
 
-	public addNewArray(): void {
-		if (this.isArray(this.object)) {
-			(<Array<any>>this.object).push(new Array());
-		} else if (this.isObject(this.object)) {
-			this.object["Property" + (Object.keys(this.object).length + 1).toString()] = new Array();
+	public addNewArray(property): void {
+		if (this.isArray(this.object[property])) {
+			(<Array<any>>this.object[property]).push(new Array());
+		} else if (this.isObject(this.object[property])) {
+			this.object[property]["Property" + (Object.keys(this.object[property]).length + 1).toString()] = new Array();
 		} else {
 			utils.logError("Could not add new element");
 		}
 	}
 
-	public addNewObject(): void {
-		if (this.isArray(this.object)) {
-			(<Array<any>>this.object).push(new Object());
-		} else if (this.isObject(this.object)) {
-			this.object["Property" + (Object.keys(this.object).length + 1).toString()] = new Object();
+	public addNewObject(property): void {
+		if (this.isArray(this.object[property])) {
+			(<Array<any>>this.object[property]).push(new Object());
+		} else if (this.isObject(this.object[property])) {
+			this.object[property]["Property" + (Object.keys(this.object[property]).length + 1).toString()] = new Object();
 		} else {
 			utils.logError("Could not add new element");
 		}
@@ -430,11 +461,33 @@ export class ObjectRendererComponent {
 
 	public deleteProperty(property): void{
 		if (this.isArray(this.object)) {
-			(<Array<any>>this.object).splice((<Array<any>>this.object).indexOf(this.object[property]));
+			(<Array<any>>this.object).splice((<Array<any>>this.object).indexOf(this.object));
 		} else if (this.isObject(this.object)) {
 			delete this.object[property]
 		}else{
 			utils.logError("Could not delete " + property);
+		}
+	}
+
+	public getOptionsForProperty(property): PopupOption[]{
+		if (this.isArray(this.object[property])) {
+			return [
+				new PopupOption("New Element", () => { this.addNewProperty(property) }),
+				new PopupOption("New Object", () => { this.addNewObject(property) }),
+				new PopupOption("New Array", () => { this.addNewArray(property) }),
+				new PopupOption("Delete", () => { this.deleteProperty(property) })
+			];
+		} else if (this.isObject(this.object[property])) {
+			return [
+				new PopupOption("New Property", () => { this.addNewProperty(property) }),
+				new PopupOption("New Object", () => { this.addNewObject(property) }),
+				new PopupOption("New Array", () => { this.addNewArray(property) }),
+				new PopupOption("Delete", () => { this.deleteProperty(property) })
+			];
+		} else {
+			return [
+				new PopupOption("Delete", () => { this.deleteProperty(property)})
+			];
 		}
 	}
 }
@@ -450,6 +503,18 @@ export class SchemaComponent {
 	@Input() schema: Schema;
 
 	constructor() {}
+}
+
+@Component({
+	selector: 'assess-structure',
+	directives: [ObjectRendererComponent, NgFor, NgIf],
+	templateUrl: './app/templates/assess-structure.html'
+})
+export class StructureComponent {
+
+	@Input() structure: {};
+
+	constructor() { }
 }
 
 @Component({
@@ -481,7 +546,7 @@ export class TabNavComponent{
 @Component({
     selector: 'assess-app',
     templateUrl: './app/templates/assess-app.html',
-    directives: [AssetGroupComponent, TabNavComponent, SchemaComponent]
+    directives: [AssetGroupComponent, TabNavComponent, SchemaComponent, StructureComponent]
 })
 export class AppComponent {
 

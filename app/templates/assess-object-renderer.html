@@ -11,7 +11,7 @@
 	<div class="fields" *ngFor="#prop of objectProperties()" [ngClass]="{hidden: collapsed}">
 		<div *ngIf="isArray(object[prop])">
 			<div class="field-name">
-				<i class="new-popout-btn indent fa fa-cog" aria-hidden="true"></i>
+				<assess-popup [options]="getOptionsForProperty(prop)"></assess-popup>
 				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
 				<span class="indent"><input type="text" name="prop" [ngModel]="prop"/> : [</span> 
 			</div>
@@ -20,7 +20,7 @@
 		</div>
 		<div *ngIf="isObject(object[prop])">
 			<div class="field-name">	
-				<i class="indent new-popout-btn fa fa-cog" aria-hidden="true"></i>
+				<assess-popup [options]="getOptionsForProperty(prop)"></assess-popup>
 				<span>{</span>
 				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
 				<span class="indent" *ngIf="!isInteger(prop)">
@@ -32,8 +32,8 @@
 		</div>
 		<div *ngIf="!isArray(object[prop]) && !isObject(object[prop])">
 			<div class="field-name">
-				<i class="new-popout-btn indent fa fa-cog" aria-hidden="true"></i>
 				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
+				<assess-popup [options]="getOptionsForProperty(prop)"></assess-popup>		
 				<span class="indent" *ngIf="!isInteger(prop)">
 					<input class="field-value" type="text" name="prop" [ngModel]="prop"/> : 
 				</span>

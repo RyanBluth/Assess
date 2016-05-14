@@ -245,5 +245,50 @@ html{
 	top: auto;
 }
 
-
 /* Object Renderer End*/
+
+/* Popup Begin */
+
+.assess-popup{
+	position: relative;
+	display: inline-block;
+}
+
+.assess-popup .options{
+	background-color: #333;
+	color: #f9f9f9;
+	font-size: 9pt;
+	display: inline-block;
+	position: absolute;
+	bottom: 12pt;
+	cursor: pointer;
+	border: thin solid #444;
+}
+
+.assess-popup .option{
+	padding: 3px;
+	padding-left: 8px;
+	padding-right: 8px;
+	border-top: thin solid #111;
+}
+
+.assess-popup .option:hover{
+	background-color: #FF582D;
+}
+
+.assess-popup .option:active{
+	background-color: #E52D00;
+}
+
+.assess-popup .toggle-btn {
+	cursor: pointer;
+	color: #666; 
+	font-weight: 100;
+	font-size: 9pt;
+}
+
+.assess-popup .toggle-btn:hover{
+	color: #888; 
+}
+
+/* Popup End */

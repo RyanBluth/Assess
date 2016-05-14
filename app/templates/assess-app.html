@@ -6,5 +6,5 @@
 	<assess-schema [schema]="_assetService.schema"></assess-schema>
 </div>
 <div *ngIf="currentMode == MODES.STRUCTURE">
-	Structure
+	<assess-structure [structure]="_assetService.schema.structureObject"></assess-structure>
 </div>

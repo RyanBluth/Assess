@@ -11,6 +11,12 @@
 		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Description": "",
 		"TTT": 0
+	},
+	{
+		"type": "IMAGE",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
+		"Description": "fdsfsdf",
+		"TTT": "0sdfsdf"
 	}
 ]
 }
