@@ -5,7 +5,7 @@ import {ProjectService} from './project'
 
 export var globalAppInjector: Injector = null;
 
-bootstrap(Components.AppComponent, [Components.AssetService, ProjectService])
+bootstrap(Components.AppComponent, [Components.GlobalEventService, Components.AssetService, ProjectService])
 .then((appRef: ComponentRef) => {
 	globalAppInjector = appRef.injector;
 });

@@ -1,10 +1,10 @@
 <div class="assess-popup indent">
 	<div class="options" *ngIf="!hidden">
 		<div *ngFor="#option of options">
-			<div (click)="option.onClick(); toggleHidden()" class="option">
+			<div (click)="clickOption(option); $event.stopPropagation()" class="option">
 				<span>{{option.label}}</span>
 			</div>
 		</div>
 	</div>
-	<i (click)="toggleHidden()" class="toggle-btn fa fa-cog" aria-hidden="true"></i>
+	<i (click)="toggleHidden(); $event.stopPropagation()" class="toggle-btn fa fa-cog" aria-hidden="true"></i>
 </div>

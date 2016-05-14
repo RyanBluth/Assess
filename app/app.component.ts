@@ -124,6 +124,28 @@ export class Schema{
 	}
 }
 
+@Injectable()
+export class GlobalEventService{
+
+	private _elemRef: any
+	private _zone: NgZone;
+
+	public globalClickEmitter: EventEmitter<any> = new EventEmitter;
+
+	constructor(@Inject(NgZone) _zone: NgZone){
+		this._zone = _zone;
+	}
+
+	public hook(elem: ElementRef){
+		this._elemRef = elem;
+		this._elemRef.onclick = (e)=>{
+			this._zone.run(() => { 
+				this.globalClickEmitter.emit(e);
+			});
+		}
+	}
+}
+
 /**
 * The assest service is setup in bootstrap.ts using the global app injector
 * This gives us access to NgZone which we need in order to update things properly 
@@ -388,7 +410,18 @@ export class PopupComponent {
 
 	public hidden = true;
 
-	constructor() {}
+	constructor( @Inject(GlobalEventService) globalEventService: GlobalEventService) {
+		globalEventService.globalClickEmitter.subscribe((event)=>{
+			if(!this.hidden){
+				this.toggleHidden();
+			}
+		})
+	}
+
+	public clickOption(option){
+		option.onClick(); 
+		this.toggleHidden(); 
+	}
 
 	public toggleHidden(){
 		this.hidden = !this.hidden;
@@ -551,6 +584,8 @@ export class TabNavComponent{
 export class AppComponent {
 
 	private _assetService: AssetService;
+	private _globalEventService: GlobalEventService;
+	private _elem: ElementRef;
 
 	public MODES = {
 		ASSETS 	  : 0,  
@@ -581,8 +616,16 @@ export class AppComponent {
 		}
 	];
 
-	constructor(@Inject(AssetService) assetService: AssetService) {
+	constructor(
+		elem: ElementRef,
+		@Inject(AssetService) assetService: AssetService, 
+		@Inject(GlobalEventService) globalEventService: GlobalEventService) 
+	{
+		this._elem = elem.nativeElement;
 		this._assetService = assetService;
+		this._globalEventService = globalEventService;
+
+		this._globalEventService.hook(this._elem);
 	}
 }
 

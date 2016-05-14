@@ -17,6 +17,18 @@
 		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Description": "fdsfsdf",
 		"TTT": "0sdfsdf"
+	},
+	{
+		"type": "IMAGE",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
+		"Description": "",
+		"TTT": "03"
+	},
+	{
+		"type": "IMAGE",
+		"src": "DEFAULT",
+		"Description": "",
+		"TTT": "03"
 	}
 ]
 }

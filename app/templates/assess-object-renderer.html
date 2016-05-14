@@ -11,31 +11,37 @@
 	<div class="fields" *ngFor="#prop of objectProperties()" [ngClass]="{hidden: collapsed}">
 		<div *ngIf="isArray(object[prop])">
 			<div class="field-name">
-				<assess-popup [options]="getOptionsForProperty(prop)"></assess-popup>
-				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
-				<span class="indent"><input type="text" name="prop" [ngModel]="prop"/> : [</span> 
+				<assess-popup class="indent" [options]="getOptionsForProperty(prop)"></assess-popup>
+				<span class="indent static-field-name" *ngIf="isInteger(prop)">
+					{{prop}}&nbsp;:&nbsp;
+				</span>
+				<span><input type="text" name="prop" [ngModel]="prop"/> : [</span> 
 			</div>
 			<assess-object-renderer class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
-			<span class="indent">]</span>
+			<span>]</span>
 		</div>
 		<div *ngIf="isObject(object[prop])">
 			<div class="field-name">	
-				<assess-popup [options]="getOptionsForProperty(prop)"></assess-popup>
-				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
+				<assess-popup class="indent" [options]="getOptionsForProperty(prop)"></assess-popup>
+				<span class="static-field-name" *ngIf="isInteger(prop)">
+					{{prop}}&nbsp;:&nbsp;
+				</span>
 				<span class="indent" *ngIf="!isInteger(prop)">
 					<input type="text" name="prop" [ngModel]="prop"/> : 
 				</span>
 				<span>{</span>
 			</div>
 			<assess-object-renderer class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
-			<span class="indent">}</span>
+			<span>}</span>
 		</div>
 		<div *ngIf="!isArray(object[prop]) && !isObject(object[prop])">
 			<div class="field-name">
-				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
-				<assess-popup [options]="getOptionsForProperty(prop)"></assess-popup>		
-				<span class="indent" *ngIf="!isInteger(prop)">
+				<assess-popup class="indent" [options]="getOptionsForProperty(prop)"></assess-popup>		
+				<span *ngIf="!isInteger(prop)">
 					<input class="field-value" type="text" name="prop" [ngModel]="prop"/> : 
+				</span>
+				<span class="static-field-name" *ngIf="isInteger(prop)">
+					{{prop}} : 
 				</span>
 				<span>
 					<input class="field-value" type="text" name="prop" [ngModel]="object[prop]"/> 

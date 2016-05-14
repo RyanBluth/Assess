@@ -1,10 +1,12 @@
-<assess-tab-nav [tabs]="mainNavTabs"></assess-tab-nav>
-<div *ngIf="currentMode == MODES.ASSETS">
-	<assess-asset-group class="asset-list-container"></assess-asset-group>
-</div>
-<div *ngIf="currentMode == MODES.SCHEMA">
-	<assess-schema [schema]="_assetService.schema"></assess-schema>
-</div>
-<div *ngIf="currentMode == MODES.STRUCTURE">
-	<assess-structure [structure]="_assetService.schema.structureObject"></assess-structure>
+<div class="assess-app">
+	<assess-tab-nav [tabs]="mainNavTabs"></assess-tab-nav>
+	<div *ngIf="currentMode == MODES.ASSETS">
+		<assess-asset-group class="asset-list-container"></assess-asset-group>
+	</div>
+	<div *ngIf="currentMode == MODES.SCHEMA">
+		<assess-schema [schema]="_assetService.schema"></assess-schema>
+	</div>
+	<div *ngIf="currentMode == MODES.STRUCTURE">
+		<assess-structure [structure]="_assetService.schema.structureObject"></assess-structure>
+	</div>
 </div>

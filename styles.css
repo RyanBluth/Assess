@@ -169,7 +169,7 @@ html{
 /* Assess Schema Begin*/
 
 .assess-schema{
-	padding: 15px;
+	padding: 5px;
 }
 
 /* Assess Schema End*/
@@ -195,7 +195,6 @@ html{
 }
 
 .assess-object-renderer .field-name{
-	margin: 3px;
 }
 
 .assess-object-renderer .fields{
@@ -213,6 +212,7 @@ html{
 	width: 50px;
 	height: 50px;
 	color: #FF582D; 
+	margin-left: -4px;
 }
 
 .assess-object-renderer .new-popout-btn {
@@ -245,6 +245,11 @@ html{
 	top: auto;
 }
 
+.assess-object-renderer .static-field-name{
+	font-size: 9pt;
+	color: #aaa;
+}
+
 /* Object Renderer End*/
 
 /* Popup Begin */
@@ -260,7 +265,7 @@ html{
 	font-size: 9pt;
 	display: inline-block;
 	position: absolute;
-	bottom: 12pt;
+	bottom: 30px;
 	cursor: pointer;
 	border: thin solid #444;
 }
@@ -285,6 +290,8 @@ html{
 	color: #666; 
 	font-weight: 100;
 	font-size: 9pt;
+	width: 25px;
+	height: 25px;
 }
 
 .assess-popup .toggle-btn:hover{
