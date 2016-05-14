@@ -15,9 +15,10 @@
 				<span class="indent static-field-name" *ngIf="isInteger(prop)">
 					{{prop}}&nbsp;:&nbsp;
 				</span>
-				<span><input type="text" name="prop" [ngModel]="prop"/> : [</span> 
+				<input type="text" name="prop" [ngModel]="prop"/> 
+				<span>: [</span> 
 			</div>
-			<assess-object-renderer class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
+			<assess-object-renderer [bracketIndex]="bracketIndex + 1" class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
 			<span>]</span>
 		</div>
 		<div *ngIf="isObject(object[prop])">
@@ -31,7 +32,7 @@
 				</span>
 				<span>{</span>
 			</div>
-			<assess-object-renderer class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
+			<assess-object-renderer [bracketIndex]="bracketIndex + 1" class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
 			<span>}</span>
 		</div>
 		<div *ngIf="!isArray(object[prop]) && !isObject(object[prop])">

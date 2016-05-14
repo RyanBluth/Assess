@@ -69,6 +69,10 @@ input{
 	color: #222;
 }
 
+.assess-app{
+	height: 100%;
+}
+
 .asset-group{
 	margin: 10px;
 }
@@ -274,7 +278,6 @@ html{
 	padding: 3px;
 	padding-left: 8px;
 	padding-right: 8px;
-	border-top: thin solid #111;
 }
 
 .assess-popup .option:hover{
@@ -292,6 +295,7 @@ html{
 	font-size: 9pt;
 	width: 25px;
 	height: 25px;
+	margin-left: -4px;
 }
 
 .assess-popup .toggle-btn:hover{

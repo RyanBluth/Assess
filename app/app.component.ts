@@ -436,8 +436,17 @@ export class PopupComponent {
 export class ObjectRendererComponent {
 
 	@Input() object: {}[];
+	@Input() bracketIndex: number;
 
 	public collapsed = false;
+
+	private _closingBracket: boolean = false;
+
+	private _bracketColors = [
+		"#ff0000",	
+		"#00ff00",	
+		"#0000ff",	
+	];
 
 	constructor() { 
 	}
@@ -522,6 +531,18 @@ export class ObjectRendererComponent {
 				new PopupOption("Delete", () => { this.deleteProperty(property)})
 			];
 		}
+	}
+
+	public getBracketColor() : string{
+		if (this.bracketIndex >= this._bracketColors.length) {
+			this.bracketIndex = 0;
+		}
+		var color = this._bracketColors[this.bracketIndex];
+		if(this._closingBracket){
+			this.bracketIndex++;
+		}
+		this._closingBracket = !this._closingBracket;
+		return color;
 	}
 }
 
