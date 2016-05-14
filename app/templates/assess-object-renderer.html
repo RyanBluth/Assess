@@ -21,11 +21,11 @@
 		<div *ngIf="isObject(object[prop])">
 			<div class="field-name">	
 				<assess-popup [options]="getOptionsForProperty(prop)"></assess-popup>
-				<span>{</span>
 				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
 				<span class="indent" *ngIf="!isInteger(prop)">
 					<input type="text" name="prop" [ngModel]="prop"/> : 
 				</span>
+				<span>{</span>
 			</div>
 			<assess-object-renderer class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
 			<span class="indent">}</span>
