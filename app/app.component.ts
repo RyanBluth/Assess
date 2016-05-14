@@ -375,7 +375,8 @@ export class ObjectRendererComponent {
 
 	public collapsed = false;
 
-	constructor() { }
+	constructor() { 
+	}
 
 	public objectProperties(): string[]{
 		return Object.keys(this.object);

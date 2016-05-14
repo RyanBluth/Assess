@@ -134,8 +134,6 @@ button{
 	border:none;
 }
 
-
-
 input[type="text"] {
      width: 100%; 
      box-sizing: border-box;
@@ -179,7 +177,7 @@ html{
 /* Object Renderer Begin */
 
 .assess-object-renderer{
-
+	white-space: nowrap;
 }
 
 .assess-object-renderer .add-new-btn{
@@ -187,8 +185,13 @@ html{
 }
 
 .assess-object-renderer input[type="text"] {
-	width:150px;
+	width:100px;
 	display: inline-block;
+	background-color: #222;
+}
+
+.assess-object-renderer input[type="text"]:focus {
+	background-color: #333;
 }
 
 .assess-object-renderer .field-name{
@@ -212,6 +215,21 @@ html{
 	color: #FF582D; 
 }
 
+.assess-object-renderer .new-popout-btn {
+	cursor: pointer;
+	color: #666; 
+	font-weight: 100;
+	font-size: 9pt;
+}
+
+.assess-object-renderer .new-popout-btn:hover{
+	color: #888; 
+}
+
+.assess-object-renderer .new-popout-btn:active {
+	color: #444; 
+}
+
 .assess-object-renderer .delete-property{
 	cursor: pointer;
 	font-weight: bold;
@@ -221,6 +239,11 @@ html{
 	color: #FF582D; 
 }
 
+.assess-object-renderer .edit-btn{
+	position:absolute;
+	left: 0;
+	top: auto;
+}
 
 
 /* Object Renderer End*/

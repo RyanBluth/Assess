@@ -1,30 +1,39 @@
 <div class="indent-double assess-object-renderer"> 
-	<span class="toggle-collapse" *ngIf="collapsed" (click)="toggleCollapse()">+</span>
-	<span class="toggle-collapse" *ngIf="!collapsed" (click)="toggleCollapse()">-</span>
-	<br/>
-	<button class="indent-double add-new-btn" [ngClass]="{hidden: collapsed}" (click)="addNewProperty('')">New Property</button>
+	<span class="toggle-collapse" *ngIf="collapsed" (click)="toggleCollapse()">
+		<i class="fa fa-caret-right" aria-hidden="true"></i>
+	</span>
+	<span class="toggle-collapse" *ngIf="!collapsed" (click)="toggleCollapse()">
+		<i class="fa fa-caret-down" aria-hidden="true"></i>
+	</span>
+	<!--<button class="indent-double add-new-btn" [ngClass]="{hidden: collapsed}" (click)="addNewProperty('')">New Property</button>
 	<button class="indent-double add-new-btn" [ngClass]="{hidden: collapsed}" (click)="addNewObject({})">New Object</button>
-	<button class="indent-double add-new-btn" [ngClass]="{hidden: collapsed}" (click)="addNewArray([])">New Array</button>
+	<button class="indent-double add-new-btn" [ngClass]="{hidden: collapsed}" (click)="addNewArray([])">New Array</button>-->
 	<div class="fields" *ngFor="#prop of objectProperties()" [ngClass]="{hidden: collapsed}">
 		<div *ngIf="isArray(object[prop])">
 			<div class="field-name">
-				<span class="delete-property" (click)="deleteProperty(prop)">x</span><span class="indent"><input type="text" name="prop" [ngModel]="prop"/> : [</span> 
+				<i class="new-popout-btn indent fa fa-cog" aria-hidden="true"></i>
+				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
+				<span class="indent"><input type="text" name="prop" [ngModel]="prop"/> : [</span> 
 			</div>
 			<assess-object-renderer class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
 			<span class="indent">]</span>
 		</div>
 		<div *ngIf="isObject(object[prop])">
 			<div class="field-name">	
+				<i class="indent new-popout-btn fa fa-cog" aria-hidden="true"></i>
+				<span>{</span>
+				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
 				<span class="indent" *ngIf="!isInteger(prop)">
 					<input type="text" name="prop" [ngModel]="prop"/> : 
 				</span>
 			</div>
-			<span class="indent">{</span>
 			<assess-object-renderer class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
 			<span class="indent">}</span>
 		</div>
 		<div *ngIf="!isArray(object[prop]) && !isObject(object[prop])">
 			<div class="field-name">
+				<i class="new-popout-btn indent fa fa-cog" aria-hidden="true"></i>
+				<!--<span class="delete-property" (click)="deleteProperty(prop)">x</span>-->
 				<span class="indent" *ngIf="!isInteger(prop)">
 					<input class="field-value" type="text" name="prop" [ngModel]="prop"/> : 
 				</span>
