@@ -12,11 +12,13 @@
 		<div *ngIf="isArray(object[prop])">
 			<div class="field-name">
 				<assess-popup class="indent" [options]="getOptionsForProperty(prop)"></assess-popup>
-				<span class="indent static-field-name" *ngIf="isInteger(prop)">
+				<span class="static-field-name" *ngIf="isInteger(prop)">
 					{{prop}}&nbsp;:&nbsp;
 				</span>
-				<input type="text" name="prop" [ngModel]="prop"/> 
-				<span>: [</span> 
+				<span *ngIf="!isInteger(prop)">
+					<input type="text" name="prop" [ngModel]="prop"/>&nbsp;:&nbsp;
+				</span> 
+				<span>[</span>
 			</div>
 			<assess-object-renderer [bracketIndex]="bracketIndex + 1" class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
 			<span>]</span>
