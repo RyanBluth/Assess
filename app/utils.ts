@@ -12,3 +12,40 @@ export function assertHasProperties(obj: Object, fields: string[]): string[] {
 export function logError(message: any): void {
 	console.error(message);
 }
+
+export function looseEquals(a, b){
+	var aArr = Array.isArray(a); 
+	var bArr = Array.isArray(b);
+
+	if(aArr != bArr){
+		return false;
+	}
+
+	var aObj = a instanceof Object;
+	var bObj = b instanceof Object;
+
+	if (aObj != bObj) {
+		return false;
+	}
+
+	if(aArr){
+		if (a.length != b.length){
+			return false;
+		}
+		for (let i = 0; i < a.length; ++i){
+			if (!looseEquals(a[i], b[i])){
+				return false;
+			}
+		}
+		return true;
+	}else if(aObj){
+		for(let p in a){
+			if (!b.hasOwnProperty(p) || !looseEquals(a[p], b[p])) {
+				return false;
+			}
+		}
+		return true;
+	}else{
+		return a == b;
+	}
+}

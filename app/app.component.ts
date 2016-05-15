@@ -46,7 +46,7 @@ var template = [
 		submenu: [
 			{
 				label: 'New Project',
-				accelerator: 'Command+N',
+				accelerator: 'CmdOrCtrl+N',
 				click: function() {
 					dialog.showSaveDialog(
 						{ properties: ['saveFile'], filters: [{ name: 'Assess Project', extensions: ['assess_project'] }] },
@@ -67,7 +67,7 @@ var template = [
 			},
 			{
 				label: 'Open Project',
-				accelerator: 'Command+o',
+				accelerator: 'CmdOrCtrl+o',
 				click: function() {
 					dialog.showOpenDialog(
 						{ properties: ['openFile'], filters: [{ name: 'Assess Project', extensions: ['assess_project'] }] },
@@ -86,7 +86,7 @@ var template = [
 			},
 			{
 				label: 'Reload',
-				accelerator: 'Command+R',
+				accelerator: 'CmdOrCtrl+R',
 				click: function() { mainWindow.reload() }
 			}
 		]
@@ -120,28 +120,6 @@ export class Schema{
 			}else{
 				utils.logError("ASSET_TYPES must be an array");
 			}
-		}
-	}
-}
-
-@Injectable()
-export class GlobalEventService{
-
-	private _elemRef: any
-	private _zone: NgZone;
-
-	public globalClickEmitter: EventEmitter<any> = new EventEmitter;
-
-	constructor(@Inject(NgZone) _zone: NgZone){
-		this._zone = _zone;
-	}
-
-	public hook(elem: ElementRef){
-		this._elemRef = elem;
-		this._elemRef.onclick = (e)=>{
-			this._zone.run(() => { 
-				this.globalClickEmitter.emit(e);
-			});
 		}
 	}
 }
@@ -313,6 +291,49 @@ export class AssetService{
 	}
 }
 
+export enum GlobalEvent {
+	GLOBAL_CLICK = 0,
+	SCHEMA_CHANGE = 1
+}
+
+@Injectable()
+export class GlobalEventService {
+
+	private _elemRef: any
+	private _zone: NgZone;
+	private _assetService: AssetService;
+
+	private _emitters = {
+		"GLOBAL_CLICK" : new EventEmitter(),
+		"SCHEMA_CHANGE": new EventEmitter()
+	}
+
+	constructor( @Inject(NgZone) _zone: NgZone, @Inject(AssetService) _assetService: AssetService) {
+		this._zone = _zone;
+		this._assetService = _assetService;
+	}
+
+	public hookupAppElement(app: AppComponent) {
+		this._elemRef = app.getElement();
+		this._elemRef.onclick = (e) => {
+			this._zone.run(() => {
+				this._emitters[GlobalEvent[GlobalEvent.GLOBAL_CLICK]].emit(e);
+			});
+		}
+	}
+
+	public subscribe(event: GlobalEvent, func: (data: any) => void) {
+		this._emitters[GlobalEvent[event]].subscribe(func);
+	}
+
+	public brodcast(event: GlobalEvent, data:any = null) {
+		this._zone.run(() => {
+			this._emitters[GlobalEvent[event]].emit(data);
+		});
+	}
+}
+
+
 export class PopupOption{
 
 	public onClick: ()=>void;
@@ -411,11 +432,11 @@ export class PopupComponent {
 	public hidden = true;
 
 	constructor( @Inject(GlobalEventService) globalEventService: GlobalEventService) {
-		globalEventService.globalClickEmitter.subscribe((event)=>{
-			if(!this.hidden){
+		globalEventService.subscribe(GlobalEvent.GLOBAL_CLICK, (event) => {
+			if (!this.hidden) {
 				this.toggleHidden();
 			}
-		})
+		});
 	}
 
 	public clickOption(option){
@@ -433,7 +454,7 @@ export class PopupComponent {
 	templateUrl: './app/templates/assess-object-renderer.html',
 	directives: [NgFor, NgIf, NgModel, ObjectRendererComponent, PopupComponent]
 })
-export class ObjectRendererComponent {
+export class ObjectRendererComponent{
 
 	@Input() object: {}[];
 	@Input() bracketIndex: number;
@@ -441,6 +462,7 @@ export class ObjectRendererComponent {
 	public collapsed = false;
 
 	private _closingBracket: boolean = false;
+	private _globalEventService: GlobalEventService;
 
 	private _bracketColors = [
 		"#ff0000",	
@@ -448,7 +470,8 @@ export class ObjectRendererComponent {
 		"#0000ff",	
 	];
 
-	constructor() { 
+	constructor(@Inject(GlobalEventService) _globalEventService: GlobalEventService) { 
+		this._globalEventService = _globalEventService;
 	}
 
 	public objectProperties(): string[]{
@@ -552,19 +575,31 @@ export class ObjectRendererComponent {
 	directives: [ObjectRendererComponent, NgFor, NgIf],
 	templateUrl: './app/templates/assess-schema.html'
 })
-export class SchemaComponent implements OnChanges{
+export class SchemaComponent {
 
 	private _assetService: AssetService;
+	private _globalEventService: GlobalEventService;
+	private _originalSchema: {} = null// Copy of the original schema so we can watch for changes
 
-	@Input() schema: Schema;
+	@Input() schemaObject: {};
 
-	constructor(@Inject(AssetService) _assetService:AssetService) {}
+	constructor(@Inject(AssetService) _assetService:AssetService, 
+		@Inject(GlobalEventService) _globalEventService: GlobalEventService) 
+	{
+		this._assetService = _assetService;
+		this._globalEventService = _globalEventService;
+	}
 
-	public ngOnChanges(){
-		try{
-			console.log(this._assetService.schema.rawObject);
-		}catch(e){
-			utils.logError("Failed to update schema file");
+	public ngOnInit(){
+		if (this._originalSchema === null) {
+			this._originalSchema = jQuery.extend(true, {}, this.schemaObject);
+			this._globalEventService.brodcast(GlobalEvent.SCHEMA_CHANGE);
+		}
+	}
+
+	public ngDoCheck() {
+		if(!utils.looseEquals(this.schemaObject, this._originalSchema)){
+			this._originalSchema = jQuery.extend(true, {}, this.schemaObject);
 		}
 	}
 }
@@ -655,7 +690,11 @@ export class AppComponent {
 		this._elem = elem.nativeElement;
 		this._assetService = assetService;
 		this._globalEventService = globalEventService;
-		this._globalEventService.hook(this._elem);
+		this._globalEventService.hookupAppElement(this);
+	}
+
+	public getElement(): any{
+		return this._elem;
 	}
 }
 
