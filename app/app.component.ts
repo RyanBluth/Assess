@@ -494,6 +494,19 @@ export class ObjectRendererComponent{
 		this.collapsed = !this.collapsed;
 	}
 
+	public updateKey(key, event){
+		console.log(event);
+		console.log(this.object);
+		if(!this.object.hasOwnProperty(event.target.value)){
+			console.log(key);
+			var jobj = JSON.stringify(this.object);
+			jobj = jobj.replace(key, event.target.value);
+			this.object = JSON.parse(jobj);
+		}else{
+			utils.logError("Can't update value. Key " + event.target.value + " already exists");
+		}
+	}
+
 	public addNewProperty(property) : void{
 		if(this.isArray(this.object[property])) {
 			(<Array<any>>this.object[property]).push('');
@@ -593,13 +606,15 @@ export class SchemaComponent {
 	public ngOnInit(){
 		if (this._originalSchema === null) {
 			this._originalSchema = jQuery.extend(true, {}, this.schemaObject);
-			this._globalEventService.brodcast(GlobalEvent.SCHEMA_CHANGE);
 		}
 	}
 
 	public ngDoCheck() {
 		if(!utils.looseEquals(this.schemaObject, this._originalSchema)){
+			// Update schema copy
 			this._originalSchema = jQuery.extend(true, {}, this.schemaObject);
+			// Brodacast that the schema has changed
+			this._globalEventService.brodcast(GlobalEvent.SCHEMA_CHANGE);
 		}
 	}
 }

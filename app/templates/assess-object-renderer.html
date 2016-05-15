@@ -41,7 +41,7 @@
 			<div class="field-name">
 				<assess-popup class="indent" [options]="getOptionsForProperty(prop)"></assess-popup>		
 				<span *ngIf="!isInteger(prop)">
-					<input class="field-value" type="text" name="prop" [ngModel]="prop"/> : 
+					<input class="field-value" type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/> : 
 				</span>
 				<span class="static-field-name" *ngIf="isInteger(prop)">
 					{{prop}} : 
