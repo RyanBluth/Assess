@@ -3,7 +3,7 @@ declare function require(moduleName: string): any;
 import {globalAppInjector} from "./bootstrap"
 
 import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, 
-	ApplicationRef, Provider, Inject, Input, Output, 
+	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
 	Optional, Injectable, AfterViewChecked} from 'angular2/core';
 
 import {NgFor, NgIf, NgModel} from 'angular2/common';
@@ -552,11 +552,21 @@ export class ObjectRendererComponent {
 	directives: [ObjectRendererComponent, NgFor, NgIf],
 	templateUrl: './app/templates/assess-schema.html'
 })
-export class SchemaComponent {
+export class SchemaComponent implements OnChanges{
+
+	private _assetService: AssetService;
 
 	@Input() schema: Schema;
 
-	constructor() {}
+	constructor(@Inject(AssetService) _assetService:AssetService) {}
+
+	public ngOnChanges(){
+		try{
+			console.log(this._assetService.schema.rawObject);
+		}catch(e){
+			utils.logError("Failed to update schema file");
+		}
+	}
 }
 
 @Component({
@@ -645,7 +655,6 @@ export class AppComponent {
 		this._elem = elem.nativeElement;
 		this._assetService = assetService;
 		this._globalEventService = globalEventService;
-
 		this._globalEventService.hook(this._elem);
 	}
 }
