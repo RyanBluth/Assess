@@ -471,7 +471,6 @@ export class ObjectRendererComponent{
 
 	private _closingBracket: boolean = false;
 	private _globalEventService: GlobalEventService;
-
 	private _bracketColors = [
 		"#ff0000",	
 		"#00ff00",	
@@ -503,26 +502,26 @@ export class ObjectRendererComponent{
 	}
 
 	public updateKey(key, event){
-		if(event.target.value.length == 0){
+		if (event.target.value.length == 0) {
 			event.srcElement.value = key;
 			utils.logError("Key cannot be a blank value");
 			return;
 		}
-		if(!this.object.hasOwnProperty(event.target.value)){
-			var jobj = JSON.stringify(this.object);
-			jobj = jobj.replace(key, event.target.value);
-			this.object = JSON.parse(jobj);
-		}else{
+		if (!this.object.hasOwnProperty(event.target.value)) {
+			var val = this.object[key];
+			delete this.object[key];
+			this.object[event.target.value] = val;
+		} else {
 			utils.logError("Can't update value. Property " + event.target.value + " already exists");
 			event.srcElement.value = key;
 		}
 	}
 
 	public addNewProperty(property) : void{
-		if(this.isArray(this.object[property])) {
+		if (this.isArray(this.object[property])) {
 			(<Array<any>>this.object[property]).push('');
 		} else if (this.isObject(this.object[property])) {
-			this.object[property]["Property" + (Object.keys(this.object[property]).length + 1).toString()] = '';
+			this.object[property]["Property" + (Object.keys(this.object[property]).length + 1).toString()] = "";
 		} else {
 			utils.logError("Could not add new element");
 		}
@@ -536,6 +535,7 @@ export class ObjectRendererComponent{
 		} else {
 			utils.logError("Could not add new element");
 		}
+			
 	}
 
 	public addNewObject(property): void {
@@ -548,12 +548,12 @@ export class ObjectRendererComponent{
 		}
 	}
 
-	public deleteProperty(property): void{
+	public deleteProperty(property): void {
 		if (this.isArray(this.object)) {
 			(<Array<any>>this.object).splice((<Array<any>>this.object).indexOf(this.object));
 		} else if (this.isObject(this.object)) {
 			delete this.object[property]
-		}else{
+		} else {
 			utils.logError("Could not delete " + property);
 		}
 	}
