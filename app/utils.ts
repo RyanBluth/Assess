@@ -17,6 +17,12 @@ export function logError(message: any): void {
 	console.error(message);
 }
 
+export function logInfo(message: any): void {
+	var eventService: GlobalEventService = globalAppInjector.get(GlobalEventService);
+	eventService.brodcast(GlobalEvent.INFO_MESSAGE, { text: message, time: new Date() })
+	console.log(message);
+}
+
 export function looseEquals(a, b){
 	var aArr = Array.isArray(a); 
 	var bArr = Array.isArray(b);

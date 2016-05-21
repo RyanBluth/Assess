@@ -145,13 +145,17 @@ export class AssetService{
 	{
 		this._zone = _zone;
 		this._projectService = _projectService;
+	}
+
+	public loadLastProject(){
 		var lastProject = window.localStorage.getItem('lastProject');
 		if (lastProject != null && lastProject != undefined) {
-			try{
+			try {
 				fs.accessSync(lastProject); // Check for file access
 				this._projectService.loadProject(lastProject);
 				this.loadProject(this._projectService.currentProject);
-			}catch(ignored){/*Fail silently*/}
+				utils.logInfo("Opened project " + lastProject);
+			} catch (ignored) {/*Fail silently*/ }
 		}
 	}
 
@@ -509,8 +513,8 @@ export class ObjectRendererComponent{
 			jobj = jobj.replace(key, event.target.value);
 			this.object = JSON.parse(jobj);
 		}else{
+			utils.logError("Can't update value. Property " + event.target.value + " already exists");
 			event.srcElement.value = key;
-			utils.logError("Can't update value. Key " + event.target.value + " already exists");
 		}
 	}
 
@@ -778,6 +782,10 @@ export class AppComponent {
 
 	public getElement(): any{
 		return this._elem;
+	}
+
+	public initialize(){
+		this._assetService.loadLastProject();
 	}
 }
 

@@ -8,6 +8,7 @@ export var globalAppInjector: Injector = null;
 bootstrap(Components.AppComponent, [Components.GlobalEventService, Components.AssetService, ProjectService])
 .then((appRef: ComponentRef) => {
 	globalAppInjector = appRef.injector;
+	appRef.instance.initialize();
 });
 
 
