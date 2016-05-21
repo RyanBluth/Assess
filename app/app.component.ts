@@ -495,14 +495,17 @@ export class ObjectRendererComponent{
 	}
 
 	public updateKey(key, event){
-		console.log(event);
-		console.log(this.object);
+		if(event.target.value.length == 0){
+			event.srcElement.value = key;
+			utils.logError("Key cannot be a blank value");
+			return;
+		}
 		if(!this.object.hasOwnProperty(event.target.value)){
-			console.log(key);
 			var jobj = JSON.stringify(this.object);
 			jobj = jobj.replace(key, event.target.value);
 			this.object = JSON.parse(jobj);
 		}else{
+			event.srcElement.value = key;
 			utils.logError("Can't update value. Key " + event.target.value + " already exists");
 		}
 	}
