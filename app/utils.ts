@@ -1,3 +1,5 @@
+import {globalAppInjector} from "./bootstrap"
+import {GlobalEventService, GlobalEvent} from "./app.component"
 
 export function assertHasProperties(obj: Object, fields: string[]): string[] {
 	var missingProps: string[] = [];
@@ -10,6 +12,8 @@ export function assertHasProperties(obj: Object, fields: string[]): string[] {
 }
 
 export function logError(message: any): void {
+	var eventService: GlobalEventService = globalAppInjector.get(GlobalEventService);
+	eventService.brodcast(GlobalEvent.ERROR_MESSAGE, {text: message, time: new Date()})
 	console.error(message);
 }
 

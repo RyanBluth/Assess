@@ -16,7 +16,7 @@
 					{{prop}}&nbsp;:&nbsp;
 				</span>
 				<span *ngIf="!isInteger(prop)">
-					<input type="text" name="prop" [ngModel]="prop"/>&nbsp;:&nbsp;
+					<input type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/>&nbsp;:&nbsp;
 				</span> 
 				<span>[</span>
 			</div>
@@ -30,7 +30,7 @@
 					{{prop}}&nbsp;:&nbsp;
 				</span>
 				<span class="indent" *ngIf="!isInteger(prop)">
-					<input type="text" name="prop" [ngModel]="prop"/> : 
+					<input type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/> : 
 				</span>
 				<span>{</span>
 			</div>

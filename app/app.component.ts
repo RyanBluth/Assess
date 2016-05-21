@@ -293,7 +293,9 @@ export class AssetService{
 
 export enum GlobalEvent {
 	GLOBAL_CLICK = 0,
-	SCHEMA_CHANGE = 1
+	SCHEMA_CHANGE = 1,
+	ERROR_MESSAGE = 2,
+	INFO_MESSAGE = 3
 }
 
 @Injectable()
@@ -304,8 +306,10 @@ export class GlobalEventService {
 	private _assetService: AssetService;
 
 	private _emitters = {
-		"GLOBAL_CLICK" : new EventEmitter(),
-		"SCHEMA_CHANGE": new EventEmitter()
+		"GLOBAL_CLICK"  : new EventEmitter(),
+		"SCHEMA_CHANGE" : new EventEmitter(),
+		"ERROR_MESSAGE" : new EventEmitter(),
+		"INFO_MESSAGE"  : new EventEmitter(),
 	}
 
 	constructor( @Inject(NgZone) _zone: NgZone, @Inject(AssetService) _assetService: AssetService) {
@@ -660,10 +664,71 @@ export class TabNavComponent{
 	}
 }
 
+
+@Component({
+	selector: 'assess-console',
+	templateUrl: './app/templates/assess-console.html'
+})
+export class ConsoleComponent{
+	
+	static ERROR: string = "error";
+	static INFO : string = "info";
+
+	private _globlaEventService: GlobalEventService;
+	private _ref: any;
+	private _zone: NgZone;
+
+	private _lastResize:number = 0;
+
+	public messages: {}[] = []; // Object format = { text:'some text', severity: 'ERROR, INFO'}
+
+	constructor(
+		@Inject(GlobalEventService) _globalEventService: GlobalEventService,
+		_ref: ElementRef, 
+		_zone: NgZone) 
+	{
+		this._ref = _ref.nativeElement;
+		this._globlaEventService = _globalEventService;
+		this._zone = _zone;
+		
+		this._globlaEventService.subscribe(GlobalEvent.ERROR_MESSAGE, (data) => { 
+			this.messages.push({
+				text: this.formatTimeStamp(data.time) + " - " + data.text,
+				severity: ConsoleComponent.ERROR
+			});
+		});
+
+		this._globlaEventService.subscribe(GlobalEvent.INFO_MESSAGE, (data) => {
+			this.messages.push({
+				text: this.formatTimeStamp(data.time) + " - " + data.text,
+				severity: ConsoleComponent.INFO
+			});
+		});
+	}
+
+	public updateConsoleSize(event){
+		this._zone.runOutsideAngular(()=>{
+			var now = Date.now();
+			if (now - this._lastResize > 33 && event.screenY > 0) {
+				this._ref.children[0].style.height = screen.height - event.screenY - 40 + "px";
+				this._lastResize = now;
+			}
+		});
+	}
+
+	private formatTimeStamp(date: Date): string{
+		var m = date.getMinutes().toString();
+		m = m.length == 1 ? "0" + m : m; 
+		var s = date.getSeconds().toString();
+		s = s.length == 1 ? "0" + s : s; 
+		return date.getHours() + ":" + m + ":" + s;
+	}
+}
+
 @Component({
     selector: 'assess-app',
     templateUrl: './app/templates/assess-app.html',
-    directives: [AssetGroupComponent, TabNavComponent, SchemaComponent, StructureComponent]
+    directives: [AssetGroupComponent, TabNavComponent, SchemaComponent, StructureComponent, ConsoleComponent]
 })
 export class AppComponent {
 
