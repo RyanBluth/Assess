@@ -340,9 +340,9 @@ html{
 }
 
 .assess-console .line{
-	margin: 10px;
-	padding-top: 10px;
+	margin: 5px;
 	color: #666;
+	display: inline-block;
 }
 
 .assess-console .line.error{
