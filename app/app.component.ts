@@ -4,7 +4,7 @@ import {globalAppInjector} from "./bootstrap"
 
 import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, 
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
-	Optional, Injectable, AfterViewChecked} from 'angular2/core';
+	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit} from 'angular2/core';
 
 import {NgFor, NgIf, NgModel} from 'angular2/common';
 import * as Assets from './assetType';
@@ -462,13 +462,15 @@ export class PopupComponent {
 	templateUrl: './app/templates/assess-object-renderer.html',
 	directives: [NgFor, NgIf, NgModel, ObjectRendererComponent, PopupComponent]
 })
-export class ObjectRendererComponent{
+export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 
 	@Input() object: {}[];
 	@Input() bracketIndex: number;
 
 	public collapsed = false;
 
+	private _zone: NgZone;
+	private _sortedFields: any[] = [];
 	private _closingBracket: boolean = false;
 	private _globalEventService: GlobalEventService;
 	private _bracketColors = [
@@ -477,12 +479,25 @@ export class ObjectRendererComponent{
 		"#0000ff",	
 	];
 
-	constructor(@Inject(GlobalEventService) _globalEventService: GlobalEventService) { 
+	constructor(@Inject(GlobalEventService) _globalEventService: GlobalEventService, _zone:NgZone) { 
 		this._globalEventService = _globalEventService;
+		this._zone = _zone;
+	}
+
+	public ngOnInit(){
+		this._sortedFields = Object.keys(this.object);
+	}
+
+	public ngAfterContentChecked(){
+		var keys = Object.keys(this.object); 	
+		var diff = keys.length - this._sortedFields.length;
+		if(diff > 0){
+			this._sortedFields.push(keys[keys.length - 1]);
+		}
 	}
 
 	public objectProperties(): string[]{
-		return Object.keys(this.object);
+		return this._sortedFields;
 	}
 
 	public isArray(val): boolean {
@@ -511,17 +526,20 @@ export class ObjectRendererComponent{
 			var val = this.object[key];
 			delete this.object[key];
 			this.object[event.target.value] = val;
+			this._sortedFields[this._sortedFields.indexOf(key)] = event.target.value; 
 		} else {
 			utils.logError("Can't update value. Property " + event.target.value + " already exists");
 			event.srcElement.value = key;
 		}
+
 	}
 
 	public addNewProperty(property) : void{
 		if (this.isArray(this.object[property])) {
 			(<Array<any>>this.object[property]).push('');
 		} else if (this.isObject(this.object[property])) {
-			this.object[property]["Property" + (Object.keys(this.object[property]).length + 1).toString()] = "";
+			var newKey = "Property" + (Object.keys(this.object[property]).length + 1).toString();
+			this.object[property][newKey] = "";
 		} else {
 			utils.logError("Could not add new element");
 		}
@@ -531,7 +549,8 @@ export class ObjectRendererComponent{
 		if (this.isArray(this.object[property])) {
 			(<Array<any>>this.object[property]).push(new Array());
 		} else if (this.isObject(this.object[property])) {
-			this.object[property]["Property" + (Object.keys(this.object[property]).length + 1).toString()] = new Array();
+			var newKey = "Property" + (Object.keys(this.object[property]).length + 1).toString();
+			this.object[property][newKey] = new Array();
 		} else {
 			utils.logError("Could not add new element");
 		}
@@ -542,7 +561,8 @@ export class ObjectRendererComponent{
 		if (this.isArray(this.object[property])) {
 			(<Array<any>>this.object[property]).push(new Object());
 		} else if (this.isObject(this.object[property])) {
-			this.object[property]["Property" + (Object.keys(this.object[property]).length + 1).toString()] = new Object();
+			var newKey = "Property" + (Object.keys(this.object[property]).length + 1).toString();
+			this.object[property][newKey] = new Object();
 		} else {
 			utils.logError("Could not add new element");
 		}
@@ -551,8 +571,10 @@ export class ObjectRendererComponent{
 	public deleteProperty(property): void {
 		if (this.isArray(this.object)) {
 			(<Array<any>>this.object).splice((<Array<any>>this.object).indexOf(this.object));
+			(<Array<any>>this._sortedFields).splice((<Array<any>>this._sortedFields).indexOf(property));
 		} else if (this.isObject(this.object)) {
-			delete this.object[property]
+			delete this.object[property];
+			this._sortedFields.splice(this._sortedFields.indexOf(property));
 		} else {
 			utils.logError("Could not delete " + property);
 		}
