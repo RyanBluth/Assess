@@ -41,6 +41,8 @@ tr{
 	
 }
 
+
+
 .asset-list-container{
 	width: 100%;
 	height: 100%;
@@ -194,6 +196,11 @@ html{
 
 .assess-schema{
 	padding: 5px;
+	padding-top: 40px;
+}
+
+.assess-schema .assess-tool-bar{
+	margin-top: -55px;
 }
 
 /* Assess Schema End*/
@@ -202,6 +209,7 @@ html{
 
 .assess-object-renderer{
 	white-space: nowrap;
+	color: #ededed;
 }
 
 .assess-object-renderer .add-new-btn{
@@ -219,6 +227,14 @@ html{
 }
 
 .assess-object-renderer .field-name{
+}
+
+.assess-object-renderer input.string{
+	color: #58BA62;
+}
+
+.assess-object-renderer input.number{
+	color: #CB4D4F;
 }
 
 .assess-object-renderer .fields{
@@ -285,7 +301,7 @@ html{
 
 .assess-popup .options{
 	background-color: #333;
-	color: #f9f9f9;
+	color: #ededed;
 	font-size: 9pt;
 	display: inline-block;
 	position: absolute;
@@ -366,3 +382,36 @@ html{
 
 
 /* Console End */ 
+
+
+/* Tool Bar Start */
+
+.assess-tool-bar{
+	margin-bottom: 10px;
+	margin-top: -10px;
+	position: fixed;
+	margin-bottom: 50px;
+	z-index: 999;
+	width: 100%;
+	padding: 10px;
+}
+
+.assess-tool-bar .button{
+	background-color: #1e1e1e;
+	color: #ddd;
+	padding: 10px;
+	font-size: 10pt;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.assess-tool-bar .button:hover{
+	background-color: #444;
+}
+
+.assess-tool-bar .button:active{
+	background-color: #111;
+}
+
+
+/* Too Bar End */

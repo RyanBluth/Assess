@@ -1,6 +1,8 @@
 declare function require(moduleName: string): any;
 
 import {Injectable, Inject, NgZone} from 'angular2/core';
+import * as Assets from './assetType';
+import {Schema} from './app.component';
 
 const fs = require('fs'); 
 const path = require('path');
@@ -113,5 +115,17 @@ export class ProjectService {
 
 	public readAssetsFile(): string{ 
 		return fs.readFileSync(path.join(this.getCurrentProjectDirectory(), this.currentProject.assetFilePath));
+ 	}
+
+ 	public writeProjectFile(schema: Schema){
+	  	var proj = new Project(this.currentProject.filePath);
+		proj.mappings = this.currentProject.mappings;
+		proj.assetPath = this.currentProject.assetPath;
+		proj.assetFilePath = this.currentProject.assetFilePath;
+		proj.schema = schema.rawObject;
+		proj.structure = this.currentProject.structure;
+		
+		var json = JSON.stringify(this.currentProject);
+		fs.writeFileSync(this.currentProject.filePath, json);
  	}
 }

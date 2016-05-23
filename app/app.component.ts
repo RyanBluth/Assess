@@ -293,6 +293,10 @@ export class AssetService{
 		}
 		return null;
 	}
+
+	public writeProjectFile(){
+		this._projectService.writeProjectFile(this.schema);
+	}
 }
 
 export enum GlobalEvent {
@@ -516,6 +520,10 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 		this.collapsed = !this.collapsed;
 	}
 
+	public getColorForType(prop){
+		return typeof this.object[prop];
+	}
+
 	public updateKey(key, event){
 		if (event.target.value.length == 0) {
 			event.srcElement.value = key;
@@ -649,6 +657,10 @@ export class SchemaComponent {
 			// Brodacast that the schema has changed
 			this._globalEventService.brodcast(GlobalEvent.SCHEMA_CHANGE);
 		}
+	}
+
+	public saveSchema(){
+		this._assetService.writeProjectFile();
 	}
 }
 
