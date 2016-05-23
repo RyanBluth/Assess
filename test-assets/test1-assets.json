@@ -4,31 +4,57 @@
 		"type": "IMAGE",
 		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Description": "asdasdasDasdadfdf",
-		"TTT": 0
+		"TTT": 0,
+		"TESTdds": 0,
+		"check": false
 	},
 	{
 		"type": "IMAGE",
 		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Description": "",
-		"TTT": 0
+		"TTT": 0,
+		"TESTdds": 0,
+		"check": false
 	},
 	{
 		"type": "IMAGE",
 		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Description": "fdsfsdf",
-		"TTT": "0sdfsdf"
+		"TTT": "0sdfsdf",
+		"TESTdds": 0,
+		"check": false
 	},
 	{
 		"type": "IMAGE",
 		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Description": "",
-		"TTT": "03"
+		"TTT": "03",
+		"TESTdds": 0,
+		"check": false
 	},
 	{
 		"type": "IMAGE",
 		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
 		"Description": "",
-		"TTT": "03"
+		"TTT": "03",
+		"TESTdds": 0,
+		"check": false
+	},
+	{
+		"type": "IMAGE",
+		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
+		"Description": "cdb",
+		"TTT": "044",
+		"TESTdds": "0ggg",
+		"check": "true"
+	},
+	{
+		"type": "entity",
+		"name": "ddsadas"
+	},
+	{
+		"type": "entity",
+		"name": "dsadasd"
 	}
 ]
 }
