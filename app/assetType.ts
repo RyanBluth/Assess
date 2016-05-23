@@ -15,8 +15,8 @@ export enum SchemaFields{
 	AS_ASSETS
 }
 
-function getLoaderForDataType(dataType: DataType) : string{
-	switch (dataType) {
+function getLoaderForDataType(AS_ASSET_FIELD_DATA_TYPE: DataType) : string{
+	switch (AS_ASSET_FIELD_DATA_TYPE) {
 		case DataType.AS_STRING:
 			return "default/asDefaultStringLoader.js";
 		case DataType.AS_INT:
@@ -35,24 +35,24 @@ function getLoaderForDataType(dataType: DataType) : string{
 export class AssetFieldDefinition{
 	
 	public name: string;
-	public dataType: DataType;
+	public AS_ASSET_FIELD_DATA_TYPE: DataType;
 	public loader: string;
 	public default: any;
 
 	constructor(def:any){
-		var missingProps = utils.assertHasProperties(def, ['name', 'dataType']);
+		var missingProps = utils.assertHasProperties(def, ['AS_ASSET_FIELD_NAME', 'AS_ASSET_FIELD_DATA_TYPE']);
 		if (missingProps.length > 0) {
 			missingProps.forEach(prop => {
 				utils.logError("Missing required property " + prop + " for AssetField");
 
 			});
 		}else{
-			this.name = def.name;
-			this.dataType = DataType[<string>def.dataType];
+			this.name = def.AS_ASSET_FIELD_NAME;
+			this.AS_ASSET_FIELD_DATA_TYPE = DataType[<string>def.AS_ASSET_FIELD_DATA_TYPE];
 			if(def.hasOwnProperty("default")){
 				this.default = def.default;
 			}else{
-				switch (this.dataType) {
+				switch (this.AS_ASSET_FIELD_DATA_TYPE) {
 					case DataType.AS_STRING:
 						this.default = "";
 						break;
@@ -72,15 +72,15 @@ export class AssetFieldDefinition{
 						this.default = null;
 				}
 			}
-			if(!def.hasOwnProperty("loader")){
-				this.loader = getLoaderForDataType(this.dataType);
+			if(!def.hasOwnProperty("AS_ASSET_FIELD_LOADER")){
+				this.loader = getLoaderForDataType(this.AS_ASSET_FIELD_DATA_TYPE);
 				if (this.loader === null) {
 					utils.logError("No loader was provided for AssetType " + this.name + " and no default " +
-						"loader was found for data type " + def.dataType);
+						"loader was found for data type " + def.AS_ASSET_FIELD_DATA_TYPE);
 					return;
 				}
 			}else{
-				this.loader = def.loader;
+				this.loader = def.AS_ASSET_FIELD_LOADER;
 			}
 		}
 	}
@@ -99,9 +99,9 @@ export class AssetTypeDefinition{
 				utils.logError("Missing required property " + prop + " for AssetType");
 			})
 		} else {
-			this.name = def.name;
-			this.type = def.type;
-			def.fields.forEach(fieldDef => {
+			this.name = def.AS_ASSET_TYPE_NAME;
+			this.type = def.AS_ASSET_TYPE_TYPE;
+			def.AS_ASSET_TYPE_FIELDS.forEach(fieldDef => {
 				this.fields.push(new AssetFieldDefinition(fieldDef));
 			});
 		}

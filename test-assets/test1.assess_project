@@ -1,1 +1,60 @@
-{"filePath":"C:\\Projects\\Assess\\test-assets\\test1.assess_project","assetPath":"","assetFilePath":"test1-assets.json","schema":{"AS_ASSETS":[{"AS_ASSET_TYPE_NAME":"Imageaa","AS_ASSET_TYPE_TYPE":"IMAGE","AS_ASSET_TYPE_FIELDS":[{"dataType":"AS_FILE","name":"src","extensions":["png","jpg","gif"],"loader":"image","default":"DEFAULT"},{"dataType":"AS_STRING","name":"Description"},{"dataType":"AS_INT","name":"TTT","number":13545},{"dataType":"AS_INT","name":"TESTdds"},{"dataType":"AS_BOOLEAN","name":"check"}]},{"AS_ASSET_TYPE_NAME":"Entity","AS_ASSET_TYPE_TYPE":"entity","AS_ASSET_TYPE_FIELDS":[{"dataType":"AS_STRING","name":"name"}]}]},"structure":{"assets":"AS_ASSETS"},"mappings":{"AS_ASSETS":"AS_ASSETS","AS_ASSET_TYPE":"type"}}
+{
+  "filePath": "C:\\Projects\\Assess\\test-assets\\test1.assess_project",
+  "assetPath": "",
+  "assetFilePath": "test1-assets.json",
+  "schema": {
+    "AS_ASSETS": [
+      {
+        "AS_ASSET_TYPE_NAME": "Imageaa",
+        "AS_ASSET_TYPE_TYPE": "IMAGE",
+        "AS_ASSET_TYPE_FIELDS": [
+          {
+            "AS_ASSET_FIELD_DATA_TYPE": "AS_FILE",
+            "AS_ASSET_FIELD_NAME": "src",
+            "extensions": [
+              "png",
+              "jpg",
+              "gif"
+            ],
+            "AS_ASSET_FIELD_LOADER": "image",
+            "default": "DEFAULT"
+          },
+          {
+            "AS_ASSET_FIELD_DATA_TYPE": "AS_STRING",
+            "AS_ASSET_FIELD_NAME": "Description"
+          },
+          {
+            "AS_ASSET_FIELD_DATA_TYPE": "AS_INT",
+            "AS_ASSET_FIELD_NAME": "TTT",
+            "number": 13545
+          },
+          {
+            "AS_ASSET_FIELD_DATA_TYPE": "AS_INT",
+            "AS_ASSET_FIELD_NAME": "TESTdds"
+          },
+          {
+            "AS_ASSET_FIELD_DATA_TYPE": "AS_BOOLEAN",
+            "AS_ASSET_FIELD_NAME": "check"
+          }
+        ]
+      },
+      {
+        "AS_ASSET_TYPE_NAME": "Entity",
+        "AS_ASSET_TYPE_TYPE": "entity",
+        "AS_ASSET_TYPE_FIELDS": [
+          {
+            "AS_ASSET_FIELD_DATA_TYPE": "AS_STRING",
+            "AS_ASSET_FIELD_NAME": "name"
+          }
+        ]
+      }
+    ]
+  },
+  "structure": {
+    "assets": "AS_ASSETS"
+  },
+  "mappings": {
+    "AS_ASSETS": "AS_ASSETS",
+    "AS_ASSET_TYPE": "type"
+  }
+}

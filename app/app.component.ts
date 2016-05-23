@@ -127,8 +127,8 @@ export class Schema{
 			let at = schemaAsObj[Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS]]; 
 			if(at instanceof Array){
 				at.forEach((typeDef) => {
-					this.assetTypes[typeDef["type"]] = new Assets.AssetTypeDefinition(typeDef);
-					this.assetTypeNames.push(typeDef["type"]);
+					this.assetTypes[typeDef["AS_ASSET_TYPE_TYPE"]] = new Assets.AssetTypeDefinition(typeDef);
+					this.assetTypeNames.push(typeDef["AS_ASSET_TYPE_TYPE"]);
 				});
 			}else{
 				utils.logError("ASSET_TYPES must be an array");
@@ -273,7 +273,7 @@ export class AssetService{
 					let outAssets = [];
 					this.assets.forEach((asset) => {
 						let outAsset = {};
-						outAsset["type"] = asset.definition.type;
+						outAsset["AS_ASSET_TYPE_TYPE"] = asset.definition.type;
 
 						for (let key in asset.fields) {
 							outAsset[key] = asset.fields[key].value;
