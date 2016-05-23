@@ -93,7 +93,7 @@ export class AssetTypeDefinition{
 	public fields: AssetFieldDefinition[] = [];
 
 	constructor(def: any){
-		var missingProps = utils.assertHasProperties(def, ['name', 'type', 'fields']);
+		var missingProps = utils.assertHasProperties(def, ['AS_ASSET_TYPE_NAME', 'AS_ASSET_TYPE_TYPE', 'AS_ASSET_TYPE_FIELDS']);
 		if (missingProps.length > 0) {
 			missingProps.forEach(prop => {
 				utils.logError("Missing required property " + prop + " for AssetType");
