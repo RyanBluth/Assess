@@ -154,7 +154,6 @@ export class AssetService{
 				fs.accessSync(lastProject); // Check for file access
 				this._projectService.loadProject(lastProject);
 				this.loadProject(this._projectService.currentProject);
-				utils.logInfo("Opened project " + lastProject);
 			} catch (ignored) {/*Fail silently*/ }
 		}
 	}
@@ -164,6 +163,7 @@ export class AssetService{
 		this._zone.run(() => {
 			this.schema = new Schema(config.schema, JSON.stringify(config.structure, null, "\t"));
 			this.readAssets(config.assetFilePath);
+			utils.logInfo("Opened project " + config.filePath);
 		});
 
 		window.localStorage.setItem("lastProject", config.filePath);
@@ -296,6 +296,7 @@ export class AssetService{
 
 	public writeProjectFile(){
 		this._projectService.writeProjectFile(this.schema);
+		utils.logInfo("Saved project file " + this._projectService.currentProject.filePath);
 	}
 }
 
@@ -661,6 +662,7 @@ export class SchemaComponent {
 
 	public saveSchema(){
 		this._assetService.writeProjectFile();
+		this._assetService.loadLastProject();
 	}
 }
 
