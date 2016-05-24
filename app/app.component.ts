@@ -603,25 +603,51 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 	}
 
 	public getOptionsForProperty(property): PopupOption[]{
+		var options = [];
 		if (this.isArray(this.object[property])) {
-			return [
+			options.push(
 				new PopupOption("New Element", () => { this.addNewProperty(property) }),
 				new PopupOption("New Object", () => { this.addNewObject(property) }),
 				new PopupOption("New Array", () => { this.addNewArray(property) }),
 				new PopupOption("Delete", () => { this.deleteProperty(property) })
-			];
+			);
 		} else if (this.isObject(this.object[property])) {
-			return [
+			options.push(
 				new PopupOption("New Property", () => { this.addNewProperty(property) }),
 				new PopupOption("New Object", () => { this.addNewObject(property) }),
 				new PopupOption("New Array", () => { this.addNewArray(property) }),
 				new PopupOption("Delete", () => { this.deleteProperty(property) })
-			];
+			);
 		} else {
-			return [
+			options.push(
 				new PopupOption("Delete", () => { this.deleteProperty(property)})
-			];
+			);
 		}
+
+		if(property == AsFields.SCHEMA.AS_ASSETS){
+			options.push(new PopupOption("New Asset Type", ()=>{
+				this.object[AsFields.SCHEMA.AS_ASSETS].push(
+					{
+						AS_ASSET_TYPE_NAME: "Display Name",
+						AS_ASSET_TYPE_TYPE: "Asset Type",
+						AS_ASSET_TYPE_FIELDS: []
+					}
+				);
+			}))
+		}
+
+		if (property == AsFields.SCHEMA.AS_ASSET_TYPE_FIELDS) {
+			options.push(new PopupOption("New Field", () => {
+				this.object[AsFields.SCHEMA.AS_ASSET_TYPE_FIELDS].push(
+					{
+						AS_ASSET_FIELD_DATA_TYPE: "AS_STRING",
+						AS_ASSET_FIELD_NAME: "Field Name"
+					}
+				);
+			}))
+		}
+
+		return options;
 	}
 
 	public getBracketColor() : string{

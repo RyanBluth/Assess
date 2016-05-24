@@ -211,6 +211,15 @@ html{
 	color: #ededed;
 }
 
+.assess-object-renderer .square-bracket{
+	white-space: nowrap;
+	color: #D529A4;
+}
+
+.assess-object-renderer .curly-bracket{
+	color: #F8C520;
+}
+
 .assess-object-renderer .add-new-btn{
 	margin: 3px;
 }

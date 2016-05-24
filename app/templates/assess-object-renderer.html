@@ -18,10 +18,10 @@
 				<span *ngIf="!isInteger(prop)">
 					<input type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/>&nbsp;:&nbsp;
 				</span> 
-				<span>[</span>
+				<span class="square-bracket">[</span>
 			</div>
 			<assess-object-renderer [bracketIndex]="bracketIndex + 1" class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
-			<span>]</span>
+			<span class="square-bracket">]</span>
 		</div>
 		<div *ngIf="isObject(object[prop])">
 			<div class="field-name">	
@@ -32,10 +32,10 @@
 				<span class="indent" *ngIf="!isInteger(prop)">
 					<input type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/> : 
 				</span>
-				<span>{</span>
+				<span class="curly-bracket">{</span>
 			</div>
 			<assess-object-renderer [bracketIndex]="bracketIndex + 1" class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
-			<span>}</span>
+			<span class="curly-bracket">}</span>
 		</div>
 		<div *ngIf="!isArray(object[prop]) && !isObject(object[prop])">
 			<div class="field-name">
