@@ -624,11 +624,14 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 
 	public deleteProperty(property): void {
 		if (this.isArray(this.object)) {
-			(<Array<any>>this.object).splice((<Array<any>>this.object).indexOf(this.object));
-			(<Array<any>>this._sortedFields).splice((<Array<any>>this._sortedFields).indexOf(property));
+			(<Array<any>>this.object).splice(property, 1);
+			this._sortedFields = [];
+			for (let i = 0; i < (<Array<any>>this.object).length; ++i){
+				this._sortedFields.push(i);
+			}
 		} else if (this.isObject(this.object)) {
 			delete this.object[property];
-			this._sortedFields.splice(this._sortedFields.indexOf(property));
+			this._sortedFields.splice(this._sortedFields.indexOf(property), 1);
 		} else {
 			utils.logError("Could not delete " + property);
 		}
