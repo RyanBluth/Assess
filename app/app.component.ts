@@ -375,7 +375,7 @@ export class PopupOption{
 @Directive({
 	selector: '[assess-adjusting-input]'
 })
-export class AdjustingInputDirective implements OnInit {
+export class AdjustingInputDirective implements OnInit, OnChanges {
 	
 	private _elem: any;
 	private _dummySpan: any;
@@ -394,6 +394,10 @@ export class AdjustingInputDirective implements OnInit {
 			this._dummySpan.innerHTML = e.target.value;
 			this.updateWidth();
 		});
+		this.updateWidth();
+	}
+
+	public ngOnChanges(){
 		this.updateWidth();
 	}
 
@@ -486,6 +490,7 @@ export class AssetGroupComponent {
 export class PopupComponent {
 
 	@Input() options: PopupOption[];
+	@Input() icon: string;
 
 	public hidden = true;
 
@@ -512,7 +517,7 @@ export class PopupComponent {
 	templateUrl: './app/templates/assess-object-renderer.html',
 	directives: [NgFor, NgIf, NgModel, ObjectRendererComponent, PopupComponent, AdjustingInputDirective]
 })
-export class ObjectRendererComponent implements OnInit, AfterContentChecked{
+export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 
 	@Input() object: {}[];
 	@Input() bracketIndex: number;
@@ -524,29 +529,29 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 	private _closingBracket: boolean = false;
 	private _globalEventService: GlobalEventService;
 	private _bracketColors = [
-		"#ff0000",	
-		"#00ff00",	
-		"#0000ff",	
+		"#ff0000",
+		"#00ff00",
+		"#0000ff",
 	];
 
-	constructor(@Inject(GlobalEventService) _globalEventService: GlobalEventService, _zone:NgZone) { 
+	constructor( @Inject(GlobalEventService) _globalEventService: GlobalEventService, _zone: NgZone) {
 		this._globalEventService = _globalEventService;
 		this._zone = _zone;
 	}
 
-	public ngOnInit(){
+	public ngOnInit() {
 		this._sortedFields = Object.keys(this.object);
 	}
 
-	public ngAfterContentChecked(){
-		var keys = Object.keys(this.object); 	
+	public ngAfterContentChecked() {
+		var keys = Object.keys(this.object);
 		var diff = keys.length - this._sortedFields.length;
-		if(diff > 0){
+		if (diff > 0) {
 			this._sortedFields.push(keys[keys.length - 1]);
 		}
 	}
 
-	public objectProperties(): string[]{
+	public objectProperties(): string[] {
 		return this._sortedFields;
 	}
 
@@ -558,19 +563,19 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 		return (val instanceof Object) && !(val instanceof Array) && !(val instanceof String);
 	}
 
-	public isInteger(val): boolean{
+	public isInteger(val): boolean {
 		return !isNaN(val);
 	}
 
-	public toggleCollapse(): void{
+	public toggleCollapse(): void {
 		this.collapsed = !this.collapsed;
 	}
 
-	public getColorForType(prop){
+	public getColorForType(prop) {
 		return typeof this.object[prop];
 	}
 
-	public updateKey(key, event){
+	public updateKey(key, event) {
 		if (event.target.value.length == 0) {
 			event.srcElement.value = key;
 			utils.logError("Key cannot be a blank value");
@@ -578,9 +583,9 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 		}
 		if (!this.object.hasOwnProperty(event.target.value)) {
 			var val = this.object[key];
-			this.deleteProperty(key);
+			delete this.object[key];
 			this.object[event.target.value] = val;
-			this._sortedFields[this._sortedFields.indexOf(key)] = event.target.value; 
+			this._sortedFields[this._sortedFields.indexOf(key)] = event.target.value;
 		} else {
 			utils.logError("Can't update value. Property " + event.target.value + " already exists");
 			event.srcElement.value = key;
@@ -588,7 +593,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 
 	}
 
-	public addNewProperty(property) : void{
+	public addNewProperty(property): void {
 		if (this.isArray(this.object[property])) {
 			(<Array<any>>this.object[property]).push('');
 		} else if (this.isObject(this.object[property])) {
@@ -608,7 +613,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 		} else {
 			utils.logError("Could not add new element");
 		}
-			
+
 	}
 
 	public addNewObject(property): void {
@@ -626,7 +631,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 		if (this.isArray(this.object)) {
 			(<Array<any>>this.object).splice(property, 1);
 			this._sortedFields = [];
-			for (let i = 0; i < (<Array<any>>this.object).length; ++i){
+			for (let i = 0; i < (<Array<any>>this.object).length; ++i) {
 				this._sortedFields.push(i);
 			}
 		} else if (this.isObject(this.object)) {
@@ -637,7 +642,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 		}
 	}
 
-	public getOptionsForProperty(property): PopupOption[]{
+	public getOptionsForProperty(property): PopupOption[] {
 		var options = [];
 		if (this.isArray(this.object[property])) {
 			options.push(
@@ -655,12 +660,12 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 			);
 		} else {
 			options.push(
-				new PopupOption("Delete", () => { this.deleteProperty(property)})
+				new PopupOption("Delete", () => { this.deleteProperty(property) })
 			);
 		}
 
-		if(property == AsFields.SCHEMA.AS_ASSETS){
-			options.push(new PopupOption("New Asset Type", ()=>{
+		if (property == AsFields.SCHEMA.AS_ASSETS) {
+			options.push(new PopupOption("New Asset Type", () => {
 				this.object[AsFields.SCHEMA.AS_ASSETS].push(
 					{
 						AS_ASSET_TYPE_NAME: "Display Name",
@@ -685,12 +690,27 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 		return options;
 	}
 
-	public getBracketColor() : string{
+	public getCompletionsForProperty(property): PopupOption[] {
+		var options: PopupOption[] = [];
+
+		if(property == AsFields.SCHEMA.AS_ASSET_FIELD_DATA_TYPE){
+			options.push(
+				new PopupOption("AS_STRING", () => { this.object[property] = "AS_STRING" }),
+				new PopupOption("AS_BOOLEAN", () => { this.object[property] = "AS_BOOLEAN" }),
+				new PopupOption("AS_FLOAT", () => { this.object[property] = "AS_FLOAT" }),
+				new PopupOption("AS_INT", () => { this.object[property] = "AS_INT" })
+			);
+		}
+
+		return options;
+	}
+
+	public getBracketColor(): string {
 		if (this.bracketIndex >= this._bracketColors.length) {
 			this.bracketIndex = 0;
 		}
 		var color = this._bracketColors[this.bracketIndex];
-		if(this._closingBracket){
+		if (this._closingBracket) {
 			this.bracketIndex++;
 		}
 		this._closingBracket = !this._closingBracket;

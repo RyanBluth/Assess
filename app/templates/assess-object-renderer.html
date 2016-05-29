@@ -5,13 +5,10 @@
 	<span class="toggle-collapse" *ngIf="!collapsed" (click)="toggleCollapse()">
 		<i class="fa fa-caret-down" aria-hidden="true"></i>
 	</span>
-	<!--<button class="indent-double add-new-btn" [ngClass]="{hidden: collapsed}" (click)="addNewProperty('')">New Property</button>
-	<button class="indent-double add-new-btn" [ngClass]="{hidden: collapsed}" (click)="addNewObject({})">New Object</button>
-	<button class="indent-double add-new-btn" [ngClass]="{hidden: collapsed}" (click)="addNewArray([])">New Array</button>-->
 	<div class="fields" *ngFor="#prop of objectProperties()" [ngClass]="{hidden: collapsed}">
 		<div *ngIf="isArray(object[prop])">
 			<div class="field-name">
-				<assess-popup class="indent" [options]="getOptionsForProperty(prop)"></assess-popup>
+				<assess-popup class="indent" [icon]="'fa-cog'" [options]="getOptionsForProperty(prop)"></assess-popup>
 				<span class="static-field-name" *ngIf="isInteger(prop)">
 					{{prop}}&nbsp;:&nbsp;
 				</span>
@@ -25,7 +22,7 @@
 		</div>
 		<div *ngIf="isObject(object[prop])">
 			<div class="field-name">	
-				<assess-popup class="indent" [options]="getOptionsForProperty(prop)"></assess-popup>
+				<assess-popup class="indent" [icon]="'fa-cog'" [options]="getOptionsForProperty(prop)"></assess-popup>
 				<span class="static-field-name" *ngIf="isInteger(prop)">
 					{{prop}}&nbsp;:&nbsp;
 				</span>
@@ -39,7 +36,7 @@
 		</div>
 		<div *ngIf="!isArray(object[prop]) && !isObject(object[prop])">
 			<div class="field-name">
-				<assess-popup class="indent" [options]="getOptionsForProperty(prop)"></assess-popup>		
+				<assess-popup class="indent" [icon]="'fa-cog'" [options]="getOptionsForProperty(prop)"></assess-popup>		
 				<span *ngIf="!isInteger(prop)">
 					<input assess-adjusting-input class="field-value" type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/> : 
 				</span>
@@ -48,6 +45,7 @@
 				</span>
 				<span>
 					<input assess-adjusting-input class="field-value {{getColorForType(prop)}}" type="text" name="prop" [(ngModel)]="object[prop]"/> 
+					<assess-popup  [icon]="'fa-magic'" [options]="getCompletionsForProperty(prop)"></assess-popup>		
 				</span>
 			</div>
 		</div>

@@ -1,4 +1,4 @@
-<div class="assess-popup indent">
+<div class="assess-popup indent" *ngIf="options.length > 0">
 	<div class="options" *ngIf="!hidden">
 		<div *ngFor="#option of options">
 			<div (click)="clickOption(option); $event.stopPropagation()" class="option">
@@ -6,5 +6,5 @@
 			</div>
 		</div>
 	</div>
-	<i (click)="toggleHidden(); $event.stopPropagation()" class="toggle-btn fa fa-cog" aria-hidden="true"></i>
+	<i (click)="toggleHidden(); $event.stopPropagation()" class="toggle-btn fa {{icon}}" aria-hidden="true"></i>
 </div>
