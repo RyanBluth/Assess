@@ -375,7 +375,7 @@ export class PopupOption{
 @Directive({
 	selector: '[assess-adjusting-input]'
 })
-export class AdjustingInputDirective implements OnInit, OnChanges {
+export class AdjustingInputDirective implements OnInit {
 	
 	private _elem: any;
 	private _dummySpan: any;
@@ -384,20 +384,16 @@ export class AdjustingInputDirective implements OnInit, OnChanges {
 		this._elem = elem.nativeElement;
 	}
 
-	public ngOnInit(){
-		this._dummySpan = document.createElement("span");   	
+	public ngOnInit() {
+		this._dummySpan = document.createElement("span");
 		var fontSize = window.getComputedStyle(this._elem, null).getPropertyValue('font-size');
-		this._dummySpan.style.fontSize = fontSize;  
-		this._elem.parentElement.appendChild(this._dummySpan);  
+		this._dummySpan.style.fontSize = fontSize;
+		this._elem.parentElement.appendChild(this._dummySpan);
 		this._dummySpan.innerHTML = this._elem.value;
-		this._elem.addEventListener("keydown", (e) => {			
+		this._elem.addEventListener("keydown", (e) => {
 			this._dummySpan.innerHTML = e.target.value;
 			this.updateWidth();
 		});
-		this.updateWidth();
-	}
-
-	public ngOnChanges(){
 		this.updateWidth();
 	}
 
@@ -696,7 +692,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 		if(property == AsFields.SCHEMA.AS_ASSET_FIELD_DATA_TYPE){
 			options.push(
 				new PopupOption("AS_STRING", () => { this.object[property] = "AS_STRING" }),
-				new PopupOption("AS_BOOLEAN", () => { this._zone.run(() => { this.object[property] = "AS_BOOLEAN" }) }),
+				new PopupOption("AS_BOOLEAN", () => { this.object[property] = "AS_BOOLEAN" }),
 				new PopupOption("AS_FLOAT", () => { this.object[property] = "AS_FLOAT" }),
 				new PopupOption("AS_INT", () => { this.object[property] = "AS_INT" })
 			);
