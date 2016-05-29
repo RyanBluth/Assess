@@ -2,7 +2,7 @@ declare function require(moduleName: string): any;
 
 import {globalAppInjector} from "./bootstrap"
 
-import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, 
+import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directive,
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
 	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit} from 'angular2/core';
 
@@ -372,6 +372,38 @@ export class PopupOption{
 }
 
 
+@Directive({
+	selector: '[assess-adjusting-input]'
+})
+export class AdjustingInputDirective implements OnInit {
+	
+	private _elem: any;
+	private _dummySpan: any;
+
+	constructor(elem: ElementRef){
+		this._elem = elem.nativeElement;
+	}
+
+	public ngOnInit(){
+		this._dummySpan = document.createElement("span");   	
+		var fontSize = window.getComputedStyle(this._elem, null).getPropertyValue('font-size');
+		this._dummySpan.style.fontSize = fontSize;  
+		this._elem.parentElement.appendChild(this._dummySpan);  
+		this._dummySpan.innerHTML = this._elem.value;
+		this._elem.addEventListener("keydown", (e) => {			
+			this._dummySpan.innerHTML = e.target.value;
+			this.updateWidth();
+		});
+		this.updateWidth();
+	}
+
+	private updateWidth(){
+		this._dummySpan.style.display = "inline-block"; 
+		this._elem.style.width = this._dummySpan.offsetWidth + 20 + "px";
+		this._dummySpan.style.display = "none"; 
+	}
+}
+
 @Component({
 	selector: '[asses-asset-field]',
 	template: '<div class="asset-field" [innerHTML]="field.create.template()"></div>',
@@ -478,7 +510,7 @@ export class PopupComponent {
 @Component({
 	selector: 'assess-object-renderer',
 	templateUrl: './app/templates/assess-object-renderer.html',
-	directives: [NgFor, NgIf, NgModel, ObjectRendererComponent, PopupComponent]
+	directives: [NgFor, NgIf, NgModel, ObjectRendererComponent, PopupComponent, AdjustingInputDirective]
 })
 export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 
@@ -807,7 +839,9 @@ export class ConsoleComponent{
 @Component({
     selector: 'assess-app',
     templateUrl: './app/templates/assess-app.html',
-    directives: [AssetGroupComponent, TabNavComponent, SchemaComponent, StructureComponent, ConsoleComponent]
+    directives: [AssetGroupComponent, TabNavComponent, 
+    	SchemaComponent, StructureComponent, 
+    	ConsoleComponent, AdjustingInputDirective]
 })
 export class AppComponent {
 
