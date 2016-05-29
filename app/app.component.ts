@@ -578,7 +578,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked{
 		}
 		if (!this.object.hasOwnProperty(event.target.value)) {
 			var val = this.object[key];
-			delete this.object[key];
+			this.deleteProperty(key);
 			this.object[event.target.value] = val;
 			this._sortedFields[this._sortedFields.indexOf(key)] = event.target.value; 
 		} else {
