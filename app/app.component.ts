@@ -376,7 +376,7 @@ export class PopupOption{
 @Directive({
 	selector: '[assess-adjusting-input]'
 })
-export class AdjustingInputDirective implements OnInit {
+export class AdjustingInputDirective implements OnInit, OnChanges {
 	
 	private _elem: any;
 	private _dummySpan: any;
@@ -395,6 +395,16 @@ export class AdjustingInputDirective implements OnInit {
 			this._dummySpan.innerHTML = e.target.value;
 			this.updateWidth();
 		});
+		this._elem.addEventListener("change", (e) => {
+			this._dummySpan.innerHTML = e.target.value;
+			this.updateWidth();
+			console.log("change");
+		});
+		this.updateWidth();
+	}
+
+	public ngOnChanges(){
+		console.log("change");
 		this.updateWidth();
 	}
 
@@ -572,6 +582,11 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 		if (diff > 0) {
 			this._sortedFields.push(keys[keys.length - 1]);
 		}
+	}
+
+	public forceChange(event){
+		console.log("CCC");
+		event.target.onchange(event);
 	}
 
 	public objectProperties(): string[] {
