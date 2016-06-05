@@ -1,4 +1,5 @@
 declare function require(moduleName: string): any;
+declare var __dirname: any;
 
 import {globalAppInjector} from "./bootstrap"
 
@@ -414,24 +415,50 @@ export class AssetFieldComponent implements AfterViewChecked {
 	private _elem: any;
 	private _assetService: AssetService;
 	private _zone: NgZone;
+	private _projectService: ProjectService;
 
-	constructor(_zone:NgZone, _elem: ElementRef, @Inject(AssetService) _assetService: AssetService) {
+	constructor(_zone:NgZone, _elem: ElementRef, @Inject(AssetService) _assetService: AssetService, @Inject(ProjectService) _projectService) {
 		this._elem = _elem.nativeElement;
 		this._assetService = _assetService;
 		this._zone = _zone;
+		this._projectService = _projectService;
 	}
 
 	public ngAfterViewChecked() {
 		this.field.create.setup(this._elem, (value) => {this.updateValue(value)});
 	}
 
-	public updateValue(value){
-		this._zone.run(() => {
+	public updateValue(value:any){
+		this._zone.run(() => {				
+				var isFileValue = false;
+				try {
+					fs.accessSync(value, fs.R_OK); // Check for file access
+					try{
+						let fp = value.split(path.sep);
+						let filename = fp[fp.length - 1];
+						let checkPath = path.join(path.join(this._projectService.getProjectFolderRelative(), 
+							this._projectService.currentProject.assetPath), filename);
+						fs.accessSync(checkPath);
+						value = checkPath;
+						isFileValue = true;
+					}catch(e){
+						utils.logError("Selected file must be in the assets folder");
+						return;
+					}
+				} catch (ignored) {/*Fail silently*/ }
 				this.field.value = value;
 				this.field.refresh();
+				if(isFileValue){
+					let vp:string[] = value.split(path.sep);
+					vp.splice(0, 1);
+					value = vp.reduce((prev: string, curr: string, index: number, array: string[]): string => {
+						return prev + path.sep + curr;
+					});
+					this.field.value = value;
+				}
+				this._assetService.writeAssets(AssetWriteFormat.JSON);
 			}
 		);
-		this._assetService.writeAssets(AssetWriteFormat.JSON);
 	}
 }
 

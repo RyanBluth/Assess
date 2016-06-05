@@ -1,4 +1,5 @@
 declare function require(moduleName: string): any;
+declare var __dirname;
 
 import {Injectable, Inject, NgZone} from 'angular2/core';
 import * as Assets from './assetType';
@@ -127,5 +128,21 @@ export class ProjectService {
 		
 		var json = JSON.stringify(this.currentProject);
 		fs.writeFileSync(this.currentProject.filePath, json);
+ 	}
+
+	public getProjectFolderRelative():string{
+  		var p:string = null;
+	  	if(this.currentProject != null){
+			var filePathParts:string[] = this.currentProject.filePath.split(path.sep);
+			p = filePathParts.reduce((prev:string, curr:string, index:number, array:string[]):string=>{
+				var ret = prev;
+				if(index < array.length - 1){
+					ret += path.sep + curr;
+				}				
+				return ret;
+			});
+			p = path.relative(__dirname, p);
+	  	}
+		return p;
  	}
 }
