@@ -44,7 +44,7 @@
 					{{prop}} : 
 				</span>
 				<span>
-					<input assess-adjusting-input class="field-value {{getColorForType(prop)}}" type="text" name="prop" (ngModelChange)="forceChange($event)" [(ngModel)]="object[prop]"/> 
+					<input assess-adjusting-input class="field-value {{getColorForType(prop)}}" type="text" name="prop" [(ngModel)]="object[prop]"/> 
 					<assess-popup [icon]="'fa-magic'" [options]="getCompletionsForProperty(prop)"></assess-popup>		
 				</span>
 			</div>

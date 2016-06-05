@@ -584,11 +584,6 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 		}
 	}
 
-	public forceChange(event){
-		console.log("CCC");
-		event.target.onchange(event);
-	}
-
 	public objectProperties(): string[] {
 		return this._sortedFields;
 	}
@@ -734,7 +729,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 		if(property == AsFields.SCHEMA.AS_ASSET_FIELD_DATA_TYPE){
 			options.push(
 				new PopupOption("AS_STRING", () => { this.object[property] = "AS_STRING" }),
-				new PopupOption("AS_BOOLEAN", () => { this.object[property] = "AS_BOOLEAN" }),
+				new PopupOption("AS_BOOLEAN", () => { this._zone.run(()=>{ this.object[property] = "AS_BOOLEAN" } )}),
 				new PopupOption("AS_FLOAT", () => { this.object[property] = "AS_FLOAT" }),
 				new PopupOption("AS_INT", () => { this.object[property] = "AS_INT" })
 			);
