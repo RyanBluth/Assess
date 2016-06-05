@@ -1,11 +1,19 @@
 exports.create = function create(value){
 	return{
 		template: function(){
-			return '<input type="text" value="' + value + '"/>'
+			if(value == true){
+				return '<input type="checkbox" checked/>'
+			}else{
+				return '<input type="checkbox"/>'
+			}
 		},
 		setup: function(elem, updateValueFunc){
 			elem.onchange = function(newVal){
-				updateValueFunc(newVal.target.value);
+				if(newVal.target.value == "on"){
+					updateValueFunc(true);
+				}else{
+					updateValueFunc(false);
+				}
 			};
 		}
 	}

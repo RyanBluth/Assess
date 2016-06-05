@@ -110,12 +110,18 @@ export class ProjectService {
 	}
 
 	public writeAssetsFile(value: string){
-		console.log("write " + this.getCurrentProjectDirectory());
+		for(let key in this.currentProject.mappings){
+			value = value.replace(new RegExp('"' + key + '"', 'g'), '"' + this.currentProject.mappings[key] + '"');
+		}
 		fs.writeFileSync(path.join(this.getCurrentProjectDirectory(), this.currentProject.assetFilePath), value);
 	}
 
 	public readAssetsFile(): string{ 
-		return fs.readFileSync(path.join(this.getCurrentProjectDirectory(), this.currentProject.assetFilePath));
+		var fileContents = fs.readFileSync(path.join(this.getCurrentProjectDirectory(), this.currentProject.assetFilePath), 'utf-8');
+		for (let key in this.currentProject.mappings) {
+			fileContents = fileContents.replace(new RegExp('"' + this.currentProject.mappings[key] + '"', 'g'), '"' + key + '"'); 
+		}
+		return fileContents;
  	}
 
  	public writeProjectFile(schema: Schema){

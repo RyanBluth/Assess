@@ -6,7 +6,7 @@
 		"Description": "asdasdasDasdadfdf",
 		"TTT": 0,
 		"TESTdds": 0,
-		"check": false
+		"check": true
 	},
 	{
 		"type": "IMAGE",
@@ -14,13 +14,13 @@
 		"Description": "",
 		"TTT": 0,
 		"TESTdds": 0,
-		"check": false
+		"check": true
 	},
 	{
 		"type": "IMAGE",
 		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Description": "fdsfsdf",
-		"TTT": "0sdfsdf",
+		"TTT": "4",
 		"TESTdds": 0,
 		"check": false
 	},
@@ -45,7 +45,7 @@
 		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
 		"Description": "cdb",
 		"TTT": "044",
-		"TESTdds": "0ggg",
+		"TESTdds": "3",
 		"check": "true"
 	},
 	{

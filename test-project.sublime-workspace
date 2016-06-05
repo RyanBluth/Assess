@@ -1,0 +1,1144 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"fun",
+				"function"
+			],
+			[
+				"Ass",
+				"AssetField	class"
+			],
+			[
+				"Asse",
+				"AssetService	class"
+			],
+			[
+				"for",
+				"forEach	method"
+			],
+			[
+				"type",
+				"typeDef	parameter"
+			],
+			[
+				"in",
+				"instanceof	keyword"
+			],
+			[
+				"File",
+				"FileReader	interface"
+			],
+			[
+				"Fil",
+				"FileReader	interface"
+			],
+			[
+				"original",
+				"originalValue"
+			],
+			[
+				"file",
+				"FileReader	interface"
+			],
+			[
+				"func",
+				"function	keyword"
+			],
+			[
+				"bo",
+				"bootstrap	alias"
+			],
+			[
+				"Com",
+				"Components	alias"
+			],
+			[
+				"A",
+				"AssetComponent	class"
+			],
+			[
+				"Asset",
+				"AssetField	class"
+			],
+			[
+				"AssetF",
+				"AssetFieldDefinition	class"
+			],
+			[
+				"cons",
+				"constructor	keyword"
+			],
+			[
+				"const",
+				"constructor()	index.js"
+			],
+			[
+				"tex",
+				"texture	statement"
+			],
+			[
+				"ali",
+				"halign	statement"
+			],
+			[
+				"font",
+				"font_size	statement"
+			],
+			[
+				"menu_",
+				"menu_item	forstmt"
+			],
+			[
+				"menu",
+				"menu_item	forstmt"
+			],
+			[
+				"on_",
+				"on_menu_item_selected"
+			],
+			[
+				"pop",
+				"pop_back	func"
+			],
+			[
+				"push",
+				"push_back	func"
+			],
+			[
+				"retStrin",
+				"retString      - [#int#]retString"
+			],
+			[
+				"resStri",
+				"retString      - [#int#]retString"
+			],
+			[
+				"applyFor",
+				"applyForceToCenter"
+			],
+			[
+				"gitla",
+				"gitlab_result"
+			],
+			[
+				"tas",
+				"taskId"
+			],
+			[
+				"new",
+				"newTask"
+			],
+			[
+				"trigger",
+				"triggerYellingContest"
+			],
+			[
+				"pro",
+				"products"
+			],
+			[
+				"trigg",
+				"triggerYellingContest"
+			],
+			[
+				"up",
+				"updateConvoOrders"
+			],
+			[
+				"convos",
+				"conversations"
+			],
+			[
+				"convo",
+				"convoService"
+			],
+			[
+				"cha",
+				"characters"
+			],
+			[
+				"sc",
+				"scenarioServices"
+			],
+			[
+				"jo",
+				"jointSrc"
+			],
+			[
+				"qu",
+				"queryResults"
+			],
+			[
+				"comp",
+				"component_set_id"
+			],
+			[
+				"ex",
+				"ex_tag_vals"
+			],
+			[
+				"obj",
+				"objects"
+			],
+			[
+				"Component",
+				"ComponentSet"
+			],
+			[
+				"delet",
+				"delete"
+			],
+			[
+				"compo",
+				"componentType"
+			],
+			[
+				"ma",
+				"margin"
+			],
+			[
+				"pa",
+				"padding"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"fon",
+				"font-weight"
+			],
+			[
+				"re",
+				"required"
+			],
+			[
+				"drop",
+				"dropzones"
+			],
+			[
+				"str",
+				"stringify"
+			],
+			[
+				"addit",
+				"additionalData"
+			],
+			[
+				"an",
+				"angular	AngularJS"
+			],
+			[
+				"show",
+				"showFileUploaders"
+			],
+			[
+				"add",
+				"additionalData"
+			],
+			[
+				"Fore",
+				"ForeignKey"
+			],
+			[
+				"ge",
+				"getNextId"
+			],
+			[
+				"item",
+				"itemService"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"Leve",
+				"Level3_Assets"
+			],
+			[
+				"reu",
+				"request"
+			],
+			[
+				"sele",
+				"selectedAssetType"
+			],
+			[
+				"is",
+				"is_valid"
+			],
+			[
+				"com",
+				"compSetForm"
+			],
+			[
+				"ComponentSet",
+				"ComponentSetForm"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"asset",
+				"assetType"
+			],
+			[
+				"ass",
+				"assetType"
+			],
+			[
+				"data",
+				"dataObj"
+			],
+			[
+				"cosn",
+				"console"
+			],
+			[
+				"compon",
+				"componentImages"
+			],
+			[
+				"te",
+				"textureSampler"
+			],
+			[
+				"test",
+				"testAnimation"
+			],
+			[
+				"durat",
+				"durationScale"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 600.0,
+		"last_filter": "rein",
+		"selected_items":
+		[
+			[
+				"rein",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"ss jsx",
+				"Set Syntax: JSX"
+			],
+			[
+				"packac",
+				"Package Control: Install Package"
+			],
+			[
+				"reinden",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"va",
+				"Pretty JSON: Validate"
+			],
+			[
+				"val",
+				"Pretty JSON: Validate"
+			],
+			[
+				"node",
+				"NodeRequirer: Set Plugin Options"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pretty",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"run",
+				"npm: Run Script"
+			],
+			[
+				"run sc",
+				"npm: Run Script"
+			],
+			[
+				"pret",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"typesc",
+				"Set Syntax: TypeScript"
+			],
+			[
+				"typescr",
+				"Set Syntax: TypeScript"
+			],
+			[
+				"inde",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"build",
+				"Build: New Build System"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"rremov",
+				"Package Control: Remove Package"
+			],
+			[
+				"ycmd",
+				"Ycmd: Restart ycmd server"
+			],
+			[
+				"hmac",
+				"Ycmd: Create HMAC keys"
+			],
+			[
+				"Package Control: rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"color",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"setsyntax text",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"setS",
+				"Set Syntax: Python"
+			],
+			[
+				"colorS",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"Install",
+				"Package Control: Install Package"
+			],
+			[
+				"pre",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"conver",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"valid",
+				"Pretty JSON: Validate"
+			],
+			[
+				"prett",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"PRETT",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"indent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"ss js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"ind",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"i",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"v",
+				"Pretty JSON: Validate"
+			],
+			[
+				"vali",
+				"Pretty JSON: Validate"
+			],
+			[
+				"vald",
+				"Pretty JSON: Validate"
+			],
+			[
+				"prettyP",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ang",
+				"AngularJS: Look Up Definition"
+			],
+			[
+				"forma",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"json",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"vin",
+				"Vintageous: Toggle Vim Ctrl Keys"
+			],
+			[
+				"buil",
+				"Build With: Hxml"
+			],
+			[
+				"haxe ",
+				"Set Syntax: Haxe"
+			]
+		],
+		"width": 720.0
+	},
+	"console":
+	{
+		"height": 204.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Projects/reactPractice/style.css",
+		"/C/Users/ryan/Desktop/index.html",
+		"/C/Projects/reactPractice/main.jsx",
+		"/C/Projects/reactPractice/index.html",
+		"/C/Projects/Asses/app/assetType.js",
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/User/NodeRequirer.sublime-settings",
+		"/C/Projects/Asses/app/loaders/image.js",
+		"/C/Projects/Asses/app/bootstrap.ts",
+		"/C/Projects/Asses/index.html",
+		"/C/Projects/Asses/app/app.component.js",
+		"/C/Projects/Asses/app/templates/assess-asset.html",
+		"/C/Projects/Asses/main.js",
+		"/C/Projects/Asses/app/assetType.ts",
+		"/C/Projects/Asses/app/loaders/image.ts",
+		"/C/Projects/Asses/app/loaders/image.js.map",
+		"/C/Projects/Asses/app/loaders/int.js",
+		"/C/Projects/Asses/app/schema.ts",
+		"/C/Projects/Asses/test-schema.json",
+		"/C/Projects/Asses/app/app.component.ts",
+		"/C/Projects/Asses/test-structure.json",
+		"/C/Projects/Asses/app/bootstrap.js",
+		"/C/Projects/Asses/package.json",
+		"/C/Projects/Asses/test-writer.json",
+		"/C/Projects/Asses/app/writers/assetWriter.js",
+		"/C/Projects/Asses/app/main.js",
+		"/C/Projects/Asses/app/index.html",
+		"/C/Projects/Asses/app/templates/index.html",
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/User/assess.sublime-build",
+		"/C/Projects/Asses/typings.json",
+		"/C/Projects/Asses/tsconfig.json",
+		"/C/Projects/Asses/node_modules/angular2/web_worker/ui.d.ts",
+		"/C/Projects/Asses/build.bat",
+		"/C/Projects/Asses/typescript/app/app.component.ts",
+		"/C/Projects/Asses/typescript/app/bootstrap.ts",
+		"/C/Projects/Asses/typescript/app.ts",
+		"/C/Projects/Asses/typescript/main.js",
+		"/C/Projects/Asses/typescript/main.ts",
+		"/C/Projects/Asses/main.ts",
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/User/electron.sublime-build",
+		"/C/Projects/Kivy/Main.py",
+		"/C/Projects/Kivy/SH_Button.py",
+		"/C/Projects/Kivy/ToolBars.py",
+		"/C/Python27/Lib/site-packages/kivy/data/images/defaulttheme.atlas",
+		"/C/Python27/Lib/site-packages/kivy/data/style.kv",
+		"/C/Python27/Lib/site-packages/kivy/data/settings_kivy.json",
+		"/C/Projects/Kivy/Actions.py",
+		"/C/Projects/LowResJam/Game/Source/Game/Game - 2012.vcxproj",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/S-Tengine2 - 2013.vcxproj",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/S-Tengine2 - 2012.vcxproj",
+		"/C/Projects/LowResJam/Game/Source/Game/Game - 2013.vcxproj.user",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/directories.props",
+		"/C/Projects/LowResJam/Game/Source/Game/Game - 2013.vcxproj",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/include/Accelerometer.h",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/src/BulletMeshEntity.cpp",
+		"/C/Users/ryan/ClionProjects/S-Tengine2/CMakeLists.txt",
+		"/C/Users/ryan/.vscode/extensions/mitaki28.vscode-clang-0.2.0/package.json",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/include/AutoMusic.h",
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/src/StringUtils.cpp",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/include/StringUtils.h",
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/ClangAutoComplete/ClangAutoComplete.sublime-settings",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/src/BulletRagdoll.cpp",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/src/BulletController.cpp",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/src/CharacterUtils.cpp",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/include/CharacterUtils.h",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/include/NodeBulletBody.h",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/S-Tengine2 - 2015.vcxproj",
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/User/YcmdCompletion.sublime-settings",
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Packages/YcmdCompletion/YcmdCompletion.sublime-settings",
+		"/C/Users/ryan/AppData/Roaming/Sublime Text 3/Installed Packages/Color Scheme - Rainbow.sublime-package",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/src/BulletHeightField.cpp",
+		"/C/scripts/pd_dev.bat",
+		"/C/Projects/S-Tengine2/S-Tengine2/Source/S-Tengine2/src/NodeUI.cpp",
+		"/C/Users/ryan/Desktop/TEST.TXT",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenario.json",
+		"/C/Projects/REST-Services/static/js/scenarioEditor/app.js",
+		"/C/Projects/REST-Services/static/js/scenarioEditor/charView/charView.js",
+		"/C/Projects/REST-Services/scenarioEditor/views.py",
+		"/C/Projects/REST-Services/scenarioEditor/gitlab_utility.py",
+		"/C/Projects/REST-Services/templates/scenarioEditor/charView/charView.html",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/data/save.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Plot_4.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Butler_3.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Plot_3.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Butler_2.json",
+		"/C/Projects/Scenarios/scenarios/4b208fb6-919a-4d59-9390-60556541fee1.json",
+		"/C/Users/ryan/Desktop/Party Darling - Test-Release/data/config.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Plot_1.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Lab_1.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Butler_1.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Ghost_Omar_Lab.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Ghost_Omar.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Adventure_Omar_Lab.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Adventure_Omar.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Robot_Omar_Lab.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Robot_Omar.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Butler_6.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Plot_6.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Lab_5.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Plot_5.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/Butler_4.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios.json",
+		"/C/Projects/Scenarios/scenarios.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Adventure_Omar_Lab.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Robot_Omar_Lab.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Intro_Lab.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Lab_1.json",
+		"/C/Tools/mangy/props.mangy",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Ghost_Omar_Lab.json",
+		"/C/Users/ryan/Desktop/FixedScenarios/second mansion.json",
+		"/C/Users/ryan/Desktop/ddd/2_sweetheartsquad@gmail.com.crt",
+		"/C/Users/ryan/Desktop/fixedScenario/Sixth mansion.json",
+		"/C/Projects/Scenarios/scenarios/Intro_Lab.json",
+		"/C/Projects/Scenarios/scenarios/Butler_1.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/animations/goodsee_writing.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/animations/dead.json",
+		"/C/Users/ryan/Desktop/ssl.key",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Butler_2.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Butler_3.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Butler_4.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/scenarios/Butler_6.json",
+		"/C/Projects/PD_GAME/PartyDarling/Source/PartyDarling/assets/animations.json",
+		"/C/Users/ryan/Desktop/fixedScenario/fifth mansion.json",
+		"/C/Users/ryan/AppData/Local/Temp/Rar$DIa0.287/Plot_1.json",
+		"/C/Users/ryan/AppData/Local/Temp/Rar$DIa0.731/Plot_5.json",
+		"/C/Users/ryan/AppData/Local/Temp/Rar$DIa0.651/Robot_Omar_Lab.json",
+		"/C/Users/ryan/Desktop/fixedScenario/Fifth_Mansion_Lab.json",
+		"/C/Users/ryan/Desktop/fixedScenario/Butler_6.json"
+	],
+	"find":
+	{
+		"height": 31.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"C:\\Projects\\Scenarios\\components"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"type",
+			"u",
+			"require",
+			");",
+			"\\t",
+			"\\n",
+			"for",
+			"require",
+			"loadedValue",
+			"component",
+			"spacing_x",
+			"5",
+			"halign",
+			"StringProperty",
+			"()",
+			"80",
+			"size_hint_y",
+			"30",
+			"OptionProperty",
+			"new_file_btn",
+			"size_hint_y",
+			", ",
+			"GLFW",
+			"110",
+			"GLFW",
+			"FREE",
+			"glfw",
+			"TW_N",
+			"TW_NO",
+			"TW_",
+			"TW",
+			"ANT",
+			"arduino",
+			"vs2013",
+			"FRE",
+			"FREE",
+			"GLFW_",
+			".lib",
+			"ft",
+			"v120",
+			"dev",
+			"project_base_path",
+			");\n",
+			"Party",
+			");\n",
+			"paper",
+			"true",
+			"asdkasodksaod",
+			"master",
+			"Room",
+			"a55",
+			"Lab",
+			"LAB_ROOM",
+			"lab-room",
+			"BUTLER",
+			"anim",
+			"\"]\n",
+			"evely",
+			"MEDIUM",
+			"bedroom",
+			"a55",
+			"id\": 1,",
+			"id\": 1",
+			"type\": \"room",
+			"room",
+			"16f",
+			"roomm",
+			"roomms",
+			"041",
+			"macey",
+			"041",
+			"97b",
+			"\"},\n",
+			"1",
+			"checkstate",
+			"hal",
+			"id\": 1",
+			"items",
+			"player",
+			"frameWidth",
+			",\n",
+			"\\W\\W\\n",
+			"\\n",
+			"},\n",
+			"conditi",
+			"rightLeg",
+			"re",
+			"State.Bui",
+			"{$null$}",
+			"right",
+			"padding",
+			">\n",
+			"gitlab",
+			"thumbnail",
+			"thumbna",
+			"gitlab",
+			"gitlab_asset?asset=' + c.imageUrl",
+			"=' ",
+			"post",
+			"components",
+			"\",\n",
+			"components/",
+			"’",
+			"“",
+			"”",
+			"“",
+			"’",
+			"”",
+			"+",
+			"\"",
+			"childComponent",
+			"h1",
+			"thin",
+			">\n",
+			"Abel",
+			"22adf247-5c1d-debc-5265-b062e121422f",
+			"37406cf55702fcbfa32d1315d684213dc992153f",
+			"dropzone",
+			"('",
+			"data",
+			"push",
+			"addDr",
+			"addF",
+			"Tagga",
+			"Item",
+			"save",
+			"ScenarioSer",
+			"lugga"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"",
+			"btn",
+			"v140",
+			"dev2015",
+			"false",
+			"\",\\n",
+			"thumbnail-small",
+			"texture/' + c.id + '?format=image'",
+			"components/definitions/",
+			"'",
+			"\"",
+			"'",
+			"",
+			"componentType",
+			"assetId",
+			"renfield",
+			"dracula",
+			"spamalot_",
+			"ogg",
+			"",
+			"RobotTexture.png",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 31.0
+	},
+	"input":
+	{
+		"height": 47.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/User/assess.sublime-build",
+	"project": "test-project.sublime-project",
+	"replace":
+	{
+		"height": 58.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"string",
+				"src\\StringUtils.cpp"
+			],
+			[
+				"char",
+				"src\\CharacterUtils.cpp"
+			],
+			[
+				"inde",
+				"templates\\sweetheartsquad\\index.html"
+			],
+			[
+				"nod",
+				"src\\NodeUI.cpp"
+			],
+			[
+				"nodeu",
+				"src\\NodeUI.cpp"
+			],
+			[
+				"gitlab",
+				"scenarioEditor\\gitlab_utility.py"
+			],
+			[
+				"gitla",
+				"scenarioEditor\\gitlab_utility.py"
+			],
+			[
+				"views",
+				"scenarioEditor\\views.py"
+			],
+			[
+				"app",
+				"static\\js\\scenarioEditor\\app.js"
+			],
+			[
+				"servi",
+				"static\\js\\scenarioEditor\\services.js"
+			],
+			[
+				"convo",
+				"templates\\scenarioEditor\\convoView\\convoView.html"
+			],
+			[
+				"con",
+				"static\\js\\scenarioEditor\\convoView\\convoView.js"
+			],
+			[
+				"conv",
+				"templates\\scenarioEditor\\convoView\\convoView.html"
+			],
+			[
+				"",
+				"static\\js\\scenarioEditor\\services.js"
+			],
+			[
+				"se",
+				"static\\js\\scenarioEditor\\services.js"
+			],
+			[
+				"ser",
+				"static\\js\\scenarioEditor\\services.js"
+			],
+			[
+				"serv",
+				"static\\js\\scenarioEditor\\services.js"
+			],
+			[
+				"item",
+				"static\\js\\scenarioEditor\\itemView\\itemView.js"
+			],
+			[
+				"ass",
+				"templates\\scenarioEditor\\assetView\\assetView.html"
+			],
+			[
+				"form",
+				"scenarioEditor\\forms.py"
+			],
+			[
+				"model",
+				"api\\models.py"
+			],
+			[
+				"git",
+				"scenarioEditor\\gitlab_utility.py"
+			],
+			[
+				"vi",
+				"scenarioEditor\\views.py"
+			],
+			[
+				"assee",
+				"static\\js\\scenarioEditor\\assetView\\assetView.js"
+			],
+			[
+				"asset",
+				"C:\\Projects\\REST-Services\\templates\\scenarioEditor\\assetView\\assetView.html"
+			],
+			[
+				"vie",
+				"scenarioEditor\\views.py"
+			],
+			[
+				"room",
+				"templates\\scenarioEditor\\roomView\\roomView.html"
+			],
+			[
+				"view",
+				"scenarioEditor\\views.py"
+			],
+			[
+				"base",
+				"templates\\scenarioEditor\\base.html"
+			],
+			[
+				"asse",
+				"static\\js\\scenarioEditor\\assetView\\assetView.js"
+			],
+			[
+				"cnf",
+				"db.cnf"
+			],
+			[
+				"models",
+				"api\\models.py"
+			],
+			[
+				"itemv",
+				"templates\\scenarioEditor\\itemView\\itemView.html"
+			],
+			[
+				"roo",
+				"static\\js\\scenarioEditor\\roomView\\roomView.js"
+			],
+			[
+				"conve",
+				"templates\\scenarioEditor\\convoView\\convoView.html"
+			],
+			[
+				"fo",
+				"scenarioEditor\\forms.py"
+			],
+			[
+				"v",
+				"scenarioEditor\\views.py"
+			],
+			[
+				"for",
+				"scenarioEditor\\forms.py"
+			],
+			[
+				"ur",
+				"scenarioEditor\\urls.py"
+			],
+			[
+				"url",
+				"scenarioEditor\\urls.py"
+			],
+			[
+				"dial",
+				"templates\\scenarioEditor\\convoView\\dialogue.html"
+			],
+			[
+				"di",
+				"templates\\scenarioEditor\\convoView\\dialogue.html"
+			],
+			[
+				"ap",
+				"static\\js\\scenarioEditor\\app.js"
+			],
+			[
+				"dialo",
+				"templates\\scenarioEditor\\convoView\\dialogue.html"
+			],
+			[
+				"ang",
+				"static\\vendor\\bower_components\\angular\\angular.js"
+			],
+			[
+				"app.js",
+				"static\\js\\scenarioEditor\\app.js"
+			],
+			[
+				"led",
+				"Led.cpp"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 750.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 570.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 271.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

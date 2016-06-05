@@ -247,7 +247,7 @@ export class AssetService{
 		if (c != null) {
 			var tempAssets = [];
 			c.forEach((asset) => {
-				let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.type], asset);
+				let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.AS_ASSET_TYPE_TYPE], asset);
 				tempAssets.push(a);
 			});
 			// Run inside angular
