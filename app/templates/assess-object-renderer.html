@@ -13,7 +13,7 @@
 					{{prop}}&nbsp;:&nbsp;
 				</span>
 				<span *ngIf="!isInteger(prop)">
-					<input assess-adjusting-input type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/>&nbsp;:&nbsp;
+					<input assess-adjusting-input type="text" [ngModel]="prop"  name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/>&nbsp;:&nbsp;
 				</span> 
 				<span class="square-bracket">[</span>
 			</div>
@@ -27,7 +27,7 @@
 					{{prop}}&nbsp;:&nbsp;
 				</span>
 				<span class="indent" *ngIf="!isInteger(prop)">
-					<input assess-adjusting-input type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/> : 
+					<input assess-adjusting-input [ngModel]="prop" type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/> : 
 				</span>
 				<span class="curly-bracket">{</span>
 			</div>
@@ -38,13 +38,13 @@
 			<div class="field-name">
 				<assess-popup class="indent" [icon]="'fa-cog'" [options]="getOptionsForProperty(prop)"></assess-popup>		
 				<span *ngIf="!isInteger(prop)">
-					<input assess-adjusting-input class="field-value" type="text" name="prop" value="{{prop}}" (change)="updateKey(prop, $event)"/> : 
+					<input assess-adjusting-input class="field-value" type="text" name="prop" value="{{prop}}" [ngModel]="prop" (change)="updateKey(prop, $event)"/> : 
 				</span>
 				<span class="static-field-name" *ngIf="isInteger(prop)">
 					{{prop}} : 
 				</span>
 				<span>
-					<input assess-adjusting-input class="field-value {{getColorForType(prop)}}" type="text" name="prop" [(ngModel)]="object[prop]"/> 
+					<input assess-adjusting-input  class="field-value {{getColorForType(prop)}}" type="text" name="prop" [(ngModel)]="object[prop]"/> 
 					<assess-popup [icon]="'fa-magic'" [options]="getCompletionsForProperty(prop)"></assess-popup>		
 				</span>
 			</div>

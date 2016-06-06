@@ -5,7 +5,7 @@ import {globalAppInjector} from "./bootstrap"
 
 import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directive,
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
-	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit} from 'angular2/core';
+	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange} from 'angular2/core';
 
 import {NgFor, NgIf, NgModel} from 'angular2/common';
 import * as Assets from './assetType';
@@ -247,7 +247,7 @@ export class AssetService{
 		if (c != null) {
 			var tempAssets = [];
 			c.forEach((asset) => {
-				let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.AS_ASSET_TYPE_TYPE], asset);
+				let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.type], asset);
 				tempAssets.push(a);
 			});
 			// Run inside angular
@@ -378,6 +378,8 @@ export class PopupOption{
 })
 export class AdjustingInputDirective implements OnInit, OnChanges {
 	
+	@Input() ngModel: any;
+
 	private _elem: any;
 	private _dummySpan: any;
 
@@ -391,21 +393,14 @@ export class AdjustingInputDirective implements OnInit, OnChanges {
 		this._dummySpan.style.fontSize = fontSize;
 		this._elem.parentElement.appendChild(this._dummySpan);
 		this._dummySpan.innerHTML = this._elem.value;
-		this._elem.addEventListener("keydown", (e) => {
-			this._dummySpan.innerHTML = e.target.value;
-			this.updateWidth();
-		});
-		this._elem.addEventListener("change", (e) => {
-			this._dummySpan.innerHTML = e.target.value;
-			this.updateWidth();
-			console.log("change");
-		});
 		this.updateWidth();
 	}
 
-	public ngOnChanges(){
-		console.log("change");
-		this.updateWidth();
+	public ngOnChanges(changes: { [propName: string]: SimpleChange }) {
+		if (this._dummySpan != undefined) {
+			this._dummySpan.innerHTML = changes["ngModel"].currentValue;
+			this.updateWidth();
+		}
 	}
 
 	private updateWidth(){
@@ -729,7 +724,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 		if(property == AsFields.SCHEMA.AS_ASSET_FIELD_DATA_TYPE){
 			options.push(
 				new PopupOption("AS_STRING", () => { this.object[property] = "AS_STRING" }),
-				new PopupOption("AS_BOOLEAN", () => { this._zone.run(()=>{ this.object[property] = "AS_BOOLEAN" } )}),
+				new PopupOption("AS_BOOLEAN", () => { this.object[property] = "AS_BOOLEAN" }),
 				new PopupOption("AS_FLOAT", () => { this.object[property] = "AS_FLOAT" }),
 				new PopupOption("AS_INT", () => { this.object[property] = "AS_INT" })
 			);
