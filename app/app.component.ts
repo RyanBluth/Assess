@@ -247,7 +247,7 @@ export class AssetService{
 		if (c != null) {
 			var tempAssets = [];
 			c.forEach((asset) => {
-				let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.type], asset);
+				let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.AS_ASSET_TYPE_TYPE], asset);
 				tempAssets.push(a);
 			});
 			// Run inside angular
@@ -382,6 +382,7 @@ export class AdjustingInputDirective implements OnInit, OnChanges {
 
 	private _elem: any;
 	private _dummySpan: any;
+	private _fontSize: number;
 
 	constructor(elem: ElementRef){
 		this._elem = elem.nativeElement;
@@ -391,6 +392,7 @@ export class AdjustingInputDirective implements OnInit, OnChanges {
 		this._dummySpan = document.createElement("span");
 		var fontSize = window.getComputedStyle(this._elem, null).getPropertyValue('font-size');
 		this._dummySpan.style.fontSize = fontSize;
+		this._fontSize = parseFloat(fontSize);
 		this._elem.parentElement.appendChild(this._dummySpan);
 		this._dummySpan.innerHTML = this._elem.value;
 		this.updateWidth();
@@ -405,7 +407,7 @@ export class AdjustingInputDirective implements OnInit, OnChanges {
 
 	private updateWidth(){
 		this._dummySpan.style.display = "inline-block"; 
-		this._elem.style.width = this._dummySpan.offsetWidth + 20 + "px";
+		this._elem.style.width = this._dummySpan.offsetWidth + this._fontSize + "px";
 		this._dummySpan.style.display = "none"; 
 	}
 }

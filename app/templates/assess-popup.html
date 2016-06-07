@@ -1,6 +1,6 @@
 <div class="assess-popup indent" *ngIf="options.length > 0">
 	<div class="options" *ngIf="!hidden">
-		<div *ngFor="#option of options">
+		<div *ngFor="let option of options">
 			<div (click)="clickOption(option); $event.stopPropagation()" class="option">
 				<span>{{option.label}}</span>
 			</div>

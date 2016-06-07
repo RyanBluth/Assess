@@ -1,7 +1,7 @@
 <div class="assess-console">
 	<div class="resize-handle" draggable="true" (drag)="updateConsoleSize($event)"></div>
 	<div class="message-container">
-		<div *ngFor="#message of messages">
+		<div *ngFor="let message of messages">
 			<span class="line {{message.severity}}">
 				{{message.text}}
 			</span>

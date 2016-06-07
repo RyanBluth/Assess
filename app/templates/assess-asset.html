@@ -1,3 +1,3 @@
-<td class="asset-field-column" *ngFor="#key of asset.getFieldKeys()" (click)="asset.fields[key].toggleEditMode()">
+<td class="asset-field-column" *ngFor="let key of asset.getFieldKeys()" (click)="asset.fields[key].toggleEditMode()">
 	<div asses-asset-field class="asset-field" [field]="asset.fields[key]"></div>
 </td>

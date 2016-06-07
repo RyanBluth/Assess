@@ -5,7 +5,7 @@
 	<span class="toggle-collapse" *ngIf="!collapsed" (click)="toggleCollapse()">
 		<i class="fa fa-caret-down" aria-hidden="true"></i>
 	</span>
-	<div class="fields" *ngFor="#prop of objectProperties()" [ngClass]="{hidden: collapsed}">
+	<div class="fields" *ngFor="let prop of objectProperties()" [ngClass]="{hidden: collapsed}">
 		<div *ngIf="isArray(object[prop])">
 			<div class="field-name">
 				<assess-popup class="indent" [icon]="'fa-cog'" [options]="getOptionsForProperty(prop)"></assess-popup>
