@@ -551,6 +551,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 
 	@Input() object: {}[];
 	@Input() bracketIndex: number;
+	@Input() isRootElement: boolean;
 
 	public collapsed = false;
 
@@ -732,6 +733,25 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 			);
 		}
 
+		return options;
+	}
+
+	public getOptionsForRoot(){
+		var options = [];
+		if (this.isArray(this.object)) {
+			options.push(
+				new PopupOption("New Element", () => { this.object.push("") }),
+				new PopupOption("New Object", () => { this.object.push({}) }),
+				new PopupOption("New Array", () => { this.object.push([]) })
+			);
+		} else if (this.isObject(this.object)) {
+			var newKey = "Property" + (Object.keys(this.object).length + 1).toString();
+			options.push(
+				new PopupOption("New Property", () => { this.object[newKey] = "New Value" }),
+				new PopupOption("New Object", () => { this.object[newKey] = {} }),
+				new PopupOption("New Array", () => { this.object[newKey] = [] })
+			);
+		} 
 		return options;
 	}
 

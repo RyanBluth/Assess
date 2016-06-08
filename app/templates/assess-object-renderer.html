@@ -1,10 +1,15 @@
 <div class="indent-double assess-object-renderer"> 
+	<assess-popup [icon]="'fa-cog'" *ngIf="isRootElement" [options]="getOptionsForRoot()"></assess-popup>
 	<span class="toggle-collapse" *ngIf="collapsed" (click)="toggleCollapse()">
 		<i class="fa fa-caret-right" aria-hidden="true"></i>
 	</span>
 	<span class="toggle-collapse" *ngIf="!collapsed" (click)="toggleCollapse()">
 		<i class="fa fa-caret-down" aria-hidden="true"></i>
 	</span>
+	<div *ngIf="isRootElement" >
+		<span *ngIf="isArray(object)" class="curly-bracket">[</span>
+		<span *ngIf="isObject(object)" class="curly-bracket">{</span>
+	</div>
 	<div class="fields" *ngFor="let prop of objectProperties()" [ngClass]="{hidden: collapsed}">
 		<div *ngIf="isArray(object[prop])">
 			<div class="field-name">
@@ -18,7 +23,7 @@
 				<span class="square-bracket">[</span>
 			</div>
 			<assess-object-renderer [bracketIndex]="bracketIndex + 1" class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
-			<span class="square-bracket">]</span>
+			<span class="square-bracket indent-double">]</span>
 		</div>
 		<div *ngIf="isObject(object[prop])">
 			<div class="field-name">	
@@ -32,7 +37,7 @@
 				<span class="curly-bracket">{</span>
 			</div>
 			<assess-object-renderer [bracketIndex]="bracketIndex + 1" class="indent-double" [object]="object[prop]"></assess-object-renderer> 	
-			<span class="curly-bracket">}</span>
+			<span class="curly-bracket indent-double">}</span>
 		</div>
 		<div *ngIf="!isArray(object[prop]) && !isObject(object[prop])">
 			<div class="field-name">
@@ -49,5 +54,9 @@
 				</span>
 			</div>
 		</div>
+	</div>
+	<div *ngIf="isRootElement" >
+			<span *ngIf="isArray(object)" class="curly-bracket">]</span>
+		<span *ngIf="isObject(object)" class="curly-bracket">}</span>
 	</div>
 </div>
