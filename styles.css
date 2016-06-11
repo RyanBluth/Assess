@@ -425,3 +425,17 @@ html{
 
 
 /* Too Bar End */
+
+/* Code Editor Start */
+
+.assess-code-editor{
+	width: 100%;
+	height: 100%;
+}
+
+.assess-code-editor textarea{
+	width: 100%;
+	height: 100%;
+}
+
+/* Code Editor End */

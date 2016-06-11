@@ -10,6 +10,9 @@
 		<div *ngIf="currentMode == MODES.STRUCTURE">
 			<assess-structure [structure]="_assetService.schema.structureObject"></assess-structure>
 		</div>
+		<div *ngIf="currentMode == MODES.LOADERS">
+			<assess-loaders></assess-loaders>
+		</div>
 	</div>
 	<assess-console></assess-console>
 </div>

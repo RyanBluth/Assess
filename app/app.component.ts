@@ -1,4 +1,5 @@
 declare function require(moduleName: string): any;
+declare var CodeMirror: any; 
 declare var __dirname: any;
 
 import {globalAppInjector} from "./bootstrap"
@@ -909,12 +910,45 @@ export class ConsoleComponent{
 	}
 }
 
+
+@Component({
+	selector: 'assess-code-editor',
+	templateUrl: './app/templates/assess-code-editor.html',
+	directives: [NgFor, NgIf]
+})
+export class CodeEditorComponent implements OnInit{
+
+	private _elem: any;
+
+	constructor(_elem:ElementRef){
+		this._elem = _elem.nativeElement;
+	}
+
+	ngOnInit(){
+		var textarea = jQuery(this._elem).find("textarea")[0];
+		CodeMirror.fromTextArea(textarea, {
+			mode: { name: "javascript", json: true },
+			theme: 'base16-dark'
+		});
+	}
+
+}
+
+@Component({
+	selector: 'assess-loaders',
+	templateUrl: './app/templates/assess-loaders.html',
+	directives: [NgFor, NgIf, CodeEditorComponent]
+})
+export class LoadersComponent{
+
+}
+
 @Component({
     selector: 'assess-app',
     templateUrl: './app/templates/assess-app.html',
     directives: [AssetGroupComponent, TabNavComponent, 
     	SchemaComponent, StructureComponent, 
-    	ConsoleComponent, AdjustingInputDirective]
+    	ConsoleComponent, AdjustingInputDirective, LoadersComponent]
 })
 export class AppComponent {
 
@@ -925,7 +959,8 @@ export class AppComponent {
 	public MODES = {
 		ASSETS 	  : 0,  
 		SCHEMA 	  : 1,  
-		STRUCTURE : 2,  
+		STRUCTURE : 2, 
+		LOADERS   : 3 
 	}
 
 	public currentMode = this.MODES.ASSETS;
@@ -947,6 +982,12 @@ export class AppComponent {
 			label: "Structure",
 			click: () => {
 				this.currentMode = this.MODES.STRUCTURE;
+			},
+		},
+		{
+			label: "Loaders",
+			click: () => {
+				this.currentMode = this.MODES.LOADERS;
 			},
 		}
 	];
