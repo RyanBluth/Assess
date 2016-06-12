@@ -6,7 +6,7 @@ import {globalAppInjector} from "./bootstrap"
 
 import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directive,
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
-	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange} from 'angular2/core';
+	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, ViewChild} from 'angular2/core';
 
 import {NgFor, NgIf, NgModel} from 'angular2/common';
 import * as Assets from './assetType';
@@ -914,11 +914,15 @@ export class ConsoleComponent{
 @Component({
 	selector: 'assess-code-editor',
 	templateUrl: './app/templates/assess-code-editor.html',
-	directives: [NgFor, NgIf]
+	directives: [NgFor, NgIf, NgModel]
 })
 export class CodeEditorComponent implements OnInit{
 
+	@Input() target: string = "";
+	@Output() codeChange = new EventEmitter();
+
 	private _elem: any;
+	private _codeMirror: any;
 
 	constructor(_elem:ElementRef){
 		this._elem = _elem.nativeElement;
@@ -926,10 +930,18 @@ export class CodeEditorComponent implements OnInit{
 
 	ngOnInit(){
 		var textarea = jQuery(this._elem).find("textarea")[0];
-		CodeMirror.fromTextArea(textarea, {
+		this._codeMirror = CodeMirror.fromTextArea(textarea, {
 			mode: { name: "javascript", json: true },
 			theme: 'base16-dark'
 		});
+
+		this._codeMirror.on("change", (cm, change)=> {
+			this.codeChange.emit(cm.getValue());
+		});
+	}
+
+	public setValue(value: string){
+		this._codeMirror.setValue(value);
 	}
 
 }
@@ -940,7 +952,23 @@ export class CodeEditorComponent implements OnInit{
 	directives: [NgFor, NgIf, CodeEditorComponent]
 })
 export class LoadersComponent{
+	@Input() loaders: Assets.Loader[] = [];
+	@ViewChild(CodeEditorComponent) editor: CodeEditorComponent;
 
+	private _currentLoader: number;
+
+	public newLoader(){
+		this.loaders.push(new Assets.Loader('Loader' + this.loaders.length, true));
+	}
+
+	public openLoader(index:number){
+		this.editor.setValue(this.loaders[index].body);
+		this._currentLoader = index;
+	}
+
+	public updateLoader(value){
+		this.loaders[this._currentLoader].body = value; 
+	}
 }
 
 @Component({

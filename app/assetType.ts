@@ -32,6 +32,32 @@ function getLoaderForDataType(AS_ASSET_FIELD_DATA_TYPE: DataType) : string{
 	}
 }
 
+export class Loader{
+	public name: string;
+	public body: string;
+
+	constructor(name:string, generateBody:boolean){
+		this.name = name;
+		if(generateBody){
+			this.body =
+			`
+exports.create = function create(value) {
+	return {
+		template: function() {
+			return '<input type="text" value="' + value + '"/>'
+		},
+		setup: function(elem, updateValueFunc) {
+			elem.onchange = function(newVal) {
+				updateValueFunc(newVal.target.value);
+			};
+		}
+	}
+}
+			`
+		}
+	}
+}
+
 export class AssetFieldDefinition{
 	
 	public name: string;

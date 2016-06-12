@@ -1,16 +1,15 @@
 <div class="assess-loaders">
-
-
+	<span class="button" (click)="newLoader()">New Loader</span>
 	<table class="container">
 		<tr>
 			<td class="sidebar-container">	
-				<div class="sidebar-loader button">
-					Test
+				<div class="sidebar-loader button" *ngFor="let loader of loaders; #i = index" (click)="openLoader(i)">
+					{{loader.name}}
 				</div>
 			</td>
 			<td>
 				<div class="code-editor-container">
-					<assess-code-editor></assess-code-editor>	
+					<assess-code-editor (codeChange)="updateLoader($event)"></assess-code-editor>	
 				</div>
 			</td>
 		</tr>
