@@ -18,6 +18,7 @@ export class Project{
 	public schema: {} = {};
 	public structure: {} = {};
 	public mappings: {} = {};
+	public loaders: {} = {};
 	
 	constructor(filePath, rawObj?) {
 		if (filePath == null || filePath == undefined) {
@@ -44,6 +45,7 @@ export class Project{
 			schema: this.schema,
 			structure: this.structure,
 			mappings: this.mappings,
+			loaders: this.loaders,
 		}, null, "\t");
 	}
 }
@@ -94,6 +96,7 @@ export class ProjectService {
 			proj.assetFilePath  = name + "-assets.json";
 			proj.schema = this._defaultSchema;
 			proj.structure = this._defaultStructure;
+			proj.loaders = {};
 			fs.writeFileSync(filePath, proj.asJson());
 		} catch (e) {
 			utils.logError("Error creating new project");
@@ -124,14 +127,7 @@ export class ProjectService {
 		return fileContents;
  	}
 
- 	public writeProjectFile(schema: Schema){
-	  	var proj = new Project(this.currentProject.filePath);
-		proj.mappings = this.currentProject.mappings;
-		proj.assetPath = this.currentProject.assetPath;
-		proj.assetFilePath = this.currentProject.assetFilePath;
-		proj.schema = schema.rawObject;
-		proj.structure = this.currentProject.structure;
-		
+ 	public writeProjectFile(){
 		var json = JSON.stringify(this.currentProject);
 		fs.writeFileSync(this.currentProject.filePath, json);
  	}

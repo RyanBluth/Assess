@@ -1,5 +1,5 @@
 html{
-	background-color: #222;
+	background-color: #1B1B1B;
 	color: #f9f9f9;
 	font-family: sans-serif;
 	padding: 0;
@@ -14,7 +14,7 @@ td{
 	width: auto;
 	margin: 0;
 	padding: 0;
-	border: thin solid #333;
+	border: thin solid #252525;
 	background-color: #1e1e1e;	
 }
 
@@ -32,7 +32,7 @@ tr{
 }
  
 ::-webkit-scrollbar-thumb {
-	background-color: #333; 
+	background-color: #252525; 
 }
 
 
@@ -64,12 +64,12 @@ tr{
 .asset-list-container{
 	width: 100%;
 	height: 100%;
-	background-color: #222;	
+	background-color: #1B1B1B;	
 }
 
 .asset-edit-container{
 	width: 30%;
-	background-color: #222;
+	background-color: #1B1B1B;
 	height: 100%;
 }
 
@@ -103,7 +103,7 @@ input{
 
 .asset-field-header{
 	padding: 5px;
-	background-color: #333;
+	background-color: #252525;
 	color: #f9f9f9;
 }
 
@@ -124,7 +124,7 @@ input{
 }
 
 .assess-tab-nav-table{
-	background-color: #222;
+	background-color: #1B1B1B;
 }
 
 .assess-tab-nav-row{
@@ -148,7 +148,7 @@ input{
 }
 
 .assess-tab-nav-col.selected{
-	background-color: #222;
+	background-color: #1B1B1B;
 	border-top: solid medium #FF582D
 }
 
@@ -245,12 +245,12 @@ html{
 
 .assess-object-renderer input[type="text"] {
 	display: inline-block;
-	background-color: #222;
+	background-color: #1B1B1B;
 	font-size: 9pt;
 }
 
 .assess-object-renderer input[type="text"]:focus {
-	background-color: #333;
+	background-color: #252525;
 }
 
 .assess-object-renderer .field-name{
@@ -265,7 +265,7 @@ html{
 }
 
 .assess-object-renderer .fields{
-	border-left: thin dashed #333; 
+	border-left: thin dashed #252525; 
 }
 
 .assess-object-renderer .field-value{
@@ -327,7 +327,7 @@ html{
 }
 
 .assess-popup .options{
-	background-color: #333;
+	background-color: #252525;
 	color: #ededed;
 	font-size: 9pt;
 	display: inline-block;
@@ -376,7 +376,7 @@ html{
 	position: fixed;
 	bottom: 0;
 	height: 200px;
-	background-color: #222;
+	background-color: #1B1B1B;
 	border: thin solid #444;
 	display: inline-block;
 	z-index: 1000;
@@ -471,9 +471,8 @@ html{
 }
 
 .assess-loaders .sidebar-container{
-	width: 300px;
+	width: 200px;
 	height: 100%;
-	background-color: #222;
 }
 
 .assess-loaders .container{
@@ -493,6 +492,34 @@ html{
 
 .assess-loaders .button{
 	width: 100%;
+}
+
+.assess-loaders .CodeMirror{
+	overflow: auto;
+}
+
+.assess-loaders{
+	overflow: hidden;
+}
+
+.assess-loaders .button{
+	width: auto;
+}
+
+.assess-loaders .toolbar{
+	margin-bottom: 5px;
+}
+
+.assess-loaders .text-button{
+	color: #aaa;
+	font-size: 10pt;
+	cursor: pointer;
+	display: block;
+	padding: 10px;
+}
+
+.assess-loaders .text-button.focused, .assess-loaders .text-button:hover{
+	color: #f9f9f9;
 }
 
 

@@ -1,14 +1,25 @@
 <div class="assess-loaders">
-	<span class="button" (click)="newLoader()">New Loader</span>
+<div class="toolbar">
+		<div class="button" (click)="newLoader()">
+			<span><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;New</span>
+		</div>
+		<div class="button" (click)="saveLoader()">
+			<span><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save</span>
+		</div>
+		<div class="button" (click)="saveLoader()">
+			<span><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Rename</span>
+		</div>
+	</div>
 	<table class="container">
 		<tr>
 			<td class="sidebar-container">	
-				<div class="sidebar-loader button" *ngFor="let loader of loaders; #i = index" (click)="openLoader(i)">
-					{{loader.name}}
+				<div class="sidebar-loader text-button" [ngClass]="{focused: loaderName == _currentLoader}" *ngFor="let loaderName of getLoaderNames()" (click)="openLoader(loaderName)">
+					{{loaderName}}
 				</div>
 			</td>
 			<td>
 				<div class="code-editor-container">
+					
 					<assess-code-editor (codeChange)="updateLoader($event)"></assess-code-editor>	
 				</div>
 			</td>

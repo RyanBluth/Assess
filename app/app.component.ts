@@ -8,7 +8,7 @@ import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directiv
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
 	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, ViewChild} from 'angular2/core';
 
-import {NgFor, NgIf, NgModel} from 'angular2/common';
+import {NgFor, NgIf, NgModel, NgClass} from 'angular2/common';
 import * as Assets from './assetType';
 import * as utils from "./utils";
 import {ProjectService, Project} from './project'
@@ -310,7 +310,7 @@ export class AssetService{
 	}
 
 	public writeProjectFile(){
-		this._projectService.writeProjectFile(this.schema);
+		this._projectService.writeProjectFile();
 		utils.logInfo("Saved project file " + this._projectService.currentProject.filePath);
 	}
 }
@@ -949,25 +949,39 @@ export class CodeEditorComponent implements OnInit{
 @Component({
 	selector: 'assess-loaders',
 	templateUrl: './app/templates/assess-loaders.html',
-	directives: [NgFor, NgIf, CodeEditorComponent]
+	directives: [NgFor, NgIf, CodeEditorComponent, NgClass]
 })
 export class LoadersComponent{
-	@Input() loaders: Assets.Loader[] = [];
+	@Input() loaders: {} = {};
 	@ViewChild(CodeEditorComponent) editor: CodeEditorComponent;
 
-	private _currentLoader: number;
+	private _currentLoader: string;
+	private _projectService: ProjectService;
 
-	public newLoader(){
-		this.loaders.push(new Assets.Loader('Loader' + this.loaders.length, true));
+	constructor(@Inject(ProjectService) _projectService: ProjectService){
+		this._projectService = _projectService;
 	}
 
-	public openLoader(index:number){
-		this.editor.setValue(this.loaders[index].body);
-		this._currentLoader = index;
+	public newLoader(){
+		var key = 'Loader' + Object.keys(this.loaders).length;
+		this.loaders[key] = (new Assets.Loader(key, true));
+	}
+
+	public openLoader(name:string){
+		this.editor.setValue(this.loaders[name].body);
+		this._currentLoader = name;
 	}
 
 	public updateLoader(value){
 		this.loaders[this._currentLoader].body = value; 
+	}
+
+	public getLoaderNames():string[]{
+		return Object.keys(this.loaders);
+	}
+
+	public saveLoader(){
+		this._projectService.writeProjectFile();
 	}
 }
 
@@ -983,6 +997,7 @@ export class AppComponent {
 	private _assetService: AssetService;
 	private _globalEventService: GlobalEventService;
 	private _elem: ElementRef;
+	private _projectService: ProjectService;
 
 	public MODES = {
 		ASSETS 	  : 0,  
@@ -1023,12 +1038,14 @@ export class AppComponent {
 	constructor(
 		elem: ElementRef,
 		@Inject(AssetService) assetService: AssetService, 
-		@Inject(GlobalEventService) globalEventService: GlobalEventService) 
+		@Inject(GlobalEventService) globalEventService: GlobalEventService,
+		@Inject(ProjectService) projectService: ProjectService)
 	{
 		this._elem = elem.nativeElement;
 		this._assetService = assetService;
 		this._globalEventService = globalEventService;
 		this._globalEventService.hookupAppElement(this);
+		this._projectService = projectService;
 	}
 
 	public getElement(): any{
