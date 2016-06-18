@@ -951,20 +951,37 @@ export class CodeEditorComponent implements OnInit{
 	templateUrl: './app/templates/assess-loaders.html',
 	directives: [NgFor, NgIf, CodeEditorComponent, NgClass]
 })
-export class LoadersComponent{
+export class LoadersComponent implements OnInit{
 	@Input() loaders: {} = {};
 	@ViewChild(CodeEditorComponent) editor: CodeEditorComponent;
 
 	private _currentLoader: string;
 	private _projectService: ProjectService;
+	private _renaming: boolean;
+	private _sortedLoaders: string[] = [];
 
-	constructor(@Inject(ProjectService) _projectService: ProjectService){
+	constructor( @Inject(ProjectService) _projectService: ProjectService) {
 		this._projectService = _projectService;
+		console.log(this.loaders);
+	}
+
+	public ngOnInit(){
+		Object.keys(this.loaders).forEach((loader) => {
+			this._sortedLoaders.push(loader);
+		});
+	}
+
+	public updateLoaderName(originalKey, event){
+		var tempBody = this.loaders[originalKey];
+		delete this.loaders[originalKey];
+		this._sortedLoaders[this._sortedLoaders.indexOf(originalKey)] = event.target.value;
+		this.loaders[event.target.value] = tempBody;
 	}
 
 	public newLoader(){
 		var key = 'Loader' + Object.keys(this.loaders).length;
 		this.loaders[key] = (new Assets.Loader(key, true));
+		this._sortedLoaders.push(key);
 	}
 
 	public openLoader(name:string){
@@ -982,6 +999,10 @@ export class LoadersComponent{
 
 	public saveLoader(){
 		this._projectService.writeProjectFile();
+	}
+
+	public rename(){
+		this._renaming = true;
 	}
 }
 
