@@ -1,5 +1,11 @@
 declare function require(moduleName: string): any;
 
+import {globalAppInjector} from "./bootstrap"
+import {ProjectService} from "./project"
+
+const fs = require('fs');
+const requireFromString = require('require-from-string');
+
 import * as utils from "./utils";
 
 export enum DataType{
@@ -16,20 +22,27 @@ export enum SchemaFields{
 }
 
 function getLoaderForDataType(AS_ASSET_FIELD_DATA_TYPE: DataType) : string{
+	var file = null;
 	switch (AS_ASSET_FIELD_DATA_TYPE) {
 		case DataType.AS_STRING:
-			return "default/asDefaultStringLoader.js";
+			file = "./app/loaders/default/asDefaultStringLoader.js";
+			break;
 		case DataType.AS_INT:
-			return "default/asDefaultIntLoader.js";
+			file = "./app/loaders/default/asDefaultIntLoader.js";
+			break;
 		case DataType.AS_FLOAT:
-			return "default/asDefaultFloatLoader.js";
+			file = "./app/loaders/default/asDefaultFloatLoader.js";
+			break;
 		case DataType.AS_SELECT:
-			return "default/asDefaultSelectLoader.js";
+			file = "./app/loaders/default/asDefaultSelectLoader.js";
+			break;
 		case DataType.AS_BOOLEAN:
-			return "default/asDefaultBooleanLoader.js";
+			file = "./app/loaders/default/asDefaultBooleanLoader.js";
+			break;
 		default:
 			return null;
 	}
+	return fs.readFileSync(file, 'utf8');
 }
 
 export class Loader{
@@ -40,8 +53,8 @@ export class Loader{
 		this.name = name;
 		if(generateBody){
 			this.body =
-			`
-exports.create = function create(value) {
+	
+`exports.create = function create(value) {
 	return {
 		template: function() {
 			return '<input type="text" value="' + value + '"/>'
@@ -53,7 +66,7 @@ exports.create = function create(value) {
 		}
 	}
 }
-			`
+`
 		}
 	}
 }
@@ -99,14 +112,15 @@ export class AssetFieldDefinition{
 				}
 			}
 			if(!def.hasOwnProperty("AS_ASSET_FIELD_LOADER")){
-				this.loader = getLoaderForDataType(this.AS_ASSET_FIELD_DATA_TYPE);
+				this.loader = requireFromString(getLoaderForDataType(this.AS_ASSET_FIELD_DATA_TYPE));
 				if (this.loader === null) {
 					utils.logError("No loader was provided for AssetType " + this.name + " and no default " +
 						"loader was found for data type " + def.AS_ASSET_FIELD_DATA_TYPE);
 					return;
 				}
 			}else{
-				this.loader = def.AS_ASSET_FIELD_LOADER;
+				var projectService = globalAppInjector.get(ProjectService);
+				this.loader = requireFromString(projectService.currentProject.loaders[def.AS_ASSET_FIELD_LOADER].body);
 			}
 		}
 	}
@@ -150,7 +164,7 @@ export class AssetField{
 		} else {
 			this.value = def.default;
 		}
-		this._loader = require("./app/loaders/" + def.loader);
+		this._loader = def.loader;
 		this.create	 = this._loader.create(this.value);
 		this.editing = true;
 	}

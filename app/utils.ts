@@ -1,6 +1,8 @@
 import {globalAppInjector} from "./bootstrap"
 import {GlobalEventService, GlobalEvent} from "./app.component"
 
+declare function require(moduleName: string): any;
+
 export function assertHasProperties(obj: Object, fields: string[]): string[] {
 	var missingProps: string[] = [];
 	fields.forEach(prop => {

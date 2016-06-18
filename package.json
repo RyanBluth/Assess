@@ -29,7 +29,8 @@
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.6",
     "zone.js": "0.6.12",
-    "codemirror" : "5.15.2"
+    "codemirror" : "5.15.2",
+    "require-from-string" : "1.2.0"
   },
   "devDependencies": {
     "electron-prebuilt": "^0.37.0",
