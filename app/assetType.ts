@@ -165,7 +165,13 @@ export class AssetField{
 			this.value = def.default;
 		}
 		this._loader = def.loader;
-		this.create	 = this._loader.create(this.value);
+		if (def.AS_ASSET_FIELD_DATA_TYPE == DataType.AS_FILE) {
+			let projectService = globalAppInjector.get(ProjectService);
+			let absValue = projectService.resolveAbsoluteAssetFilePath(value);
+			this.create = this._loader.create(absValue);
+		}else{
+			this.create	 = this._loader.create(this.value);
+		}
 		this.editing = true;
 	}
 

@@ -467,6 +467,7 @@ export class AssetFieldComponent implements AfterViewChecked {
 				this._assetService.writeAssets(AssetWriteFormat.JSON);
 			}
 		);
+
 	}
 }
 

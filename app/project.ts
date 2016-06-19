@@ -1,3 +1,4 @@
+
 declare function require(moduleName: string): any;
 declare var __dirname;
 
@@ -67,7 +68,7 @@ export class ProjectService {
 
 	private _defaultMappings = {
 		AS_ASSETS : "AS_ASSETS",
-		AS_ASSET_TYPE : "type"
+		AS_ASSET_TYPE_TYPE : "type"
 	}
 
 	constructor( @Inject(NgZone) _zone: NgZone){
@@ -147,4 +148,9 @@ export class ProjectService {
 	  	}
 		return p;
  	}
+
+	public resolveAbsoluteAssetFilePath(asset: string): string{
+		var absAssetFolder = this.getCurrentProjectDirectory() + path.sep + this.currentProject.assetPath;
+		return absAssetFolder + path.sep + asset;
+	}
 }
