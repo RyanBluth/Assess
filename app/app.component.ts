@@ -446,23 +446,21 @@ export class AssetFieldComponent implements AfterViewChecked {
 						let filename = fp[fp.length - 1];
 						let checkPath = path.join(path.join(this._projectService.getProjectFolderRelative(), 
 							this._projectService.currentProject.assetPath), filename);
-						fs.accessSync(checkPath);
-						value = checkPath;
+						//fs.accessSync(checkPath);
+						//value = checkPath;
 						isFileValue = true;
 					}catch(e){
-						utils.logError("Selected file must be in the assets folder");
-						return;
+						//utils.logError("Selected file must be in the assets folder");
+						//return;
 					}
 				} catch (ignored) {/*Fail silently*/ }
 				this.field.value = value;
 				this.field.refresh();
 				if(isFileValue){
-					let vp:string[] = value.split(path.sep);
-					vp.splice(0, 1);
-					value = vp.reduce((prev: string, curr: string, index: number, array: string[]): string => {
-						return prev + path.sep + curr;
-					});
-					this.field.value = value;
+					//let vp:string[] = value.split(path.sep);
+					//vp.splice(0, 1);
+					//value = vp.join(path.sep);
+					this.field.value = this._projectService.resolveRelativeAssetFilePath(value);
 				}
 				this._assetService.writeAssets(AssetWriteFormat.JSON);
 			}

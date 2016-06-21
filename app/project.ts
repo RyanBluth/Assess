@@ -153,4 +153,11 @@ export class ProjectService {
 		var absAssetFolder = this.getCurrentProjectDirectory() + path.sep + this.currentProject.assetPath;
 		return absAssetFolder + path.sep + asset;
 	}
+
+	public resolveRelativeAssetFilePath(asset:string): string{
+		var absAssetFolder = this.getCurrentProjectDirectory() + path.sep + this.currentProject.assetPath;
+		console.log(absAssetFolder);
+		console.log(asset);
+		return path.relative(absAssetFolder, asset);
+	}
 }
