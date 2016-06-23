@@ -417,7 +417,7 @@ export class AdjustingInputDirective implements OnInit, OnChanges {
 	selector: '[asses-asset-field]',
 	template: '<div class="asset-field" [innerHTML]="field.create.template()"></div>',
 })
-export class AssetFieldComponent implements AfterViewChecked {
+export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 	@Input() field: Assets.AssetField;
 
 	private _elem: any;
@@ -434,6 +434,10 @@ export class AssetFieldComponent implements AfterViewChecked {
 
 	public ngAfterViewChecked() {
 		this.field.create.setup(this._elem, (value) => {this.updateValue(value)});
+	}
+
+	public ngOnChanges(){
+		this.field.create.setup(this._elem, (value) => { this.updateValue(value) });
 	}
 
 	public updateValue(value:any){
