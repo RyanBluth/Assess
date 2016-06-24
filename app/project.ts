@@ -76,12 +76,14 @@ export class ProjectService {
 	}
 
 	public loadProject(filePath: string){
-		try {
-			var proj = fs.readFileSync(filePath, 'utf8');
-			this.currentProject = new Project(filePath, JSON.parse(proj));
-		} catch (e) {
-			utils.logError("Project file " + filePath + " does not exist");
-		}
+		this._zone.run(() => {
+			try {
+				var proj = fs.readFileSync(filePath, 'utf8');
+				this.currentProject = new Project(filePath, JSON.parse(proj));
+			} catch (e) {
+				utils.logError("Project file " + filePath + " does not exist");
+			}
+		});
 	}
 
 	public newProject(filePath: string){

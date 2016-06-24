@@ -2,7 +2,7 @@
 	"assets": [
 	{
 		"type": "IMAGE",
-		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
+		"src": "Capture.PNG",
 		"Description": "asdasdasDasdadfdf",
 		"TTT": 0,
 		"TESTdds": 0,
@@ -10,7 +10,7 @@
 	},
 	{
 		"type": "IMAGE",
-		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
+		"src": "Capture.PNG",
 		"Description": "",
 		"TTT": 0,
 		"TESTdds": "-3",
@@ -18,7 +18,7 @@
 	},
 	{
 		"type": "IMAGE",
-		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
+		"src": "icon.png",
 		"Description": "fdsfsdf",
 		"TTT": "4",
 		"TESTdds": 0,
@@ -26,7 +26,7 @@
 	},
 	{
 		"type": "IMAGE",
-		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
+		"src": "Capture.PNG",
 		"Description": "",
 		"TTT": "03",
 		"TESTdds": 0,
@@ -34,7 +34,7 @@
 	},
 	{
 		"type": "IMAGE",
-		"src": "C:\\Projects\\Assess\\test-assets\\Capture.PNG",
+		"src": "Capture.PNG",
 		"Description": "",
 		"TTT": "03",
 		"TESTdds": 0,
@@ -42,7 +42,7 @@
 	},
 	{
 		"type": "IMAGE",
-		"src": "C:\\Projects\\Assess\\test-assets\\icon.png",
+		"src": "Capture.PNG",
 		"Description": "cdb",
 		"TTT": "044",
 		"TESTdds": "3",

@@ -415,15 +415,16 @@ export class AdjustingInputDirective implements OnInit, OnChanges {
 
 @Component({
 	selector: '[asses-asset-field]',
-	template: '<div class="asset-field" [innerHTML]="field.create.template()"></div>',
+	template: '<div class="asset-field" [innerHTML]="_innerHtml"></div>',
 })
-export class AssetFieldComponent implements AfterViewChecked, OnChanges {
+export class AssetFieldComponent implements AfterViewChecked, OnInit {
 	@Input() field: Assets.AssetField;
 
 	private _elem: any;
 	private _assetService: AssetService;
 	private _zone: NgZone;
 	private _projectService: ProjectService;
+	private _innerHtml: string = "";
 
 	constructor(_zone:NgZone, _elem: ElementRef, @Inject(AssetService) _assetService: AssetService, @Inject(ProjectService) _projectService) {
 		this._elem = _elem.nativeElement;
@@ -432,12 +433,12 @@ export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 		this._projectService = _projectService;
 	}
 
-	public ngAfterViewChecked() {
-		this.field.create.setup(this._elem, (value) => {this.updateValue(value)});
+	public ngOnInit(){
+		this._innerHtml = this.field.create.template();
 	}
 
-	public ngOnChanges(){
-		this.field.create.setup(this._elem, (value) => { this.updateValue(value) });
+	public ngAfterViewChecked() {
+		this.field.create.setup(this._elem, (value) => {this.updateValue(value)});
 	}
 
 	public updateValue(value:any){
@@ -445,25 +446,11 @@ export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 				var isFileValue = false;
 				try {
 					fs.accessSync(value, fs.R_OK); // Check for file access
-					try{
-						let fp = value.split(path.sep);
-						let filename = fp[fp.length - 1];
-						let checkPath = path.join(path.join(this._projectService.getProjectFolderRelative(), 
-							this._projectService.currentProject.assetPath), filename);
-						//fs.accessSync(checkPath);
-						//value = checkPath;
-						isFileValue = true;
-					}catch(e){
-						//utils.logError("Selected file must be in the assets folder");
-						//return;
-					}
+					isFileValue = true;
 				} catch (ignored) {/*Fail silently*/ }
 				this.field.value = value;
 				this.field.refresh();
 				if(isFileValue){
-					//let vp:string[] = value.split(path.sep);
-					//vp.splice(0, 1);
-					//value = vp.join(path.sep);
 					this.field.value = this._projectService.resolveRelativeAssetFilePath(value);
 				}
 				this._assetService.writeAssets(AssetWriteFormat.JSON);
