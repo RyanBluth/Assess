@@ -2,7 +2,7 @@
 	"assets": [
 	{
 		"type": "IMAGE",
-		"src": "Capture.PNG",
+		"src": "icon.png",
 		"Description": "asdasdasDasdadfdf",
 		"TTT": 0,
 		"TESTdds": 0,
@@ -55,6 +55,14 @@
 	{
 		"type": "entity",
 		"name": "dsadasd"
+	},
+	{
+		"type": "IMAGE",
+		"src": "Capture.PNG",
+		"Description": "",
+		"TTT": 0,
+		"TESTdds": 0,
+		"check": false
 	}
 ]
 }

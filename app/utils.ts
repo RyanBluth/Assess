@@ -15,14 +15,12 @@ export function assertHasProperties(obj: Object, fields: string[]): string[] {
 
 export function logError(message: any): void {
 	var eventService: GlobalEventService = globalAppInjector.get(GlobalEventService);
-	eventService.brodcast(GlobalEvent.ERROR_MESSAGE, {text: message, time: new Date()})
-	console.error(message);
+	eventService.brodcast(GlobalEvent.ERROR_MESSAGE, {text: message, time: new Date()});
 }
 
 export function logInfo(message: any): void {
 	var eventService: GlobalEventService = globalAppInjector.get(GlobalEventService);
-	eventService.brodcast(GlobalEvent.INFO_MESSAGE, { text: message, time: new Date() })
-	console.log(message);
+	eventService.brodcast(GlobalEvent.INFO_MESSAGE, { text: message, time: new Date() });
 }
 
 export function looseEquals(a, b){

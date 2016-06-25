@@ -417,7 +417,7 @@ export class AdjustingInputDirective implements OnInit, OnChanges {
 	selector: '[asses-asset-field]',
 	template: '<div class="asset-field" [innerHTML]="_innerHtml"></div>',
 })
-export class AssetFieldComponent implements AfterViewChecked, OnInit {
+export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 	@Input() field: Assets.AssetField;
 
 	private _elem: any;
@@ -433,7 +433,7 @@ export class AssetFieldComponent implements AfterViewChecked, OnInit {
 		this._projectService = _projectService;
 	}
 
-	public ngOnInit(){
+	public ngOnChanges(){
 		this._innerHtml = this.field.create.template();
 	}
 
@@ -952,7 +952,6 @@ export class LoadersComponent implements OnInit{
 
 	constructor( @Inject(ProjectService) _projectService: ProjectService) {
 		this._projectService = _projectService;
-		console.log(this.loaders);
 	}
 
 	public ngOnInit(){
