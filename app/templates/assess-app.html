@@ -2,7 +2,10 @@
 	<assess-tab-nav [tabs]="mainNavTabs"></assess-tab-nav>
 	<div class="page-container">
 		<div *ngIf="currentMode == MODES.ASSETS">
-			<assess-asset-group class="asset-list-container"></assess-asset-group>
+			<div *ngFor="let groupName of _assetService.getAssetGroupNames()">
+				<h1>{{groupName}}</h1>
+				<assess-asset-group [assetGroup]="_assetService.assetGroups[groupName]" class="asset-list-container"></assess-asset-group>
+			</div>
 		</div>
 		<div *ngIf="currentMode == MODES.SCHEMA">
 			<assess-schema [schemaObject]="_assetService.schema.rawObject"></assess-schema>

@@ -6,7 +6,7 @@
     			<tr assess-asset-header [assetType]="assetService.schema.assetTypes[assetTypeName]"></tr>
 			</thead>
 			<tbody>
-    			<tr assess-asset *ngFor="let asset of assetService.assetsForType(assetTypeName)" [asset]="asset"></tr>
+    			<tr assess-asset *ngFor="let asset of assetService.assetsForTypeFromGroup(assetTypeName, assetGroup)" [asset]="asset"></tr>
     		</tbody>
 		</table>
 		<button class="new-asset-btn" (click)="assetService.addAsset(assetTypeName)">New</button>

@@ -119,6 +119,7 @@ export class Schema{
 	public structureStr: string;
 	public structureObject: {};
 	public rawObject: {};
+	public groups: {} = {};
 
 	constructor(schemaAsObj: any, structureStr: string){
 		this.structureStr = structureStr;
@@ -145,6 +146,7 @@ export class Schema{
 **/
 @Injectable()
 export class AssetService{
+	public assetGroups : {} = {};
 	public assets: Assets.Asset[] = [];
 	public assetTypeDefinitions: any = null;
 
@@ -230,48 +232,51 @@ export class AssetService{
 		}
 		let strucToAssetMap = {};
 		let strucObj = JSON.parse(this.schema.structureStr);
+		let assetsObj = JSON.parse(assetsStr);
 		this.schema.properties.forEach(p => {
 			strucToAssetMap[p] = this.findValueInObject(strucObj, p).reverse();
-		});
-
-		// @TODO Load custom properties
-		let assetsObj = JSON.parse(assetsStr);
-		var c = null;
-		strucToAssetMap["AS_ASSETS"].forEach(p => {
-			if(c == null){
+			console.log(p);
+			let c = null;
+			strucToAssetMap[p].forEach(p => {
 				c = assetsObj[p];
-			}else{
-				c = c[p];
+				//if(c == null){
+				//}else{
+				//	c = c[p];
+				//}
+			});
+			if (c != null) {
+				let tempAssets = [];
+				console.log(c);
+				c.forEach((asset) => {
+					let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.AS_ASSET_TYPE_TYPE], asset);
+					tempAssets.push(a);
+				});
+				// Run inside angular
+				this._zone.run(() => {
+					this.assets = tempAssets;
+					this.assetGroups[p] = tempAssets;
+				});
 			}
 		});
 
-		if (c != null) {
-			var tempAssets = [];
-			c.forEach((asset) => {
-				let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.AS_ASSET_TYPE_TYPE], asset);
-				tempAssets.push(a);
-			});
-			// Run inside angular
-			this._zone.run(() => {
-				this.assets = tempAssets;
-			});
-		}
+		console.log(this.assetGroups);
+
 	}
 
-	public assetsForType(type:string): Assets.Asset[]{
+	public assetsForTypeFromGroup(type:string, group : Assets.Asset[]): Assets.Asset[]{
 		var ret: Assets.Asset[] = [];
-		for(let idx in this.assets){
-			if(this.assets[idx].definition.type === type){
-				ret.push(this.assets[idx]);
+		for(let idx in group){
+			if(group[idx].definition.type === type){
+				ret.push(group[idx]);
 			}
 		}
 		return ret;
 	}
 
 	public retriveValueForSchemaProperty(property: string) : string{
-		if(AS_SchemaTypes.indexOf(property) != -1){
-			switch (property) {
-				case "AS_ASSETS":
+		//if(AS_SchemaTypes.indexOf(property) != -1){
+		//	switch (property) {
+		//		case "AS_ASSETS":
 					let outAssets = [];
 					this.assets.forEach((asset) => {
 						let outAsset = {};
@@ -283,12 +288,12 @@ export class AssetService{
 						outAssets.push(outAsset);
 					});
 					return JSON.stringify(outAssets, null, "\t");
-			}
-		}else{
+		//	}
+		//}else{
 			// @TODO Retrive custom properties
-			return '"DDDDDD"';
-		}
-		return "";
+		//	return '"DDDDDD"';
+		//}
+		//return "";
 	}
 
 	public findValueInObject(obj: any, property: string, curPath: any[] = []): any[] {
@@ -312,6 +317,10 @@ export class AssetService{
 	public writeProjectFile(){
 		this._projectService.writeProjectFile();
 		utils.logInfo("Saved project file " + this._projectService.currentProject.filePath);
+	}
+
+	public getAssetGroupNames() : string[]{
+		return Object.keys(this.assetGroups);
 	}
 }
 
@@ -491,6 +500,8 @@ export class AssetHeaderComponent {
     templateUrl: './app/templates/assess-asset-group.html'
 })
 export class AssetGroupComponent {
+
+	@Input() assetGroup : {};
 
 	public assetService: AssetService;
 

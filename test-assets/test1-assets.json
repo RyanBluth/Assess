@@ -38,7 +38,7 @@
 		"Description": "",
 		"TTT": "03",
 		"TESTdds": 0,
-		"check": false
+		"check": true
 	},
 	{
 		"type": "IMAGE",
@@ -63,6 +63,23 @@
 		"TTT": 0,
 		"TESTdds": 0,
 		"check": false
+	},
+	{
+		"type": "config",
+		"width": "1920",
+		"height": "1080",
+		"decorated": true
+	},
+	{
+		"type": "IMAGE",
+		"src": null,
+		"Description": "",
+		"TTT": "6",
+		"TESTdds": 0,
+		"check": false
 	}
+],
+	"assets2": [
+
 ]
 }
