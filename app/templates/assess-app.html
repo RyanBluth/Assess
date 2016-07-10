@@ -4,7 +4,7 @@
 		<div *ngIf="currentMode == MODES.ASSETS">
 			<div *ngFor="let groupName of _assetService.getAssetGroupNames()">
 				<h1>{{groupName}}</h1>
-				<assess-asset-group [assetGroup]="_assetService.assetGroups[groupName]" class="asset-list-container"></assess-asset-group>
+				<assess-asset-group [assetGroupName]="groupName" [assetGroup]="_assetService.assetGroups[groupName]" class="asset-list-container"></assess-asset-group>
 			</div>
 		</div>
 		<div *ngIf="currentMode == MODES.SCHEMA">

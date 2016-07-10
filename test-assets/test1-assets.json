@@ -1,85 +1,22 @@
 {
 	"assets": [
 	{
-		"type": "IMAGE",
-		"src": "icon.png",
-		"Description": "asdasdasDasdadfdf",
-		"TTT": 0,
-		"TESTdds": 0,
-		"check": true
+		"type": "Test 2",
+		"Field 2": "fgsdfsdfsd"
 	},
 	{
-		"type": "IMAGE",
-		"src": "Capture.PNG",
-		"Description": "",
-		"TTT": 0,
-		"TESTdds": "-3",
-		"check": true
-	},
-	{
-		"type": "IMAGE",
-		"src": "icon.png",
-		"Description": "fdsfsdf",
-		"TTT": "4",
-		"TESTdds": 0,
-		"check": true
-	},
-	{
-		"type": "IMAGE",
-		"src": "Capture.PNG",
-		"Description": "",
-		"TTT": "03",
-		"TESTdds": 0,
-		"check": false
-	},
-	{
-		"type": "IMAGE",
-		"src": "Capture.PNG",
-		"Description": "",
-		"TTT": "03",
-		"TESTdds": 0,
-		"check": true
-	},
-	{
-		"type": "IMAGE",
-		"src": "Capture.PNG",
-		"Description": "cdb",
-		"TTT": "044",
-		"TESTdds": "3",
-		"check": "true"
-	},
-	{
-		"type": "entity",
-		"name": "ddsadas"
-	},
-	{
-		"type": "entity",
-		"name": "dsadasd"
-	},
-	{
-		"type": "IMAGE",
-		"src": "Capture.PNG",
-		"Description": "",
-		"TTT": 0,
-		"TESTdds": 0,
-		"check": false
-	},
-	{
-		"type": "config",
-		"width": "1920",
-		"height": "1080",
-		"decorated": true
-	},
-	{
-		"type": "IMAGE",
-		"src": null,
-		"Description": "",
-		"TTT": "6",
-		"TESTdds": 0,
-		"check": false
+		"type": "Test 2",
+		"Field 2": "sdfsdfsdf"
 	}
 ],
 	"assets2": [
-
+	{
+		"type": "Test 2",
+		"Field 2": "fgsdfsdfsd"
+	},
+	{
+		"type": "Test 2",
+		"Field 2": "sdfsdfsdf"
+	}
 ]
 }

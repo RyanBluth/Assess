@@ -1,14 +1,14 @@
 <div *ngIf="assetService.schema != null">
-	<div class="asset-group" *ngFor="let assetTypeName of assetService.schema.assetTypeNames"> 
-		<div class="asset-type-title"><span>{{assetService.schema.assetTypes[assetTypeName].name}}s</span></div> 
+	<div class="asset-group" *ngFor="let assetTypeName of assetService.schema.groups[assetGroupName].assetTypeNames"> 
+		<div class="asset-type-title"><span>{{assetService.schema.groups[assetGroupName].assetTypes[assetTypeName].name}}s</span></div> 
 		<table class="asset-group-table" cellpadding=0 cellspacing=0>
 			<thead>
-    			<tr assess-asset-header [assetType]="assetService.schema.assetTypes[assetTypeName]"></tr>
+    			<tr assess-asset-header [assetType]="assetService.schema.groups[assetGroupName].assetTypes[assetTypeName]"></tr>
 			</thead>
 			<tbody>
     			<tr assess-asset *ngFor="let asset of assetService.assetsForTypeFromGroup(assetTypeName, assetGroup)" [asset]="asset"></tr>
     		</tbody>
 		</table>
-		<button class="new-asset-btn" (click)="assetService.addAsset(assetTypeName)">New</button>
+		<button class="new-asset-btn" (click)="assetService.addAsset(assetTypeName, assetGroupName)">New</button>
 	</div>
 </div>

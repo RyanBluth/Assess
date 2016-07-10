@@ -71,7 +71,7 @@ var template = [
 								projService.newProject(file.toString());
 								var assetService: AssetService = globalAppInjector.get(AssetService);
 								assetService.loadProject(projService.currentProject);
-								assetService.writeAssets(AssetWriteFormat.JSON, projService.currentProject.assetFilePath);
+								assetService.writeAssets(AssetWriteFormat.JSON, projService.currentProject.assetPath);
 							}
 						}
 					);
@@ -126,17 +126,24 @@ export class Schema{
 		this.structureObject = JSON.parse(structureStr);
 		this.rawObject = schemaAsObj;
 		this.properties = Object.keys(schemaAsObj);
-		if (schemaAsObj.hasOwnProperty(Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS])){
-			let at = schemaAsObj[Assets.SchemaFields[Assets.SchemaFields.AS_ASSETS]]; 
-			if(at instanceof Array){
+		for (let key in schemaAsObj) {
+			let at = schemaAsObj[key];
+			this.groups[key] = {
+				assetTypes : {},
+				assetTypeNames : []
+			};
+			if (at instanceof Array) {
 				at.forEach((typeDef) => {
-					this.assetTypes[typeDef["AS_ASSET_TYPE_TYPE"]] = new Assets.AssetTypeDefinition(typeDef);
-					this.assetTypeNames.push(typeDef["AS_ASSET_TYPE_TYPE"]);
+					this.groups[key].assetTypes[typeDef["AS_ASSET_TYPE_TYPE"]] = new Assets.AssetTypeDefinition(typeDef);
+					this.groups[key].assetTypeNames.push(typeDef["AS_ASSET_TYPE_TYPE"]);
+					//this.assetTypes[typeDef["AS_ASSET_TYPE_TYPE"]] = new Assets.AssetTypeDefinition(typeDef);
+					//this.assetTypeNames.push(typeDef["AS_ASSET_TYPE_TYPE"]);
 				});
-			}else{
+			} else {
 				utils.logError("ASSET_TYPES must be an array");
 			}
 		}
+		console.log(this.groups);
 	}
 }
 
@@ -193,16 +200,16 @@ export class AssetService{
 	 * 
 	 * @param type The type of the asset - specified in the schema
 	 */
-	public addAsset(type: string): void {
+	public addAsset(type: string, group:string): void {
 		// Need to make sure there is a loaded type definition for the specified type
-		if(!this.schema.assetTypes.hasOwnProperty(type)){
+		if(!this.schema.groups[group].assetTypes.hasOwnProperty(type)){
 			utils.logError("Error occured during call to addAsset - type \"" + type + "\" is not specified in the loaded schema");
 			return;
 		}
 		// Run inside the injected NgZone so angular knows to do an update
 		this._zone.run(() => {
 			// Creeate a new asset object - passing in the type definition from the schema
-			this.assets.push(new Assets.Asset(this.schema.assetTypes[type]));
+			this.assets.push(new Assets.Asset(this.schema.groups[group].assetTypes[type]));
 		});
 	}	
 
@@ -235,8 +242,10 @@ export class AssetService{
 		let assetsObj = JSON.parse(assetsStr);
 		this.schema.properties.forEach(p => {
 			strucToAssetMap[p] = this.findValueInObject(strucObj, p).reverse();
-			console.log(p);
+			console.log(strucToAssetMap);
 			let c = null;
+			console.log(p);
+			console.log(c);
 			strucToAssetMap[p].forEach(p => {
 				c = assetsObj[p];
 				//if(c == null){
@@ -246,21 +255,18 @@ export class AssetService{
 			});
 			if (c != null) {
 				let tempAssets = [];
-				console.log(c);
 				c.forEach((asset) => {
-					let a: Assets.Asset = new Assets.Asset(this.schema.assetTypes[asset.AS_ASSET_TYPE_TYPE], asset);
+					console.log(this.schema.groups[p]);
+					console.log(asset.AS_ASSET_TYPE_TYPE);
+					let a: Assets.Asset = new Assets.Asset(this.schema.groups[p].assetTypes[asset.AS_ASSET_TYPE_TYPE], asset);
 					tempAssets.push(a);
 				});
 				// Run inside angular
 				this._zone.run(() => {
-					this.assets = tempAssets;
 					this.assetGroups[p] = tempAssets;
 				});
 			}
 		});
-
-		console.log(this.assetGroups);
-
 	}
 
 	public assetsForTypeFromGroup(type:string, group : Assets.Asset[]): Assets.Asset[]{
@@ -502,6 +508,7 @@ export class AssetHeaderComponent {
 export class AssetGroupComponent {
 
 	@Input() assetGroup : {};
+	@Input() assetGroupName: string;
 
 	public assetService: AssetService;
 
