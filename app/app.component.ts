@@ -154,7 +154,6 @@ export class Schema{
 @Injectable()
 export class AssetService{
 	public assetGroups : {} = {};
-	public assets: Assets.Asset[] = [];
 	public assetTypeDefinitions: any = null;
 
 	public schema: Schema = null;
