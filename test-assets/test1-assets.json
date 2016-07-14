@@ -1,22 +1,16 @@
 {
 	"assets": [
 	{
-		"type": "Test 2",
-		"Field 2": "fgsdfsdfsd"
-	},
-	{
-		"type": "Test 2",
-		"Field 2": "sdfsdfsdf"
+		"type": "config",
+		"width": 0,
+		"height": 0,
+		"decorated": true
 	}
 ],
 	"assets2": [
 	{
 		"type": "Test 2",
-		"Field 2": "fgsdfsdfsd"
-	},
-	{
-		"type": "Test 2",
-		"Field 2": "sdfsdfsdf"
+		"Field 2": "ddsfsdf"
 	}
 ]
 }

@@ -209,7 +209,7 @@ export class AssetService{
 		// Run inside the injected NgZone so angular knows to do an update
 		this._zone.run(() => {
 			// Creeate a new asset object - passing in the type definition from the schema
-			this.assets.push(new Assets.Asset(this.schema.groups[group].assetTypes[type]));
+			this.assetGroups[group].push(new Assets.Asset(this.schema.groups[group].assetTypes[type]));
 		});
 	}	
 
@@ -284,7 +284,7 @@ export class AssetService{
 		//	switch (property) {
 		//		case "AS_ASSETS":
 					let outAssets = [];
-					this.assets.forEach((asset) => {
+					this.assetGroups[property].forEach((asset) => {
 						let outAsset = {};
 						outAsset["AS_ASSET_TYPE_TYPE"] = asset.definition.type;
 
