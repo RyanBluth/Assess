@@ -1,7 +1,7 @@
 declare function require(moduleName: string): any;
 
 import {globalAppInjector} from "./bootstrap"
-import {ProjectService} from "./project"
+import {ProjectService} from "./service/project.service"
 
 const fs = require('fs');
 const requireFromString = require('require-from-string');
@@ -16,6 +16,19 @@ export enum DataType{
 	AS_SELECT,
 	AS_BOOLEAN
 }
+
+export var AsFields = {
+	SCHEMA : {
+		AS_ASSETS: "AS_ASSETS", // An Array of asset types
+		AS_ASSET_TYPE_NAME: "AS_ASSET_TYPE_NAME", // The display name for an asset type
+		AS_ASSET_TYPE_TYPE: "AS_ASSET_TYPE_TYPE", // The type for an asset type
+		AS_ASSET_TYPE_FIELDS: "AS_ASSET_TYPE_FIELDS", // An array of field definitions for an asset type
+		AS_ASSET_FIELD_NAME: "AS_ASSET_FIELD_NAME", // The name of a an asset type field 
+		AS_ASSET_FIELD_DATA_TYPE: "AS_ASSET_FIELD_DATA_TYPE", // The data type of a field 
+		AS_ASSET_FIELD_LOADER: "AS_ASSET_FIELD_LOADER", // The loader for the asset type field
+	}
+}
+
 
 export enum SchemaFields{
 	AS_ASSETS

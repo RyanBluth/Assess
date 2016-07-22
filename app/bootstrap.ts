@@ -1,12 +1,14 @@
 import {bootstrap} from 'angular2/platform/browser';
 import {ElementRef, NgZone, provide, ComponentRef, Component, EventEmitter, Injector, ApplicationRef, Provider, Inject, Input, Output, Optional, Injectable, AfterViewChecked} from 'angular2/core';
-import * as Components from './app.component';
-import {ProjectService} from './project';
+import {AppComponent} from './component/app.component';
+import {ProjectService} from './service/project.service';
+import {GlobalEventService} from './service/globalEvent.service'
+import {AssetService} from './service/asset.service'
 import * as Utils from './utils';
 
 export var globalAppInjector: Injector = null;
 
-bootstrap(Components.AppComponent, [Components.GlobalEventService, Components.AssetService, ProjectService])
+bootstrap(AppComponent, [AssetService, ProjectService, GlobalEventService])
 .then((appRef: ComponentRef) => {
 	globalAppInjector = appRef.injector;
 	appRef.instance.initialize();

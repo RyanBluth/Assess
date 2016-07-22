@@ -1,7 +1,7 @@
-import {globalAppInjector} from "./bootstrap"
-import {GlobalEventService, GlobalEvent} from "./app.component"
-
 declare function require(moduleName: string): any;
+
+import {globalAppInjector} from "./bootstrap"
+import {GlobalEvent, GlobalEventService} from './service/globalEvent.service'
 
 export function assertHasProperties(obj: Object, fields: string[]): string[] {
 	var missingProps: string[] = [];
