@@ -25,8 +25,7 @@ export class SchemaComponent {
 	private _globalEventService: GlobalEventService;
 	private _originalSchema: {} = null// Copy of the original schema so we can watch for changes
 
-	@Input() schemaObject:
-	 {};
+	@Input() schemaObject:{};
 
 	constructor(@Inject(AssetService) _assetService:AssetService, 
 		@Inject(GlobalEventService) _globalEventService: GlobalEventService) 

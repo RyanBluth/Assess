@@ -22,11 +22,11 @@ const path = require('path');
 **/
 @Injectable()
 export class AssetService{
-	public assetGroups : {} = {};
-	public assetTypeDefinitions: any = null;
+	public assetGroups : {};
+	public assetTypeDefinitions: any;
 
-	public schema: Schema = null;
-	public assetsAsObj: any = null; // Asset file loaded as object
+	public schema: Schema;
+	public assetsAsObj: any; // Asset file loaded as object
 
 	private _zone: NgZone;// Angular zone
 	private _projectService: ProjectService;
@@ -35,8 +35,16 @@ export class AssetService{
 		@Inject(NgZone) _zone: NgZone, 
 		@Inject(ProjectService) _projectService: ProjectService) 
 	{
+		this.init();
 		this._zone = _zone;
 		this._projectService = _projectService;
+	}
+
+	public init(){
+		this.assetGroups = {};
+		this.assetTypeDefinitions = null;
+		this.schema = null;
+		this.assetsAsObj = null;	
 	}
 
 	public loadLastProject(){
@@ -53,6 +61,7 @@ export class AssetService{
 	public loadProject(config: Project){
 		// Run inside the injected NgZone so angular knows to do an update
 		this._zone.run(() => {
+			this.init();
 			this.schema = new Schema(config.schema, JSON.stringify(config.structure, null, "\t"));
 			this.readAssets(config.assetFilePath);
 			utils.logInfo("Opened project " + config.filePath);
@@ -116,10 +125,6 @@ export class AssetService{
 			console.log(c);
 			strucToAssetMap[p].forEach(p => {
 				c = assetsObj[p];
-				//if(c == null){
-				//}else{
-				//	c = c[p];
-				//}
 			});
 			if (c != null) {
 				let tempAssets = [];
@@ -148,26 +153,17 @@ export class AssetService{
 	}
 
 	public retriveValueForSchemaProperty(property: string) : string{
-		//if(AS_SchemaTypes.indexOf(property) != -1){
-		//	switch (property) {
-		//		case "AS_ASSETS":
-					let outAssets = [];
-					this.assetGroups[property].forEach((asset) => {
-						let outAsset = {};
-						outAsset["AS_ASSET_TYPE_TYPE"] = asset.definition.type;
+		let outAssets = [];
+		this.assetGroups[property].forEach((asset) => {
+			let outAsset = {};
+			outAsset["AS_ASSET_TYPE_TYPE"] = asset.definition.type;
 
-						for (let key in asset.fields) {
-							outAsset[key] = asset.fields[key].value;
-						}
-						outAssets.push(outAsset);
-					});
-					return JSON.stringify(outAssets, null, "\t");
-		//	}
-		//}else{
-			// @TODO Retrive custom properties
-		//	return '"DDDDDD"';
-		//}
-		//return "";
+			for (let key in asset.fields) {
+				outAsset[key] = asset.fields[key].value;
+			}
+			outAssets.push(outAsset);
+		});
+		return JSON.stringify(outAssets, null, "\t");
 	}
 
 	public findValueInObject(obj: any, property: string, curPath: any[] = []): any[] {
