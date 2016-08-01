@@ -196,7 +196,7 @@ export class AssetField{
 			let absValue = projectService.resolveAbsoluteAssetFilePath(value);
 			this.create = this._loader.create(absValue);
 		}else{
-			this.create	 = this._loader.create(this.value);
+			this.create	= this._loader.create(this.value);
 		}
 	}
 }

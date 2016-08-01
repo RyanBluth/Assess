@@ -2,15 +2,44 @@
 	"assets": [
 	{
 		"type": "config",
-		"width": 0,
+		"width": "4",
 		"height": 0,
 		"decorated": true
+	},
+	{
+		"type": "IMAGE",
+		"src": "Capture.PNG",
+		"Description": "FSDFSD",
+		"TTT": 0,
+		"TESTdds": "045454",
+		"check": false
+	},
+	{
+		"type": "entity",
+		"name": "SFSDFSDF"
+	},
+	{
+		"type": "IMAGE",
+		"src": "icon.png",
+		"Description": "DSFDSF",
+		"TTT": 0,
+		"TESTdds": 0,
+		"check": true
 	}
 ],
 	"assets2": [
 	{
 		"type": "Test 2",
 		"Field 2": "ddsfsdf"
+	},
+	{
+		"type": "Test 2",
+		"Field 2": "dfdsfsdfdf"
+	},
+	{
+		"type": "type3",
+		"vvddd": "xcvxcv",
+		"vvv": true
 	}
 ]
 }

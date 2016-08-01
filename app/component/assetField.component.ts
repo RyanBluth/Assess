@@ -3,7 +3,8 @@ const fs = require('fs');
 
 import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directive,
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
-	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, ViewChild} from 'angular2/core';
+	Optional, Injectable, AfterViewChecked, 
+	AfterContentChecked, OnInit, SimpleChange, ViewChild} from 'angular2/core';
 
 import {NgFor, NgIf, NgModel, NgClass} from 'angular2/common';
 import * as Assets from './../assetType';
@@ -17,6 +18,7 @@ import {AssetWriteFormat} from './../project'
 	template: '<div class="asset-field" [innerHTML]="_innerHtml"></div>'
 })
 export class AssetFieldComponent implements AfterViewChecked, OnChanges {
+	
 	@Input() field: Assets.AssetField;
 
 	private _elem: any;
@@ -25,7 +27,10 @@ export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 	private _projectService: ProjectService;
 	private _innerHtml: string = "";
 
-	constructor(_zone:NgZone, _elem: ElementRef, @Inject(AssetService) _assetService: AssetService, @Inject(ProjectService) _projectService) {
+	constructor(_zone:NgZone, _elem: ElementRef, 
+		@Inject(AssetService) _assetService: AssetService, 
+		@Inject(ProjectService) _projectService) {
+		
 		this._elem = _elem.nativeElement;
 		this._assetService = _assetService;
 		this._zone = _zone;
@@ -41,20 +46,17 @@ export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 	}
 
 	public updateValue(value:any){
-		this._zone.run(() => {				
-				var isFileValue = false;
-				try {
-					fs.accessSync(value, fs.R_OK); // Check for file access
-					isFileValue = true;
-				} catch (ignored) {/*Fail silently*/ }
-				this.field.value = value;
-				this.field.refresh();
-				if(isFileValue){
-					this.field.value = this._projectService.resolveRelativeAssetFilePath(value);
-				}
-				this._assetService.writeAssets(AssetWriteFormat.JSON);
-			}
-		);
-
+		var isFileValue = false;
+		try {
+			fs.accessSync(value, fs.R_OK); // Check for file access
+			isFileValue = true;
+		} catch (ignored) {/*Fail silently*/ }
+		this.field.value = value;
+		if(isFileValue){
+			this.field.value = this._projectService.resolveRelativeAssetFilePath(value);
+		}
+		this.field.refresh();
+		this._assetService.writeAssets(AssetWriteFormat.JSON);
+		this.ngOnChanges();
 	}
 }
