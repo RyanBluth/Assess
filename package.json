@@ -39,6 +39,8 @@
     "zone.js": "^0.6.12",
     "angular2-in-memory-web-api": "0.0.14",
     "bootstrap": "^3.3.6",
+    "@angular2-material/core":"",
+    "@angular2-material/button":"",
     
     "require-from-string": "1.2.0",
     "codemirror": "5.15.2",
