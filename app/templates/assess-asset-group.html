@@ -9,6 +9,6 @@
     			<tr assess-asset *ngFor="let asset of assetService.assetsForTypeFromGroup(assetTypeName, assetGroup)" [asset]="asset"></tr>
     		</tbody>
 		</table>
-		<button class="new-asset-btn" (click)="assetService.addAsset(assetTypeName, assetGroupName)">New</button>
+		<button md-raised-button color="primary" class="new-asset-btn" (click)="assetService.addAsset(assetTypeName, assetGroupName)">New</button>
 	</div>
 </div>

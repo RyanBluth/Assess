@@ -22,7 +22,6 @@
     "tutorial"
   ],
   "dependencies": {
-    "jquery":"^2.2",
     "@angular/common": "2.0.0-rc.4",
     "@angular/compiler": "2.0.0-rc.4",
     "@angular/core": "2.0.0-rc.4",
@@ -33,13 +32,16 @@
     "@angular/router": "3.0.0-beta.1",
     "@angular/router-deprecated": "2.0.0-rc.2",
     "@angular/upgrade": "2.0.0-rc.4",
-    "systemjs": "0.19.26",
+    "@angular2-material/button": "^2.0.0-alpha.5-2",
+    "@angular2-material/core": "^2.0.0-alpha.5-2",
+    "codemirror": "5.15.2",
     "es6-shim": "^0.35.0",
+    "jquery": "^2.2",
     "reflect-metadata": "0.1.2",
+    "require-from-string": "1.2.0",
     "rxjs": "5.0.0-beta.6",
-    "zone.js": "0.6.12",
-    "codemirror" : "5.15.2",
-    "require-from-string" : "1.2.0"
+    "systemjs": "0.19.26",
+    "zone.js": "0.6.12"
   },
   "devDependencies": {
     "electron-prebuilt": "^0.37.0",
