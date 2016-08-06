@@ -2,7 +2,7 @@
 declare function require(moduleName: string): any;
 declare var __dirname;
 
-import {Injectable, Inject, NgZone} from 'angular2/core';
+import {Injectable, Inject, NgZone} from '@angular/core';
 import * as Assets from './../assetType';
 import {Schema} from './../schema';
 

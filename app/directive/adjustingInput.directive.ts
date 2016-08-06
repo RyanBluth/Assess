@@ -1,6 +1,6 @@
 import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directive,
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
-	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, HostListener, ViewChild} from 'angular2/core';
+	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, HostListener, ViewChild} from '@angular/core';
 
 @Directive({
 	selector: '[assess-adjusting-input]'

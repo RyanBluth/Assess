@@ -4,9 +4,9 @@ const fs = require('fs');
 import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directive,
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
 	Optional, Injectable, AfterViewChecked, 
-	AfterContentChecked, OnInit, SimpleChange, ViewChild} from 'angular2/core';
+	AfterContentChecked, OnInit, SimpleChange, ViewChild} from '@angular/core';
 
-import {NgFor, NgIf, NgModel, NgClass} from 'angular2/common';
+import {NgFor, NgIf, NgModel, NgClass} from '@angular/common';
 import * as Assets from './../assetType';
 import * as utils from "./../utils";
 import {ProjectService} from './../service/project.service'
@@ -15,7 +15,7 @@ import {AssetWriteFormat} from './../project'
 
 @Component({
 	selector: '[asses-asset-field]',
-	template: '<div class="asset-field" [innerHTML]="_innerHtml"></div>'
+	template: '<div class="asset-field"></div>'
 })
 export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 	
@@ -25,7 +25,6 @@ export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 	private _assetService: AssetService;
 	private _zone: NgZone;
 	private _projectService: ProjectService;
-	private _innerHtml: string = "";
 
 	constructor(_zone:NgZone, _elem: ElementRef, 
 		@Inject(AssetService) _assetService: AssetService, 
@@ -38,7 +37,7 @@ export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 	}
 
 	public ngOnChanges(){
-		this._innerHtml = this.field.create.template();
+		this._elem.innerHTML = this.field.create.template();
 	}
 
 	public ngAfterViewChecked() {

@@ -1,8 +1,8 @@
 
 import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directive,
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
-	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, ViewChild} from 'angular2/core';
-import {NgFor, NgIf, NgModel, NgClass} from 'angular2/common';
+	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, ViewChild} from '@angular/core';
+import {NgFor, NgIf, NgModel, NgClass} from '@angular/common';
 
 import {GlobalEventService, GlobalEvent} from './../service/globalEvent.service'
 

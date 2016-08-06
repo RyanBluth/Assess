@@ -2,9 +2,9 @@ declare function require(moduleName: string): any;
 
 import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directive,
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
-	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, ViewChild} from 'angular2/core';
+	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, ViewChild} from '@angular/core';
 
-import {NgFor, NgIf, NgModel, NgClass} from 'angular2/common';
+import {NgFor, NgIf, NgModel, NgClass} from '@angular/common';
 import * as Assets from './../assetType';
 import * as utils from "./../utils";
 import {ProjectService} from './project.service'

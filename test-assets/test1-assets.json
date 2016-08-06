@@ -20,11 +20,17 @@
 	},
 	{
 		"type": "IMAGE",
-		"src": "icon.png",
+		"src": "Capture.PNG",
 		"Description": "DSFDSF",
 		"TTT": 0,
 		"TESTdds": 0,
 		"check": true
+	},
+	{
+		"type": "config",
+		"width": 0,
+		"height": 0,
+		"decorated": true
 	}
 ],
 	"assets2": [
