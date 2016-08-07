@@ -20,7 +20,9 @@
 
   var materialPackages = [
     'core',
-    'button'
+    'button',
+    'card',
+    'toolbar'
   ];
 
   var ngPackageNames = [

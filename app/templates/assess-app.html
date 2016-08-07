@@ -3,7 +3,6 @@
 	<div class="page-container">
 		<div *ngIf="currentMode == MODES.ASSETS">
 			<div *ngFor="let groupName of _assetService.getAssetGroupNames()">
-				<h3 class="indent">{{groupName}}</h3>
 				<assess-asset-group [assetGroupName]="groupName" [assetGroup]="_assetService.assetGroups[groupName]" class="asset-list-container"></assess-asset-group>
 			</div>
 		</div>

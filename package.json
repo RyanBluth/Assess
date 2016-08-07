@@ -41,6 +41,8 @@
     "bootstrap": "^3.3.6",
     "@angular2-material/core":"",
     "@angular2-material/button":"",
+    "@angular2-material/card":"",
+    "@angular2-material/toolbar":"",
     
     "require-from-string": "1.2.0",
     "codemirror": "5.15.2",

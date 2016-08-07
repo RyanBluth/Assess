@@ -9,7 +9,7 @@
 	{
 		"type": "IMAGE",
 		"src": "icon.png",
-		"Description": "FSDFSD",
+		"Description": "FSDFSDdsfdsfsdf",
 		"TTT": 0,
 		"TESTdds": "045454",
 		"check": false
@@ -31,6 +31,14 @@
 		"width": 0,
 		"height": 0,
 		"decorated": true
+	},
+	{
+		"type": "IMAGE",
+		"src": "Capture.PNG",
+		"Description": "",
+		"TTT": 0,
+		"TESTdds": 0,
+		"check": false
 	}
 ],
 	"assets2": [
