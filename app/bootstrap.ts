@@ -1,6 +1,6 @@
-import {bootstrap} from '@angular/platform-browser-dynamic';
-import {ElementRef, NgZone, provide, ComponentRef, Component, EventEmitter, Injector, ApplicationRef, Provider, Inject, Input, Output, Optional, Injectable, AfterViewChecked} from '@angular/core';
-import {AppComponent} from './component/app.component';
+import {platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {ElementRef, NgZone, provide, ComponentRef, Component, EventEmitter, Injector, NgModuleRef, ApplicationRef, Provider, Inject, Input, Output, Optional, Injectable, AfterViewChecked} from '@angular/core';
+import {AppModule} from './app.module';
 import {ProjectService} from './service/project.service';
 import {GlobalEventService} from './service/globalEvent.service'
 import {AssetService} from './service/asset.service'
@@ -8,10 +8,9 @@ import * as Utils from './utils';
 
 export var globalAppInjector: Injector = null;
 
-bootstrap(AppComponent, [AssetService, ProjectService, GlobalEventService])
-.then((appRef: ComponentRef<AppComponent>) => {
+platformBrowserDynamic().bootstrapModule(AppModule)
+.then((appRef: NgModuleRef<AppModule>) => {
 	globalAppInjector = appRef.injector;
-	appRef.instance.initialize();
 
 	var log = console.log;
 	var error = console.error;
@@ -25,6 +24,6 @@ bootstrap(AppComponent, [AssetService, ProjectService, GlobalEventService])
 		Utils.logError(m);
 		error.apply(console, [m]);
 	}
-});
 
+});
 

@@ -5,13 +5,13 @@ import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directiv
 @Directive({
 	selector: '[assess-adjusting-input]'
 })
-export class AdjustingInputDirective implements OnInit, OnChanges {
-	
-	@Input() ngModel: any;
+export class AdjustingInputDirective implements OnInit {
 
 	private _elem: any;
 	private _dummySpan: any;
 	private _fontSize: number;
+
+	@Input() value:string;
 
 	constructor(elem: ElementRef){
 		this._elem = elem.nativeElement;
@@ -26,20 +26,14 @@ export class AdjustingInputDirective implements OnInit, OnChanges {
   	}
 
 	public ngOnInit() {
+		this._elem.value = this.value;
 		this._dummySpan = document.createElement("span");
 		var fontSize = window.getComputedStyle(this._elem, null).getPropertyValue('font-size');
 		this._dummySpan.style.fontSize = fontSize;
 		this._fontSize = parseFloat(fontSize);
 		this._elem.parentElement.appendChild(this._dummySpan);
-		this._dummySpan.innerHTML = this._elem.value;
+		this._dummySpan.innerHTML = this.value;
 		this.updateWidth(this._fontSize);
-	}
-
-	public ngOnChanges(changes: { [propName: string]: SimpleChange }) {
-		if (this._dummySpan != undefined) {
-			this._dummySpan.innerHTML = changes["ngModel"].currentValue;
-			this.updateWidth(this._fontSize);
-		}
 	}
 
 	private updateWidth(padding:number){

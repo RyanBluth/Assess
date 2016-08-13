@@ -33,7 +33,6 @@ export class Schema{
 				utils.logError("ASSET_TYPES must be an array");
 			}
 		}
-		console.log(this.groups);
 	}
 }
 

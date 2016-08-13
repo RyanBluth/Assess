@@ -4,10 +4,6 @@ import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directiv
 	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, ViewChild} from '@angular/core';
 import {NgFor, NgIf, NgModel, NgClass} from '@angular/common';
 
-import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
-import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
-import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
-
 import * as Assets from './../assetType'
 import {AssetService} from './../service/asset.service'
 import {AssetComponent} from './asset.component'
@@ -18,7 +14,7 @@ declare var jQuery: any;
 
 @Component({
     selector: 'assess-asset-group',
-    directives: [AssetComponent, AssetHeaderComponent, NgFor, NgIf, MD_BUTTON_DIRECTIVES, MD_CARD_DIRECTIVES, MD_TOOLBAR_DIRECTIVES],
+    directives: [AssetComponent, AssetHeaderComponent, NgFor, NgIf],
     templateUrl: './app/templates/assess-asset-group.html'
 })
 export class AssetGroupComponent {

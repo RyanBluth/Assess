@@ -119,18 +119,13 @@ export class AssetService{
 		let assetsObj = JSON.parse(assetsStr);
 		this.schema.properties.forEach(p => {
 			strucToAssetMap[p] = this.findValueInObject(strucObj, p).reverse();
-			console.log(strucToAssetMap);
 			let c = null;
-			console.log(p);
-			console.log(c);
 			strucToAssetMap[p].forEach(p => {
 				c = assetsObj[p];
 			});
 			if (c != null) {
 				let tempAssets = [];
 				c.forEach((asset) => {
-					console.log(this.schema.groups[p]);
-					console.log(asset.AS_ASSET_TYPE_TYPE);
 					let a: Assets.Asset = new Assets.Asset(this.schema.groups[p].assetTypes[asset.AS_ASSET_TYPE_TYPE], asset);
 					tempAssets.push(a);
 				});

@@ -7,6 +7,8 @@ import {NgFor, NgIf, NgModel, NgClass} from '@angular/common';
 import {CodeEditorComponent} from './codeEditor.component';
 
 import {ProjectService} from './../service/project.service'
+import {GlobalEventService, GlobalEvent} from './../service/globalEvent.service'
+import {Project} from './../Project'
 
 import * as Assets from './../assetType'
 
@@ -24,7 +26,7 @@ export class LoadersComponent implements OnInit{
 	private _renaming: boolean;
 	private _sortedLoaders: string[] = [];
 
-	constructor( @Inject(ProjectService) _projectService: ProjectService) {
+	constructor( @Inject(ProjectService) _projectService: ProjectService, @Inject(GlobalEventService) _globalEventService: GlobalEventService) {	
 		this._projectService = _projectService;
 	}
 
@@ -48,12 +50,14 @@ export class LoadersComponent implements OnInit{
 	}
 
 	public openLoader(name:string){
-		this.editor.setValue(this.loaders[name].body);
 		this._currentLoader = name;
+		this.editor.setValue(this.loaders[name].body);
 	}
 
 	public updateLoader(value){
-		this.loaders[this._currentLoader].body = value; 
+		if(this._currentLoader !== undefined){
+			this.loaders[this._currentLoader].body = value; 
+		}
 	}
 
 	public getLoaderNames():string[]{

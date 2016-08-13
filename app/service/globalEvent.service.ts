@@ -10,10 +10,11 @@ import {AppComponent} from './../component/app.component'
 import {globalAppInjector} from './../bootstrap'
 
 export enum GlobalEvent {
-	GLOBAL_CLICK = 0,
-	SCHEMA_CHANGE = 1,
-	ERROR_MESSAGE = 2,
-	INFO_MESSAGE = 3
+	GLOBAL_CLICK   = 0,
+	SCHEMA_CHANGE  = 1,
+	ERROR_MESSAGE  = 2,
+	INFO_MESSAGE   = 3,
+	PROJECT_LOADED = 4
 }
 
 @Injectable()
@@ -23,10 +24,11 @@ export class GlobalEventService {
 	private _zone: NgZone;
 
 	private _emitters = {
-		"GLOBAL_CLICK"  : new EventEmitter(),
-		"SCHEMA_CHANGE" : new EventEmitter(),
-		"ERROR_MESSAGE" : new EventEmitter(),
-		"INFO_MESSAGE"  : new EventEmitter(),
+		"GLOBAL_CLICK"   : new EventEmitter(),
+		"SCHEMA_CHANGE"  : new EventEmitter(),
+		"ERROR_MESSAGE"  : new EventEmitter(),
+		"INFO_MESSAGE"   : new EventEmitter(),
+		"PROJECT_LOADED" : new EventEmitter()
 	}
 
 	constructor( @Inject(NgZone) _zone: NgZone) {

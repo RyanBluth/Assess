@@ -12,12 +12,15 @@ const path = require('path');
 import * as utils from "./../utils";
 import {Project} from './../project'
 
+import {GlobalEventService, GlobalEvent} from './globalEvent.service'
+
 @Injectable()
 export class ProjectService {
 
  	public currentProject: Project = null;
 
   	private _zone: NgZone;
+  	private _globalEventService:GlobalEventService;
 
   	private _defaultSchema = {
 		AS_ASSETS: []
@@ -32,8 +35,9 @@ export class ProjectService {
 		AS_ASSET_TYPE_TYPE : "type"
 	}
 
-	constructor( @Inject(NgZone) _zone: NgZone){
+	constructor( @Inject(NgZone) _zone: NgZone, @Inject(GlobalEventService) _globalEventService:GlobalEventService){
 		this._zone = _zone
+		this._globalEventService = _globalEventService;
 	}
 
 	public loadProject(filePath: string){
@@ -41,6 +45,8 @@ export class ProjectService {
 			try {
 				var proj = fs.readFileSync(filePath, 'utf8');
 				this.currentProject = new Project(filePath, JSON.parse(proj));
+				this._globalEventService.brodcast(GlobalEvent.PROJECT_LOADED, this.currentProject);
+
 			} catch (e) {
 				utils.logError("Project file " + filePath + " does not exist");
 			}
@@ -119,8 +125,6 @@ export class ProjectService {
 
 	public resolveRelativeAssetFilePath(asset:string): string{
 		var absAssetFolder = this.getCurrentProjectDirectory() + path.sep + this.currentProject.assetPath;
-		console.log(absAssetFolder);
-		console.log(asset);
 		return path.relative(absAssetFolder, asset);
 	}
 }

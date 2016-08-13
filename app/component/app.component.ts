@@ -104,16 +104,17 @@ Menu.setApplicationMenu(menu);
 @Component({
     selector: 'assess-app',
     templateUrl: './app/templates/assess-app.html',
-    directives: [AssetGroupComponent, TabNavComponent, 
+    directives: [TabNavComponent, 
     	SchemaComponent, StructureComponent, 
     	ConsoleComponent, AdjustingInputDirective, LoadersComponent]
 })
-export class AppComponent {
+export class AppComponent{
 
 	private _assetService: AssetService;
 	private _globalEventService: GlobalEventService;
 	private _elem: ElementRef;
 	private _projectService: ProjectService;
+	private _zone:NgZone;
 
 	public MODES = {
 		ASSETS 	  : 0,  
@@ -155,13 +156,15 @@ export class AppComponent {
 		elem: ElementRef,
 		@Inject(AssetService) assetService: AssetService, 
 		@Inject(GlobalEventService) globalEventService: GlobalEventService,
-		@Inject(ProjectService) projectService: ProjectService)
+		@Inject(ProjectService) projectService: ProjectService,
+		@Inject(NgZone)_zone:NgZone)
 	{
 		this._elem = elem.nativeElement;
 		this._assetService = assetService;
 		this._globalEventService = globalEventService;
 		this._globalEventService.hookupAppElement(this);
 		this._projectService = projectService;
+		this._zone = _zone;
 	}
 
 	public getElement(): any{
@@ -171,6 +174,7 @@ export class AppComponent {
 	public initialize(){
 		this._assetService.loadLastProject();
 	}
+
 }
 
 

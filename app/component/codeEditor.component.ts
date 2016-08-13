@@ -2,7 +2,7 @@ import {ElementRef, NgZone, provide, Component, EventEmitter, Injector, Directiv
 	ApplicationRef, Provider, Inject, Input, Output, OnChanges, 
 	Optional, Injectable, AfterViewChecked, AfterContentChecked, OnInit, SimpleChange, ViewChild} from '@angular/core';
 
-import {NgFor, NgIf, NgModel, NgClass} from '@angular/common';
+import {NgFor, NgIf, NgClass} from '@angular/common';
 
 // Declare jquery - It's included in index.html
 declare var jQuery: any;
@@ -11,7 +11,7 @@ declare var CodeMirror: any;
 @Component({
 	selector: 'assess-code-editor',
 	templateUrl: './app/templates/assess-code-editor.html',
-	directives: [NgFor, NgIf, NgModel]
+	directives: [NgFor, NgIf]
 })
 export class CodeEditorComponent implements OnInit{
 
@@ -29,7 +29,9 @@ export class CodeEditorComponent implements OnInit{
 		var textarea = jQuery(this._elem).find("textarea")[0];
 		this._codeMirror = CodeMirror.fromTextArea(textarea, {
 			mode: { name: "javascript", json: true },
-			theme: 'base16-dark'
+			theme: 'base16-dark',
+			lineNumbers: true,
+			htmlMode: true
 		});
 
 		this._codeMirror.on("change", (cm, change)=> {
