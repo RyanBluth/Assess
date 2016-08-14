@@ -1,6 +1,7 @@
 import * as utils from './utils' 
 import * as Assets from './assetType'
 
+
 export class Schema{
 	
 	public assetTypes: {} = {};
@@ -24,10 +25,8 @@ export class Schema{
 			};
 			if (at instanceof Array) {
 				at.forEach((typeDef) => {
-					this.groups[key].assetTypes[typeDef["AS_ASSET_TYPE_TYPE"]] = new Assets.AssetTypeDefinition(typeDef);
-					this.groups[key].assetTypeNames.push(typeDef["AS_ASSET_TYPE_TYPE"]);
-					//this.assetTypes[typeDef["AS_ASSET_TYPE_TYPE"]] = new Assets.AssetTypeDefinition(typeDef);
-					//this.assetTypeNames.push(typeDef["AS_ASSET_TYPE_TYPE"]);
+					this.groups[key].assetTypes[typeDef[Assets.AsFields.AS_ASSET_TYPE_TYPE]] = new Assets.AssetTypeDefinition(typeDef);
+					this.groups[key].assetTypeNames.push(typeDef[Assets.AsFields.AS_ASSET_TYPE_TYPE]);
 				});
 			} else {
 				utils.logError("ASSET_TYPES must be an array");

@@ -163,9 +163,9 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 			);
 		}
 
-		if (property == AsFields.SCHEMA.AS_ASSETS) {
+		if (property == AsFields.AS_ASSETS) {
 			options.push(new PopupOption("New Asset Type", () => {
-				(<[{}]>this.object[AsFields.SCHEMA.AS_ASSETS]).push(
+				(<[{}]>this.object[AsFields.AS_ASSETS]).push(
 					{
 						AS_ASSET_TYPE_NAME: "Display Name",
 						AS_ASSET_TYPE_TYPE: "Asset Type",
@@ -175,9 +175,9 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 			}))
 		}
 
-		if (property == AsFields.SCHEMA.AS_ASSET_TYPE_FIELDS) {
+		if (property == AsFields.AS_ASSET_TYPE_FIELDS) {
 			options.push(new PopupOption("New Field", () => {
-				(<[{}]>this.object[AsFields.SCHEMA.AS_ASSET_TYPE_FIELDS]).push(
+				(<[{}]>this.object[AsFields.AS_ASSET_TYPE_FIELDS]).push(
 					{
 						AS_ASSET_FIELD_DATA_TYPE: "AS_STRING",
 						AS_ASSET_FIELD_NAME: "Field Name"
@@ -192,7 +192,7 @@ export class ObjectRendererComponent implements OnInit, AfterContentChecked {
 	public getCompletionsForProperty(property): PopupOption[] {
 		var options: PopupOption[] = [];
 
-		if(property == AsFields.SCHEMA.AS_ASSET_FIELD_DATA_TYPE){
+		if(property == AsFields.AS_ASSET_FIELD_DATA_TYPE){
 			options.push(
 				new PopupOption("AS_STRING", () => { this.object[property] = "AS_STRING" }),
 				new PopupOption("AS_BOOLEAN", () => { this.object[property] = "AS_BOOLEAN" }),

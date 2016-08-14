@@ -3,28 +3,28 @@
 	{
 		"type": "config",
 		"width": "4",
-		"height": 0,
+		"height": "5",
 		"decorated": true
 	},
 	{
-		"type": "IMAGE",
-		"src": "icon.png",
-		"Description": "FSDFSDdsfdsfsdf",
-		"TTT": 0,
-		"TESTdds": "045454",
-		"check": false
+		"type": "image",
+		"src": "Capture.PNG",
+		"description": "fsdfsddsfdsfsdf",
+		"ttt": 0,
+		"testdds": "045454",
+		"checkffdssdfsdfsdfsdf": 0
 	},
 	{
 		"type": "entity",
-		"name": "SFSDFSDF"
+		"name": "sfsdfsdfdfgfdgdfg"
 	},
 	{
-		"type": "IMAGE",
-		"src": "icon.png",
-		"Description": "DSFDSF",
-		"TTT": 0,
-		"TESTdds": 0,
-		"check": true
+		"type": "image",
+		"src": "Capture.PNG",
+		"description": "dsfdsf",
+		"ttt": 0,
+		"testdds": 0,
+		"checkffdssdfsdfsdfsdf": 0
 	},
 	{
 		"type": "config",
@@ -33,27 +33,96 @@
 		"decorated": true
 	},
 	{
-		"type": "IMAGE",
-		"src": "Capture.PNG",
-		"Description": "",
-		"TTT": 0,
-		"TESTdds": 0,
-		"check": false
+		"type": "image",
+		"src": "capture.png",
+		"description": "fdgdfgvdf",
+		"ttt": 0,
+		"testdds": 0,
+		"checkffdssdfsdfsdfsdf": 0
+	},
+	{
+		"type": "image",
+		"src": "icon.png",
+		"description": "dfgdfgdfg",
+		"ttt": 0,
+		"testdds": 0,
+		"checkffdssdfsdfsdfsdf": 0
+	},
+	{
+		"type": "entity",
+		"name": "fgdgdfgfdg"
 	}
 ],
 	"assets2": [
 	{
-		"type": "Test 2",
-		"Field 2": "ddsfsdf"
+		"type": "test 2",
+		"field 2": "ddsfsdf"
 	},
 	{
-		"type": "Test 2",
-		"Field 2": "dfdsfsdfdf"
+		"type": "test 2",
+		"field 2": "dfdsfsdfdf"
 	},
 	{
 		"type": "type3",
 		"vvddd": "xcvxcv",
-		"vvv": true
+		"vvvsdfsfdfsdfsd": true
+	},
+	{
+		"type": "test 2",
+		"field 2": "fsdfsdf"
+	},
+	{
+		"type": "type3",
+		"vvddd": "",
+		"vvvsdfsfdfsdfsd": false
+	},
+	{
+		"type": "test 2",
+		"field 2": "sdfdsf"
+	},
+	{
+		"type": "test 2",
+		"field 2": "fsd"
+	},
+	{
+		"type": "test 2",
+		"field 2": "dsfsd"
+	},
+	{
+		"type": "test 2",
+		"field 2": "dsfsfsd"
+	},
+	{
+		"type": "test 2",
+		"field 2": "sdfdsfsdf"
+	},
+	{
+		"type": "test 2",
+		"field 2": "dsfsdfsdfdsf"
+	},
+	{
+		"type": "test 2",
+		"field 2": "dsfsd"
+	},
+	{
+		"type": "test 2",
+		"field 2": "fsdfsdf"
+	},
+	{
+		"type": "test 2",
+		"field 2": "dsfdsf"
+	},
+	{
+		"type": "test 2",
+		"field 2": "fsdf"
+	},
+	{
+		"type": "test 2",
+		"field 2": "dsfdsfdsf"
+	},
+	{
+		"type": "test 2",
+		"field 2": "dsf"
 	}
 ]
 }

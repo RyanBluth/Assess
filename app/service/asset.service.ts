@@ -11,6 +11,7 @@ import {ProjectService} from './project.service'
 
 import {AssetWriteFormat, Project} from './../project'
 import {Schema} from './../schema'
+import {AsFields} from './../assetType'
 
 // Node includes
 const fs = require('fs'); 
@@ -126,7 +127,7 @@ export class AssetService{
 			if (c != null) {
 				let tempAssets = [];
 				c.forEach((asset) => {
-					let a: Assets.Asset = new Assets.Asset(this.schema.groups[p].assetTypes[asset.AS_ASSET_TYPE_TYPE], asset);
+					let a: Assets.Asset = new Assets.Asset(this.schema.groups[p].assetTypes[asset[AsFields.AS_ASSET_TYPE_TYPE]], asset);
 					tempAssets.push(a);
 				});
 				// Run inside angular
@@ -151,7 +152,7 @@ export class AssetService{
 		let outAssets = [];
 		this.assetGroups[property].forEach((asset) => {
 			let outAsset = {};
-			outAsset["AS_ASSET_TYPE_TYPE"] = asset.definition.type;
+			outAsset[AsFields.AS_ASSET_TYPE_TYPE] = asset.definition.type;
 
 			for (let key in asset.fields) {
 				outAsset[key] = asset.fields[key].value;

@@ -45,12 +45,13 @@ export class AssetFieldComponent implements AfterViewChecked, OnChanges {
 	}
 
 	public updateValue(value:any){
-			this._zone.run(() => {
+		this._zone.run(() => {
 			var isFileValue = false;
+			console.log(value);
 			try {
 				fs.accessSync(value, fs.R_OK); // Check for file access
 				isFileValue = true;
-			} catch (ignored) {/*Fail silently*/ }
+			} catch (ignored) {console.log(ignored)}
 			this.field.value = value;
 			if(isFileValue){
 				this.field.value = this._projectService.resolveRelativeAssetFilePath(value);
