@@ -86,6 +86,7 @@ export class AssetFieldDefinition{
 	
 	public name: string;
 	public loader: string;
+	public dataType: string;
 	public default: any;
 
 	constructor(def:any){
@@ -96,6 +97,7 @@ export class AssetFieldDefinition{
 
 			});
 		}else{
+			this.dataType = def[AsFields.AS_ASSET_FIELD_DATA_TYPE];
 			this.name = def[AsFields.AS_ASSET_FIELD_NAME];
 			if(def.hasOwnProperty("default")){
 				this.default = def.default;
@@ -187,7 +189,7 @@ export class AssetField{
 	}
 
 	private setValue(value){
-		if (this.definition[AsFields.AS_ASSET_FIELD_DATA_TYPE] == DataType.AS_FILE) {
+		if (this.definition.dataType == DataType.AS_FILE) {
 			let projectService = globalAppInjector.get(ProjectService);
 			let absValue = projectService.resolveAbsoluteAssetFilePath(value);
 			this.create = this._loader.create(absValue);

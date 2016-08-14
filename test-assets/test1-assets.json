@@ -42,7 +42,7 @@
 	},
 	{
 		"type": "image",
-		"src": "icon.png",
+		"src": "Capture.PNG",
 		"description": "dfgdfgdfg",
 		"ttt": 0,
 		"testdds": 0,
@@ -51,6 +51,26 @@
 	{
 		"type": "entity",
 		"name": "fgdgdfgfdg"
+	},
+	{
+		"type": "entity",
+		"name": ""
+	},
+	{
+		"type": "image",
+		"src": "Capture.PNG",
+		"description": "",
+		"ttt": 0,
+		"testdds": 0,
+		"checkffdssdfsdfsdfsdf": 0
+	},
+	{
+		"type": "image",
+		"src": "icon.png",
+		"description": "",
+		"ttt": 0,
+		"testdds": 0,
+		"checkffdssdfsdfsdfsdf": 0
 	}
 ],
 	"assets2": [
@@ -74,7 +94,7 @@
 	{
 		"type": "type3",
 		"vvddd": "",
-		"vvvsdfsfdfsdfsd": false
+		"vvvsdfsfdfsdfsd": true
 	},
 	{
 		"type": "test 2",
@@ -123,6 +143,11 @@
 	{
 		"type": "test 2",
 		"field 2": "dsf"
+	},
+	{
+		"type": "type3",
+		"vvddd": "",
+		"vvvsdfsfdfsdfsd": false
 	}
 ]
 }
